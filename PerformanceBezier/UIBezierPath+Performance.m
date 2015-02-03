@@ -26,7 +26,7 @@ static char BEZIER_PROPERTIES;
     return props;
 }
 
--(void)setTangentAtEnd:(CGPoint)tangent{
+-(void)setTangentAtEnd:(CGFloat)tangent{
     [self pathProperties].tangentAtEnd = tangent;
 }
 
@@ -60,7 +60,7 @@ static char BEZIER_PROPERTIES;
     }
     return props.isClosed;
 }
--(CGPoint) tangentAtEnd{
+-(CGFloat) tangentAtEnd{
     return [self pathProperties].tangentAtEnd;
 }
 
@@ -126,6 +126,10 @@ static char BEZIER_PROPERTIES;
         bezier[3] = self.firstPoint;
     }else if (thisElement.type == kCGPathElementMoveToPoint ||
               thisElement.type == kCGPathElementAddLineToPoint){
+//        bezier[1] = CGPointMake(bezier[0].x + (thisElement.points[0].x - bezier[0].x)/3,
+//                                bezier[0].y + (thisElement.points[0].y - bezier[0].y)/3);
+//        bezier[2] = CGPointMake(bezier[0].x + (thisElement.points[0].x - bezier[0].x)*2/3,
+//                                bezier[0].y + (thisElement.points[0].y - bezier[0].y)*2/3);
         bezier[1] = bezier[0];
         bezier[2] = thisElement.points[0];
         bezier[3] = thisElement.points[0];
@@ -288,7 +292,7 @@ CGFloat dotProduct(const CGPoint p1, const CGPoint p2) {
     }
     props.hasLastPoint = YES;
     props.lastPoint = point;
-    props.tangentAtEnd = CGPointZero;
+    props.tangentAtEnd = 0;
     props.lastAddedElementWasMoveTo = YES;
     [self swizzle_moveToPoint:point];
 }
@@ -302,7 +306,7 @@ CGFloat dotProduct(const CGPoint p1, const CGPoint p2) {
     if(props.cachedElementCount){
         props.cachedElementCount = props.cachedElementCount + 1;
     }
-    props.tangentAtEnd = CGPointMake(props.lastPoint.x - point.x, props.lastPoint.y - point.y);
+    props.tangentAtEnd = [self calculateTangentBetween:point andPoint:props.lastPoint];
     props.hasLastPoint = YES;
     props.lastPoint = point;
     [self swizzle_addLineToPoint:point];
@@ -317,7 +321,7 @@ CGFloat dotProduct(const CGPoint p1, const CGPoint p2) {
     if(props.cachedElementCount){
         props.cachedElementCount = props.cachedElementCount + 1;
     }
-    props.tangentAtEnd = CGPointMake(ctrl2.x - point.x, ctrl2.y - point.y);
+    props.tangentAtEnd = [self calculateTangentBetween:point andPoint:ctrl2];
     props.hasLastPoint = YES;
     props.lastPoint = point;
     [self swizzle_addCurveToPoint:point controlPoint1:ctrl1 controlPoint2:ctrl2];
@@ -334,7 +338,7 @@ CGFloat dotProduct(const CGPoint p1, const CGPoint p2) {
     }
     props.hasLastPoint = YES;
     props.lastPoint = point;
-    props.tangentAtEnd = CGPointMake(ctrl1.x - point.x, ctrl1.y - point.y);
+    props.tangentAtEnd = [self calculateTangentBetween:point andPoint:ctrl1];
     [self swizzle_quadCurveToPoint:point controlPoint:ctrl1];
 }
 -(void) swizzle_closePath{
@@ -374,7 +378,7 @@ CGFloat dotProduct(const CGPoint p1, const CGPoint p2) {
     props.bezierPathByFlatteningPath = nil;
     [self swizzle_removeAllPoints];
     props.cachedElementCount = 0;
-    props.tangentAtEnd = CGPointZero;
+    props.tangentAtEnd = 0;
     props.hasLastPoint = NO;
     props.hasFirstPoint = NO;
     props.isClosed = NO;

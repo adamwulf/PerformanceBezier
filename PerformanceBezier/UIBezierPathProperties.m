@@ -16,7 +16,7 @@
     CGPoint lastPoint;
     BOOL hasFirstPoint;
     CGPoint firstPoint;
-    CGPoint tangentAtEnd;
+    CGFloat tangentAtEnd;
     NSInteger cachedElementCount;
     UIBezierPath* bezierPathByFlatteningPath;
 }
@@ -44,7 +44,7 @@
     lastPoint = [decoder decodeCGPointForKey:@"pathProperties_lastPoint"];
     hasFirstPoint = [decoder decodeBoolForKey:@"pathProperties_hasFirstPoint"];
     firstPoint = [decoder decodeCGPointForKey:@"pathProperties_firstPoint"];
-    tangentAtEnd = [decoder decodeCGPointForKey:@"pathProperties_tangentAtEnd"];
+    tangentAtEnd = [decoder decodeFloatForKey:@"pathProperties_tangentAtEnd"];
     cachedElementCount = [decoder decodeIntegerForKey:@"pathProperties_cachedElementCount"];
     return self;
 }
@@ -57,7 +57,7 @@
     [aCoder encodeCGPoint:lastPoint forKey:@"pathProperties_lastPoint"];
     [aCoder encodeBool:hasFirstPoint forKey:@"pathProperties_hasFirstPoint"];
     [aCoder encodeCGPoint:firstPoint forKey:@"pathProperties_firstPoint"];
-    [aCoder encodeCGPoint:tangentAtEnd forKey:@"pathProperties_tangentAtEnd"];
+    [aCoder encodeFloat:tangentAtEnd forKey:@"pathProperties_tangentAtEnd"];
     [aCoder encodeInteger:cachedElementCount forKey:@"pathProperties_cachedElementCount"];
 }
 

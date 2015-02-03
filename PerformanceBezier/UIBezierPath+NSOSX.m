@@ -154,7 +154,7 @@ void updatePathElementAtIndex(void* info, const CGPathElement* element) {
  * all points in the path, including control points for Bézier and
  * quadratic curves.
  *
- * this method is meant to mimic NSBezierPath's method of the same name
+ * this method is meant to mimic UIBezierPath's method of the same name
  */
 -(CGRect) controlPointBounds{
     return CGPathGetBoundingBox(self.CGPath);

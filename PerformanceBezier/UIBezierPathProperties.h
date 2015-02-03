@@ -17,7 +17,7 @@
 @property (nonatomic) CGPoint lastPoint;
 @property (nonatomic) BOOL hasFirstPoint;
 @property (nonatomic) CGPoint firstPoint;
-@property (nonatomic) CGPoint tangentAtEnd;
+@property (nonatomic) CGFloat tangentAtEnd;
 @property (nonatomic) NSInteger cachedElementCount;
 @property (nonatomic, retain) UIBezierPath* bezierPathByFlatteningPath;
 @property (nonatomic) BOOL lastAddedElementWasMoveTo;

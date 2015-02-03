@@ -24,7 +24,7 @@ CGPoint bezierPointAtT(const CGPoint bez[4], CGFloat t);
 -(CGPoint) firstPoint;
 
 // returns the tangent at the very end of the path
--(CGPoint) tangentAtEnd;
+-(CGFloat) tangentAtEnd;
 
 // returns YES if the path is closed (or contains at least 1 closed subpath)
 // returns NO otherwise
