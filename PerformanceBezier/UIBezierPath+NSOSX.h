@@ -33,7 +33,7 @@
 -(CGRect) controlPointBounds;
 
 // iterate over each element in the path with the input block
--(void) iteratePathWithBlock:(void (^)(CGPathElement element))block;
+-(void) iteratePathWithBlock:(void (^)(CGPathElement element,NSUInteger idx))block;
 
 // helper method to return the number of points for any input element
 // based on its type. ie, an element of type

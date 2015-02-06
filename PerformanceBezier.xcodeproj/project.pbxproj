@@ -11,6 +11,9 @@
 		660E0FDA1A80055300F19D8A /* UIBezierPath+Center.m in Sources */ = {isa = PBXBuildFile; fileRef = 660E0FD81A80055300F19D8A /* UIBezierPath+Center.m */; };
 		660E0FDF1A80287600F19D8A /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 660E0FDC1A80284C00F19D8A /* LICENSE */; };
 		660E0FE01A80287900F19D8A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 660E0FDB1A80226100F19D8A /* README.md */; };
+		663355CD1A8575F600C45718 /* UIBezierPath+Description.h in Headers */ = {isa = PBXBuildFile; fileRef = 663355CB1A8575F600C45718 /* UIBezierPath+Description.h */; };
+		663355CE1A8575F600C45718 /* UIBezierPath+Description.m in Sources */ = {isa = PBXBuildFile; fileRef = 663355CC1A8575F600C45718 /* UIBezierPath+Description.m */; };
+		663355D01A85773000C45718 /* PerformanceBezierDescriptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 663355CF1A85773000C45718 /* PerformanceBezierDescriptionTests.m */; };
 		667617AE1A7EB5CB00C0B447 /* PerformanceBezier-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 667617AD1A7EB5CB00C0B447 /* PerformanceBezier-Info.plist */; };
 		667617B01A7EB5CB00C0B447 /* PerformanceBezier.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617AF1A7EB5CB00C0B447 /* PerformanceBezier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		667617B91A7EB73A00C0B447 /* UIBezierPathProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617B71A7EB73A00C0B447 /* UIBezierPathProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -39,6 +42,9 @@
 		660E0FD81A80055300F19D8A /* UIBezierPath+Center.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Center.m"; sourceTree = "<group>"; };
 		660E0FDB1A80226100F19D8A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		660E0FDC1A80284C00F19D8A /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		663355CB1A8575F600C45718 /* UIBezierPath+Description.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Description.h"; sourceTree = "<group>"; };
+		663355CC1A8575F600C45718 /* UIBezierPath+Description.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Description.m"; sourceTree = "<group>"; };
+		663355CF1A85773000C45718 /* PerformanceBezierDescriptionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierDescriptionTests.m; sourceTree = "<group>"; };
 		667617A41A7EB5CB00C0B447 /* PerformanceBezier.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework.static; includeInIndex = 0; path = PerformanceBezier.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		667617AA1A7EB5CB00C0B447 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		667617AD1A7EB5CB00C0B447 /* PerformanceBezier-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PerformanceBezier-Info.plist"; sourceTree = "<group>"; };
@@ -128,16 +134,18 @@
 		667617B61A7EB72F00C0B447 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				660E0FD71A80055300F19D8A /* UIBezierPath+Center.h */,
+				660E0FD81A80055300F19D8A /* UIBezierPath+Center.m */,
 				667617CF1A7EB88200C0B447 /* UIBezierPath+Clockwise.h */,
 				667617D01A7EB88200C0B447 /* UIBezierPath+Clockwise.m */,
+				667617CB1A7EB86200C0B447 /* UIBezierPath+Debug.h */,
+				667617CC1A7EB86200C0B447 /* UIBezierPath+Debug.m */,
+				663355CB1A8575F600C45718 /* UIBezierPath+Description.h */,
+				663355CC1A8575F600C45718 /* UIBezierPath+Description.m */,
 				667617C01A7EB79F00C0B447 /* UIBezierPath+NSOSX.h */,
 				667617C11A7EB79F00C0B447 /* UIBezierPath+NSOSX.m */,
 				667617F41A7EC58700C0B447 /* UIBezierPath+Performance.h */,
 				667617F61A7EC58700C0B447 /* UIBezierPath+Performance.m */,
-				667617CB1A7EB86200C0B447 /* UIBezierPath+Debug.h */,
-				667617CC1A7EB86200C0B447 /* UIBezierPath+Debug.m */,
-				660E0FD71A80055300F19D8A /* UIBezierPath+Center.h */,
-				660E0FD81A80055300F19D8A /* UIBezierPath+Center.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -163,6 +171,7 @@
 				66D4021E1A7EDACA00043802 /* PerformanceBezierAbstractTest.h */,
 				66D4021F1A7EDACA00043802 /* PerformanceBezierAbstractTest.m */,
 				66D4021C1A7EDA9000043802 /* PerformanceBezierClockwiseTests.m */,
+				663355CF1A85773000C45718 /* PerformanceBezierDescriptionTests.m */,
 				66D402151A7EDA7000043802 /* Supporting Files */,
 			);
 			path = PerformanceBezierTests;
@@ -190,6 +199,7 @@
 				667617CD1A7EB86200C0B447 /* UIBezierPath+Debug.h in Headers */,
 				667617F71A7EC58700C0B447 /* UIBezierPath+Performance.h in Headers */,
 				660E0FD91A80055300F19D8A /* UIBezierPath+Center.h in Headers */,
+				663355CD1A8575F600C45718 /* UIBezierPath+Description.h in Headers */,
 				667617F81A7EC58700C0B447 /* UIBezierPath+Performance_Private.h in Headers */,
 				667617FC1A7EC5D400C0B447 /* UIBezierPath+FirstLast.h in Headers */,
 				667617C21A7EB79F00C0B447 /* UIBezierPath+NSOSX_Private.h in Headers */,
@@ -314,6 +324,7 @@
 			files = (
 				667617CE1A7EB86200C0B447 /* UIBezierPath+Debug.m in Sources */,
 				667617D81A7EB9AC00C0B447 /* JRSwizzle.m in Sources */,
+				663355CE1A8575F600C45718 /* UIBezierPath+Description.m in Sources */,
 				667617C41A7EB79F00C0B447 /* UIBezierPath+NSOSX.m in Sources */,
 				667617BA1A7EB73A00C0B447 /* UIBezierPathProperties.m in Sources */,
 				667617D21A7EB88200C0B447 /* UIBezierPath+Clockwise.m in Sources */,
@@ -329,6 +340,7 @@
 			files = (
 				66D402201A7EDACA00043802 /* PerformanceBezierAbstractTest.m in Sources */,
 				66D4021D1A7EDA9000043802 /* PerformanceBezierClockwiseTests.m in Sources */,
+				663355D01A85773000C45718 /* PerformanceBezierDescriptionTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

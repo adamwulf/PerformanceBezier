@@ -12,10 +12,9 @@
 @implementation UIBezierPath (FirstLast)
 
 -(CGPoint) lastPointCalculated{
-    __block BOOL foundFirstYet = NO;
     __block CGPoint firstPoint = CGPointZero;
     __block CGPoint lastPoint = CGPointZero;
-    [self iteratePathWithBlock:^(CGPathElement element) {
+    [self iteratePathWithBlock:^(CGPathElement element, NSUInteger idx) {
         CGPoint currPoint = CGPointZero;
         if(element.type == kCGPathElementMoveToPoint){
             currPoint = element.points[0];
@@ -29,12 +28,11 @@
         }else if(element.type == kCGPathElementAddQuadCurveToPoint){
             currPoint = element.points[1];
         }
-        if(!foundFirstYet){
+        if(idx == 0){
             // path should've begun with a moveTo,
             // but this is a sanity check for malformed
             // paths
             firstPoint = currPoint;
-            foundFirstYet = YES;
         }
         lastPoint = currPoint;
     }];
@@ -42,10 +40,9 @@
 }
 
 -(CGPoint) firstPointCalculated{
-    __block BOOL foundFirstYet = NO;
     __block CGPoint firstPoint = CGPointZero;
-    [self iteratePathWithBlock:^(CGPathElement element) {
-        if(!foundFirstYet){
+    [self iteratePathWithBlock:^(CGPathElement element, NSUInteger idx) {
+        if(idx == 0){
             if(element.type == kCGPathElementMoveToPoint ||
                element.type == kCGPathElementAddLineToPoint){
                 firstPoint = element.points[0];
@@ -56,7 +53,6 @@
             }else if(element.type == kCGPathElementAddQuadCurveToPoint){
                 firstPoint = element.points[1];
             }
-            foundFirstYet = YES;
         }
     }];
     return firstPoint;

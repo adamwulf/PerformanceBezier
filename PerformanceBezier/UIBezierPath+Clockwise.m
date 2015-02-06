@@ -16,7 +16,7 @@
     __block CGPoint lastMoveTo = CGPointZero;
     __block CGPoint lastPoint = CGPointZero;
     __block CGFloat sum = 0;
-    [self iteratePathWithBlock:^(CGPathElement element){
+    [self iteratePathWithBlock:^(CGPathElement element, NSUInteger idx){
         if(element.type == kCGPathElementMoveToPoint){
             lastMoveTo = element.points[0];
             lastPoint = lastMoveTo;

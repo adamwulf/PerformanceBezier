@@ -51,7 +51,7 @@ static char BEZIER_PROPERTIES;
     if(!props.knowsIfClosed){
         // we dont know if the path is closed, so
         // find a close element if we have one
-        [self iteratePathWithBlock:^(CGPathElement ele){
+        [self iteratePathWithBlock:^(CGPathElement ele, NSUInteger idx){
             if(ele.type == kCGPathElementCloseSubpath){
                 props.isClosed = YES;
             }

@@ -79,10 +79,8 @@ static char ELEMENT_ARRAY;
     if(askingForIndex < [self.elementCacheArray count]){
         returnVal = *(CGPathElement*)[[self.elementCacheArray objectAtIndex:askingForIndex] pointerValue];
     }else{
-        __block NSMutableDictionary* params = [NSMutableDictionary dictionary];
         __block UIBezierPath* this = self;
-        __block int currentIndex = 0;
-        [self iteratePathWithBlock:^(CGPathElement element){
+        [self iteratePathWithBlock:^(CGPathElement element, NSUInteger currentIndex){
             int numberInCache = (int) [this.elementCacheArray count];
             if(!didReturn || currentIndex == [this.elementCacheArray count]){
                 if(currentIndex == numberInCache){
@@ -93,8 +91,6 @@ static char ELEMENT_ARRAY;
                     didReturn = YES;
                 }
             }
-            [params setObject:[NSNumber numberWithInt:currentIndex] forKey:@"curr"];
-            currentIndex++;
         }];
     }
     
@@ -187,7 +183,7 @@ void countPathElement(void* info, const CGPathElement* element) {
     }
 }
 
--(void) iteratePathWithBlock:(void (^)(CGPathElement element))block{
+-(void) iteratePathWithBlock:(void (^)(CGPathElement element,NSUInteger idx))block{
     void (^copiedBlock)(CGPathElement element) = [block copy];
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [params setObject:copiedBlock forKey:@"block"];
@@ -198,8 +194,10 @@ void countPathElement(void* info, const CGPathElement* element) {
 // helper function
 void blockWithElement(void* info, const CGPathElement* element) {
     NSMutableDictionary* params = (NSMutableDictionary*) info;
-    void (^block)(CGPathElement element) = [params objectForKey:@"block"];
-    block(*element);
+    void (^block)(CGPathElement element,NSUInteger idx) = [params objectForKey:@"block"];
+    NSUInteger index = [[params objectForKey:@"index"] unsignedIntegerValue];
+    block(*element, index);
+    [params setObject:@(index+1) forKey:@"index"];
 }
 
 
