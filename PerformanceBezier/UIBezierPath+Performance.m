@@ -10,6 +10,7 @@
 #import "UIBezierPath+Performance_Private.h"
 #import "UIBezierPath+FirstLast.h"
 #import "UIBezierPath+NSOSX.h"
+#import "UIBezierPath+Uncached.h"
 #import <objc/runtime.h>
 #import "JRSwizzle.h"
 
@@ -35,6 +36,10 @@ static char BEZIER_PROPERTIES;
     if(!props.hasLastPoint){
         props.hasLastPoint = YES;
         props.lastPoint = [self lastPointCalculated];
+#ifdef MMPreventBezierPerformance
+    }else{
+        [self simulateNoBezierCaching];
+#endif
     }
     return props.lastPoint;
 }
@@ -43,6 +48,10 @@ static char BEZIER_PROPERTIES;
     if(!props.hasFirstPoint){
         props.hasFirstPoint = YES;
         props.firstPoint = [self firstPointCalculated];
+#ifdef MMPreventBezierPerformance
+    }else{
+        [self simulateNoBezierCaching];
+#endif
     }
     return props.firstPoint;
 }
@@ -57,10 +66,17 @@ static char BEZIER_PROPERTIES;
             }
         }];
         props.knowsIfClosed = YES;
+#ifdef MMPreventBezierPerformance
+    }else{
+        [self simulateNoBezierCaching];
+#endif
     }
     return props.isClosed;
 }
 -(CGFloat) tangentAtEnd{
+#ifdef MMPreventBezierPerformance
+    [self simulateNoBezierCaching];
+#endif
     return [self pathProperties].tangentAtEnd;
 }
 

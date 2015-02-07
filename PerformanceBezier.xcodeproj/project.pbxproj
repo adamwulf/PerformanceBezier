@@ -14,6 +14,8 @@
 		663355CD1A8575F600C45718 /* UIBezierPath+Description.h in Headers */ = {isa = PBXBuildFile; fileRef = 663355CB1A8575F600C45718 /* UIBezierPath+Description.h */; };
 		663355CE1A8575F600C45718 /* UIBezierPath+Description.m in Sources */ = {isa = PBXBuildFile; fileRef = 663355CC1A8575F600C45718 /* UIBezierPath+Description.m */; };
 		663355D01A85773000C45718 /* PerformanceBezierDescriptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 663355CF1A85773000C45718 /* PerformanceBezierDescriptionTests.m */; };
+		663355D71A857A2700C45718 /* UIBezierPath+Uncached.h in Headers */ = {isa = PBXBuildFile; fileRef = 663355D51A857A2700C45718 /* UIBezierPath+Uncached.h */; };
+		663355D81A857A2700C45718 /* UIBezierPath+Uncached.m in Sources */ = {isa = PBXBuildFile; fileRef = 663355D61A857A2700C45718 /* UIBezierPath+Uncached.m */; };
 		667617AE1A7EB5CB00C0B447 /* PerformanceBezier-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 667617AD1A7EB5CB00C0B447 /* PerformanceBezier-Info.plist */; };
 		667617B01A7EB5CB00C0B447 /* PerformanceBezier.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617AF1A7EB5CB00C0B447 /* PerformanceBezier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		667617B91A7EB73A00C0B447 /* UIBezierPathProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617B71A7EB73A00C0B447 /* UIBezierPathProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -45,6 +47,8 @@
 		663355CB1A8575F600C45718 /* UIBezierPath+Description.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Description.h"; sourceTree = "<group>"; };
 		663355CC1A8575F600C45718 /* UIBezierPath+Description.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Description.m"; sourceTree = "<group>"; };
 		663355CF1A85773000C45718 /* PerformanceBezierDescriptionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierDescriptionTests.m; sourceTree = "<group>"; };
+		663355D51A857A2700C45718 /* UIBezierPath+Uncached.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Uncached.h"; sourceTree = "<group>"; };
+		663355D61A857A2700C45718 /* UIBezierPath+Uncached.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Uncached.m"; sourceTree = "<group>"; };
 		667617A41A7EB5CB00C0B447 /* PerformanceBezier.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework.static; includeInIndex = 0; path = PerformanceBezier.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		667617AA1A7EB5CB00C0B447 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		667617AD1A7EB5CB00C0B447 /* PerformanceBezier-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PerformanceBezier-Info.plist"; sourceTree = "<group>"; };
@@ -146,6 +150,8 @@
 				667617C11A7EB79F00C0B447 /* UIBezierPath+NSOSX.m */,
 				667617F41A7EC58700C0B447 /* UIBezierPath+Performance.h */,
 				667617F61A7EC58700C0B447 /* UIBezierPath+Performance.m */,
+				663355D51A857A2700C45718 /* UIBezierPath+Uncached.h */,
+				663355D61A857A2700C45718 /* UIBezierPath+Uncached.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -200,6 +206,7 @@
 				667617F71A7EC58700C0B447 /* UIBezierPath+Performance.h in Headers */,
 				660E0FD91A80055300F19D8A /* UIBezierPath+Center.h in Headers */,
 				663355CD1A8575F600C45718 /* UIBezierPath+Description.h in Headers */,
+				663355D71A857A2700C45718 /* UIBezierPath+Uncached.h in Headers */,
 				667617F81A7EC58700C0B447 /* UIBezierPath+Performance_Private.h in Headers */,
 				667617FC1A7EC5D400C0B447 /* UIBezierPath+FirstLast.h in Headers */,
 				667617C21A7EB79F00C0B447 /* UIBezierPath+NSOSX_Private.h in Headers */,
@@ -326,6 +333,7 @@
 				667617D81A7EB9AC00C0B447 /* JRSwizzle.m in Sources */,
 				663355CE1A8575F600C45718 /* UIBezierPath+Description.m in Sources */,
 				667617C41A7EB79F00C0B447 /* UIBezierPath+NSOSX.m in Sources */,
+				663355D81A857A2700C45718 /* UIBezierPath+Uncached.m in Sources */,
 				667617BA1A7EB73A00C0B447 /* UIBezierPathProperties.m in Sources */,
 				667617D21A7EB88200C0B447 /* UIBezierPath+Clockwise.m in Sources */,
 				667617FD1A7EC5D400C0B447 /* UIBezierPath+FirstLast.m in Sources */,

@@ -12,6 +12,7 @@
 #import "UIBezierPath+NSOSX_Private.h"
 #import "UIBezierPath+Performance_Private.h"
 #import "UIBezierPath+Performance.h"
+#import "UIBezierPath+Uncached.h"
 
 
 static char ELEMENT_ARRAY;
@@ -78,6 +79,9 @@ static char ELEMENT_ARRAY;
     __block CGPathElement returnVal;
     if(askingForIndex < [self.elementCacheArray count]){
         returnVal = *(CGPathElement*)[[self.elementCacheArray objectAtIndex:askingForIndex] pointerValue];
+#ifdef MMPreventBezierPerformance
+        [self simulateNoBezierCaching];
+#endif
     }else{
         __block UIBezierPath* this = self;
         [self iteratePathWithBlock:^(CGPathElement element, NSUInteger currentIndex){
@@ -160,6 +164,9 @@ void updatePathElementAtIndex(void* info, const CGPathElement* element) {
 - (NSInteger)elementCount{
     UIBezierPathProperties* props = [self pathProperties];
     if(props.cachedElementCount){
+#ifdef MMPreventBezierPerformance
+        [self simulateNoBezierCaching];
+#endif
         return props.cachedElementCount;
     }
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
