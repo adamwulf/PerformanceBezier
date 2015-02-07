@@ -1,5 +1,5 @@
 //
-//  UIBezierPath+Debug.h
+//  UIBezierPath+Equals.h
 //  LooseLeaf
 //
 //  Created by Adam Wulf on 6/3/14.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIBezierPath (Debug)
+@interface UIBezierPath (Equals)
 
 // returns YES if the input path is equal
 // to the current path. convenience wrapper

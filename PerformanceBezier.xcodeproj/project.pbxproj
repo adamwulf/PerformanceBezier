@@ -23,8 +23,8 @@
 		667617C21A7EB79F00C0B447 /* UIBezierPath+NSOSX_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617BF1A7EB79F00C0B447 /* UIBezierPath+NSOSX_Private.h */; };
 		667617C31A7EB79F00C0B447 /* UIBezierPath+NSOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617C01A7EB79F00C0B447 /* UIBezierPath+NSOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		667617C41A7EB79F00C0B447 /* UIBezierPath+NSOSX.m in Sources */ = {isa = PBXBuildFile; fileRef = 667617C11A7EB79F00C0B447 /* UIBezierPath+NSOSX.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		667617CD1A7EB86200C0B447 /* UIBezierPath+Debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617CB1A7EB86200C0B447 /* UIBezierPath+Debug.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		667617CE1A7EB86200C0B447 /* UIBezierPath+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 667617CC1A7EB86200C0B447 /* UIBezierPath+Debug.m */; };
+		667617CD1A7EB86200C0B447 /* UIBezierPath+Equals.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617CB1A7EB86200C0B447 /* UIBezierPath+Equals.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		667617CE1A7EB86200C0B447 /* UIBezierPath+Equals.m in Sources */ = {isa = PBXBuildFile; fileRef = 667617CC1A7EB86200C0B447 /* UIBezierPath+Equals.m */; };
 		667617D11A7EB88200C0B447 /* UIBezierPath+Clockwise.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617CF1A7EB88200C0B447 /* UIBezierPath+Clockwise.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		667617D21A7EB88200C0B447 /* UIBezierPath+Clockwise.m in Sources */ = {isa = PBXBuildFile; fileRef = 667617D01A7EB88200C0B447 /* UIBezierPath+Clockwise.m */; };
 		667617D71A7EB9AC00C0B447 /* JRSwizzle.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617D31A7EB9AC00C0B447 /* JRSwizzle.h */; };
@@ -58,8 +58,8 @@
 		667617BF1A7EB79F00C0B447 /* UIBezierPath+NSOSX_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+NSOSX_Private.h"; sourceTree = "<group>"; };
 		667617C01A7EB79F00C0B447 /* UIBezierPath+NSOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+NSOSX.h"; sourceTree = "<group>"; };
 		667617C11A7EB79F00C0B447 /* UIBezierPath+NSOSX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+NSOSX.m"; sourceTree = "<group>"; };
-		667617CB1A7EB86200C0B447 /* UIBezierPath+Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Debug.h"; sourceTree = "<group>"; };
-		667617CC1A7EB86200C0B447 /* UIBezierPath+Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Debug.m"; sourceTree = "<group>"; };
+		667617CB1A7EB86200C0B447 /* UIBezierPath+Equals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Equals.h"; sourceTree = "<group>"; };
+		667617CC1A7EB86200C0B447 /* UIBezierPath+Equals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Equals.m"; sourceTree = "<group>"; };
 		667617CF1A7EB88200C0B447 /* UIBezierPath+Clockwise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Clockwise.h"; sourceTree = "<group>"; };
 		667617D01A7EB88200C0B447 /* UIBezierPath+Clockwise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Clockwise.m"; sourceTree = "<group>"; };
 		667617D31A7EB9AC00C0B447 /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
@@ -142,8 +142,8 @@
 				660E0FD81A80055300F19D8A /* UIBezierPath+Center.m */,
 				667617CF1A7EB88200C0B447 /* UIBezierPath+Clockwise.h */,
 				667617D01A7EB88200C0B447 /* UIBezierPath+Clockwise.m */,
-				667617CB1A7EB86200C0B447 /* UIBezierPath+Debug.h */,
-				667617CC1A7EB86200C0B447 /* UIBezierPath+Debug.m */,
+				667617CB1A7EB86200C0B447 /* UIBezierPath+Equals.h */,
+				667617CC1A7EB86200C0B447 /* UIBezierPath+Equals.m */,
 				663355CB1A8575F600C45718 /* UIBezierPath+Description.h */,
 				663355CC1A8575F600C45718 /* UIBezierPath+Description.m */,
 				667617C01A7EB79F00C0B447 /* UIBezierPath+NSOSX.h */,
@@ -202,7 +202,7 @@
 				667617B91A7EB73A00C0B447 /* UIBezierPathProperties.h in Headers */,
 				667617D11A7EB88200C0B447 /* UIBezierPath+Clockwise.h in Headers */,
 				667617C31A7EB79F00C0B447 /* UIBezierPath+NSOSX.h in Headers */,
-				667617CD1A7EB86200C0B447 /* UIBezierPath+Debug.h in Headers */,
+				667617CD1A7EB86200C0B447 /* UIBezierPath+Equals.h in Headers */,
 				667617F71A7EC58700C0B447 /* UIBezierPath+Performance.h in Headers */,
 				660E0FD91A80055300F19D8A /* UIBezierPath+Center.h in Headers */,
 				663355CD1A8575F600C45718 /* UIBezierPath+Description.h in Headers */,
@@ -329,7 +329,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				667617CE1A7EB86200C0B447 /* UIBezierPath+Debug.m in Sources */,
+				667617CE1A7EB86200C0B447 /* UIBezierPath+Equals.m in Sources */,
 				667617D81A7EB9AC00C0B447 /* JRSwizzle.m in Sources */,
 				663355CE1A8575F600C45718 /* UIBezierPath+Description.m in Sources */,
 				667617C41A7EB79F00C0B447 /* UIBezierPath+NSOSX.m in Sources */,

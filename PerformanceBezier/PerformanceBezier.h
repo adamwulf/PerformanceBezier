@@ -11,6 +11,6 @@
 #import "UIBezierPath+Clockwise.h"
 #import "UIBezierPath+Performance.h"
 #import "UIBezierPath+NSOSX.h"
-#import "UIBezierPath+Debug.h"
+#import "UIBezierPath+Equals.h"
 #import "UIBezierPath+Center.h"
 
