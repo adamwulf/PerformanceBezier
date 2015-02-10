@@ -70,7 +70,7 @@ static char ELEMENT_ARRAY;
 
 /**
  * returns the CGPathElement at the specified index, optionally
- * also returnin the elements points in the 2nd parameter
+ * also returning the elements points in the 2nd parameter
  *
  * this method is meant to mimic UIBezierPath's method of the same name
  */
