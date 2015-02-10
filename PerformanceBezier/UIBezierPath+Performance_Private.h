@@ -10,7 +10,6 @@
 #define DrawKit_iOS_UIBezierPath_Performance_Private_h
 
 #import "UIBezierPathProperties.h"
-#import "UIBezierPathProperties.h"
 
 @interface UIBezierPath (Performance_Private)
 
