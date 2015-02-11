@@ -15,11 +15,13 @@ Pod::Spec.new do |s|
 
   # File patterns
   s.source_files  = ['PerformanceBezier/PerformanceBezier.h', 'PerformanceBezier/UIBezierPath*.{h,m}']
+  s.private_header_files = ['PerformanceBezier/UIBezierPathProperties.{h,m}', 'PerformanceBezier/UIBezierPath+FirstLast.{h,m}', 'PerformanceBezier/UIBezierPath+*Private.h']
 
   # Build settings
   s.framework = 'Foundation', 'UIKit'
   s.requires_arc = false
   s.dependency 'JRSwizzle', '~> 1.0'
+  s.xcconfig = { 'OTHER_LDFLAGS' => '-ObjC++ -lstdc++' }
 
   # Platform
   s.platform = :ios
