@@ -6,8 +6,22 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		66B9D2BA1A8D66D500CAC341 /* Framework */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 66B9D2BB1A8D66D500CAC341 /* Build configuration list for PBXAggregateTarget "Framework" */;
+			buildPhases = (
+				66B9D2C01A8D66ED00CAC341 /* Build Framework */,
+			);
+			dependencies = (
+				66B9D2BF1A8D66E000CAC341 /* PBXTargetDependency */,
+			);
+			name = Framework;
+			productName = Framework;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
-		66B9D2851A8D5FDE00CAC341 /* PerformanceBezier.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66B9D2841A8D5FDE00CAC341 /* PerformanceBezier.h */; };
 		66B9D28D1A8D5FDF00CAC341 /* libPerformanceBezier.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66B9D2821A8D5FDE00CAC341 /* libPerformanceBezier.a */; };
 		66B9D29C1A8D603900CAC341 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 667617D41A7EB9AC00C0B447 /* JRSwizzle.m */; };
 		66B9D29D1A8D603B00CAC341 /* UIBezierPathProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 667617B81A7EB73A00C0B447 /* UIBezierPathProperties.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -22,10 +36,30 @@
 		66B9D2A61A8D609200CAC341 /* PerformanceBezierAbstractTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 66D4021F1A7EDACA00043802 /* PerformanceBezierAbstractTest.m */; };
 		66B9D2A71A8D609300CAC341 /* PerformanceBezierClockwiseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 66D4021C1A7EDA9000043802 /* PerformanceBezierClockwiseTests.m */; };
 		66B9D2A81A8D609300CAC341 /* PerformanceBezierDescriptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 663355CF1A85773000C45718 /* PerformanceBezierDescriptionTests.m */; };
+		66B9D2AA1A8D624000CAC341 /* PerformanceBezier.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617AF1A7EB5CB00C0B447 /* PerformanceBezier.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66B9D2AB1A8D624200CAC341 /* JRSwizzle.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617D31A7EB9AC00C0B447 /* JRSwizzle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66B9D2AC1A8D624500CAC341 /* UIBezierPathProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617B71A7EB73A00C0B447 /* UIBezierPathProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66B9D2AD1A8D624700CAC341 /* UIBezierPath+FirstLast.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617FA1A7EC5D400C0B447 /* UIBezierPath+FirstLast.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66B9D2AE1A8D624A00CAC341 /* UIBezierPath+NSOSX_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617BF1A7EB79F00C0B447 /* UIBezierPath+NSOSX_Private.h */; };
+		66B9D2AF1A8D624B00CAC341 /* UIBezierPath+Performance_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617F51A7EC58700C0B447 /* UIBezierPath+Performance_Private.h */; };
+		66B9D2B01A8D624D00CAC341 /* UIBezierPath+Center.h in Headers */ = {isa = PBXBuildFile; fileRef = 660E0FD71A80055300F19D8A /* UIBezierPath+Center.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66B9D2B11A8D624E00CAC341 /* UIBezierPath+Clockwise.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617CF1A7EB88200C0B447 /* UIBezierPath+Clockwise.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66B9D2B21A8D625000CAC341 /* UIBezierPath+Equals.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617CB1A7EB86200C0B447 /* UIBezierPath+Equals.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66B9D2B31A8D625100CAC341 /* UIBezierPath+Description.h in Headers */ = {isa = PBXBuildFile; fileRef = 663355CB1A8575F600C45718 /* UIBezierPath+Description.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66B9D2B41A8D625200CAC341 /* UIBezierPath+NSOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617C01A7EB79F00C0B447 /* UIBezierPath+NSOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66B9D2B51A8D625400CAC341 /* UIBezierPath+Performance.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617F41A7EC58700C0B447 /* UIBezierPath+Performance.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66B9D2B61A8D625500CAC341 /* UIBezierPath+Uncached.h in Headers */ = {isa = PBXBuildFile; fileRef = 663355D51A857A2700C45718 /* UIBezierPath+Uncached.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		66B9D28E1A8D5FDF00CAC341 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 661B30C91A7EB43A008549C7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 66B9D2811A8D5FDE00CAC341;
+			remoteInfo = PerformanceBezier;
+		};
+		66B9D2BE1A8D66E000CAC341 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 661B30C91A7EB43A008549C7 /* Project object */;
 			proxyType = 1;
@@ -41,7 +75,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				66B9D2851A8D5FDE00CAC341 /* PerformanceBezier.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,7 +108,6 @@
 		667617FA1A7EC5D400C0B447 /* UIBezierPath+FirstLast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+FirstLast.h"; sourceTree = "<group>"; };
 		667617FB1A7EC5D400C0B447 /* UIBezierPath+FirstLast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+FirstLast.m"; sourceTree = "<group>"; };
 		66B9D2821A8D5FDE00CAC341 /* libPerformanceBezier.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPerformanceBezier.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		66B9D2841A8D5FDE00CAC341 /* PerformanceBezier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PerformanceBezier.h; sourceTree = "<group>"; };
 		66B9D28C1A8D5FDE00CAC341 /* PerformanceBezierTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PerformanceBezierTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		66B9D2921A8D5FDF00CAC341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		66D4021C1A7EDA9000043802 /* PerformanceBezierClockwiseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierClockwiseTests.m; sourceTree = "<group>"; };
@@ -164,7 +196,6 @@
 				667617AF1A7EB5CB00C0B447 /* PerformanceBezier.h */,
 				667617DB1A7EB9B000C0B447 /* Protected */,
 				667617B61A7EB72F00C0B447 /* Categories */,
-				66B9D2841A8D5FDE00CAC341 /* PerformanceBezier.h */,
 			);
 			path = PerformanceBezier;
 			sourceTree = "<group>";
@@ -191,6 +222,29 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		66B9D2A91A8D622E00CAC341 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66B9D2AA1A8D624000CAC341 /* PerformanceBezier.h in Headers */,
+				66B9D2AB1A8D624200CAC341 /* JRSwizzle.h in Headers */,
+				66B9D2B11A8D624E00CAC341 /* UIBezierPath+Clockwise.h in Headers */,
+				66B9D2B21A8D625000CAC341 /* UIBezierPath+Equals.h in Headers */,
+				66B9D2B51A8D625400CAC341 /* UIBezierPath+Performance.h in Headers */,
+				66B9D2B61A8D625500CAC341 /* UIBezierPath+Uncached.h in Headers */,
+				66B9D2B41A8D625200CAC341 /* UIBezierPath+NSOSX.h in Headers */,
+				66B9D2B01A8D624D00CAC341 /* UIBezierPath+Center.h in Headers */,
+				66B9D2B31A8D625100CAC341 /* UIBezierPath+Description.h in Headers */,
+				66B9D2AD1A8D624700CAC341 /* UIBezierPath+FirstLast.h in Headers */,
+				66B9D2AC1A8D624500CAC341 /* UIBezierPathProperties.h in Headers */,
+				66B9D2AE1A8D624A00CAC341 /* UIBezierPath+NSOSX_Private.h in Headers */,
+				66B9D2AF1A8D624B00CAC341 /* UIBezierPath+Performance_Private.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		66B9D2811A8D5FDE00CAC341 /* PerformanceBezier */ = {
 			isa = PBXNativeTarget;
@@ -199,6 +253,8 @@
 				66B9D27E1A8D5FDE00CAC341 /* Sources */,
 				66B9D27F1A8D5FDE00CAC341 /* Frameworks */,
 				66B9D2801A8D5FDE00CAC341 /* CopyFiles */,
+				66B9D2A91A8D622E00CAC341 /* Headers */,
+				66B9D2B91A8D65FC00CAC341 /* Prepare Framework */,
 			);
 			buildRules = (
 			);
@@ -241,6 +297,9 @@
 					66B9D28B1A8D5FDE00CAC341 = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
+					66B9D2BA1A8D66D500CAC341 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
 				};
 			};
 			buildConfigurationList = 661B30CC1A7EB43A008549C7 /* Build configuration list for PBXProject "PerformanceBezier" */;
@@ -257,6 +316,7 @@
 			targets = (
 				66B9D2811A8D5FDE00CAC341 /* PerformanceBezier */,
 				66B9D28B1A8D5FDE00CAC341 /* PerformanceBezierTests */,
+				66B9D2BA1A8D66D500CAC341 /* Framework */,
 			);
 		};
 /* End PBXProject section */
@@ -270,6 +330,37 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		66B9D2B91A8D65FC00CAC341 /* Prepare Framework */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Prepare Framework";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"";
+		};
+		66B9D2C01A8D66ED00CAC341 /* Build Framework */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Build Framework";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nset +u\n# Avoid recursively calling this script.\nif [[ $SF_MASTER_SCRIPT_RUNNING ]]\nthen\nexit 0\nfi\nset -u\nexport SF_MASTER_SCRIPT_RUNNING=1\n\nSF_TARGET_NAME=${PROJECT_NAME}\nSF_EXECUTABLE_PATH=\"lib${SF_TARGET_NAME}.a\"\nSF_WRAPPER_NAME=\"${SF_TARGET_NAME}.framework\"\n\n# The following conditionals come from\n# https://github.com/kstenerud/iOS-Universal-Framework\n\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\nSF_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]\nthen\nSF_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\nif [[ \"$SF_SDK_PLATFORM\" = \"iphoneos\" ]]\nthen\nSF_OTHER_PLATFORM=iphonesimulator\nelse\nSF_OTHER_PLATFORM=iphoneos\nfi\n\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$SF_SDK_PLATFORM$ ]]\nthen\nSF_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${SF_OTHER_PLATFORM}\"\nelse\necho \"Could not find platform name from build products directory: $BUILT_PRODUCTS_DIR\"\nexit 1\nfi\n\n# Build the other platform.\nxcrun xcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${SF_OTHER_PLATFORM}${SF_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" OBJROOT=\"${OBJROOT}\" BUILD_ROOT=\"${BUILD_ROOT}\" SYMROOT=\"${SYMROOT}\" $ACTION\n\n# Smash the two static libraries into one fat binary and store it in the .framework\nxcrun lipo -create \"${BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" -output \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\"\n\n# Copy the binary to the other architecture folder to have a complete framework in both.\ncp -a \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		66B9D27E1A8D5FDE00CAC341 /* Sources */ = {
@@ -307,22 +398,35 @@
 			target = 66B9D2811A8D5FDE00CAC341 /* PerformanceBezier */;
 			targetProxy = 66B9D28E1A8D5FDF00CAC341 /* PBXContainerItemProxy */;
 		};
+		66B9D2BF1A8D66E000CAC341 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 66B9D2811A8D5FDE00CAC341 /* PerformanceBezier */;
+			targetProxy = 66B9D2BE1A8D66E000CAC341 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		661B30CD1A7EB43A008549C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = "non-global";
 			};
 			name = Debug;
 		};
 		661B30CE1A7EB43A008549C7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = "non-global";
 			};
 			name = Release;
 		};
@@ -343,7 +447,6 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -361,9 +464,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = Headers;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -385,7 +487,6 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -397,8 +498,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = Headers;
 				SKIP_INSTALL = YES;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -421,6 +522,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -445,7 +547,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -474,6 +575,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -504,6 +606,20 @@
 			};
 			name = Release;
 		};
+		66B9D2BC1A8D66D500CAC341 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		66B9D2BD1A8D66D500CAC341 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -529,6 +645,14 @@
 			buildConfigurations = (
 				66B9D2971A8D5FDF00CAC341 /* Debug */,
 				66B9D2981A8D5FDF00CAC341 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		66B9D2BB1A8D66D500CAC341 /* Build configuration list for PBXAggregateTarget "Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66B9D2BC1A8D66D500CAC341 /* Debug */,
+				66B9D2BD1A8D66D500CAC341 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
