@@ -2,7 +2,8 @@ iOS UIBezierPath Performance
 =====
 
 This code dramatically improves performance for common UIBezierPath operations, and it also
-brings UIBezierPath API closer to its NSBezierPath counterpart.
+brings UIBezierPath API closer to its NSBezierPath counterpart. For full background of this
+repo, checkout [the blogpost explaining what this framework does](http://blog.getlooseleaf.com/post/110511009139/improving-uibezierpath-performance-and-api).
 
 ## What is this?
 
