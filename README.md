@@ -25,16 +25,7 @@ View the header files for full documentation.
 
 ## Building the framework
 
-This library will generate a proper static framework, as described in [https://github.com/jverkoey/iOS-Framework](https://github.com/jverkoey/iOS-Framework)
-
-There are three targets in the PerformanceBezier Xcode project.
-
-1. The PerformanceBezier target will build the standard .a static framework file
-2. The PerformanceBezierTests target contains all of the unit tests for the framework
-3. The Framework target will build (1) and bundle it into a standard .framework bundle that can be imported as any other.
-
-The single PerformanceBezier scheme will build (3) above, generating the .framework bundle. Testing this scheme will
-run all of the unit tests.
+This library will generate a proper static framework bundle that can be used in any iOS7+ project.
 
 ## Including in your project
 
