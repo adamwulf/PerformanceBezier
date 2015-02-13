@@ -19,6 +19,11 @@ retrieve the first point of the curve, you must CGPathApply() and interate over 
 to retrieve that single point. This framework changes that. For many algorithms, this can 
 dramatically affect performance.
 
+## Are you using PerformanceBezier?
+
+Let me know! I'd love to know where PerformanceBezier is using and how it's affecting your apps. Ping me
+at [@adamwulf](https://twitter.com/adamwulf)!
+
 ## Documentation
 
 View the header files for full documentation.
