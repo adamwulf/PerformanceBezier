@@ -107,6 +107,7 @@
 		667617F61A7EC58700C0B447 /* UIBezierPath+Performance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Performance.m"; sourceTree = "<group>"; };
 		667617FA1A7EC5D400C0B447 /* UIBezierPath+FirstLast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+FirstLast.h"; sourceTree = "<group>"; };
 		667617FB1A7EC5D400C0B447 /* UIBezierPath+FirstLast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+FirstLast.m"; sourceTree = "<group>"; };
+		668FBC1E1A8D76AC00F717C5 /* PerformanceBezier.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PerformanceBezier.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Submodules-atjowsbrivaldqblxffjhatdorwq/Build/Products/Debug-iphoneos/PerformanceBezier.framework"; sourceTree = "<group>"; };
 		66B9D2821A8D5FDE00CAC341 /* libPerformanceBezier.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPerformanceBezier.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		66B9D28C1A8D5FDE00CAC341 /* PerformanceBezierTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PerformanceBezierTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		66B9D2921A8D5FDF00CAC341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -142,6 +143,7 @@
 				66B9D2831A8D5FDE00CAC341 /* PerformanceBezier */,
 				66B9D2901A8D5FDF00CAC341 /* PerformanceBezierTests */,
 				667617871A7EB50A00C0B447 /* Products */,
+				668FBC1D1A8D769B00F717C5 /* Framework Product */,
 			);
 			sourceTree = "<group>";
 		};
@@ -188,6 +190,14 @@
 				667617F51A7EC58700C0B447 /* UIBezierPath+Performance_Private.h */,
 			);
 			name = Protected;
+			sourceTree = "<group>";
+		};
+		668FBC1D1A8D769B00F717C5 /* Framework Product */ = {
+			isa = PBXGroup;
+			children = (
+				668FBC1E1A8D76AC00F717C5 /* PerformanceBezier.framework */,
+			);
+			name = "Framework Product";
 			sourceTree = "<group>";
 		};
 		66B9D2831A8D5FDE00CAC341 /* PerformanceBezier */ = {
@@ -639,6 +649,7 @@
 				66B9D2951A8D5FDF00CAC341 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		66B9D2961A8D5FDF00CAC341 /* Build configuration list for PBXNativeTarget "PerformanceBezierTests" */ = {
 			isa = XCConfigurationList;
@@ -647,6 +658,7 @@
 				66B9D2981A8D5FDF00CAC341 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		66B9D2BB1A8D66D500CAC341 /* Build configuration list for PBXAggregateTarget "Framework" */ = {
 			isa = XCConfigurationList;
@@ -655,6 +667,7 @@
 				66B9D2BD1A8D66D500CAC341 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

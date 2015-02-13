@@ -24,8 +24,7 @@ View the header files for full documentation.
 
 ## Building the framework
 
-This library depends on [IOS-Universal-Framework](https://github.com/kstenerud/iOS-Universal-Framework)
-and is built with the Real Framework option.
+This library will generate a proper static framework, as described in [https://github.com/jverkoey/iOS-Framework](https://github.com/jverkoey/iOS-Framework)
 
 ## Including in your project
 
