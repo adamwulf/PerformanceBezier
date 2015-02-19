@@ -5,6 +5,9 @@ This code dramatically improves performance for common UIBezierPath operations, 
 brings UIBezierPath API closer to its NSBezierPath counterpart. For full background of this
 repo, checkout [the blogpost explaining what this framework does](http://blog.getlooseleaf.com/post/110511009139/improving-uibezierpath-performance-and-api).
 
+This code was originally part of [Loose Leaf](https://getlooseleaf.com/). Additional components and
+libraries from the app [have also been open sourced](https://getlooseleaf.com/opensource/).
+
 ## What is this?
 
 This framework adds caching into every UIBezierPath so that common operations can
