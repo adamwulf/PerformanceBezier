@@ -1,0 +1,17 @@
+PODS:
+  - JRSwizzle (1.0)
+  - PerformanceBezier (0.1):
+    - JRSwizzle (~> 1.0)
+
+DEPENDENCIES:
+  - PerformanceBezier (from `.`)
+
+EXTERNAL SOURCES:
+  PerformanceBezier:
+    :path: .
+
+SPEC CHECKSUMS:
+  JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
+  PerformanceBezier: d3108df8462ff96a128843851b9f091c0b2d76fb
+
+COCOAPODS: 0.35.0
