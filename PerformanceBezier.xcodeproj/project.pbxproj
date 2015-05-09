@@ -10,6 +10,8 @@
 		6617530D1A8DC45A0051D5CB /* PerformanceBezier.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66F2EBE31A8DC05100D536E9 /* PerformanceBezier.framework */; };
 		66B9D2A61A8D609200CAC341 /* PerformanceBezierAbstractTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 66D4021F1A7EDACA00043802 /* PerformanceBezierAbstractTest.m */; };
 		66B9D2A71A8D609300CAC341 /* PerformanceBezierClockwiseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 66D4021C1A7EDA9000043802 /* PerformanceBezierClockwiseTests.m */; };
+		66D1B7971AFEAC6F00210262 /* UIBezierPath+Trim.h in Headers */ = {isa = PBXBuildFile; fileRef = 66D1B7951AFEAC6F00210262 /* UIBezierPath+Trim.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66D1B7981AFEAC6F00210262 /* UIBezierPath+Trim.m in Sources */ = {isa = PBXBuildFile; fileRef = 66D1B7961AFEAC6F00210262 /* UIBezierPath+Trim.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		66F2EBE41A8DC05100D536E9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6682FF251A8DBACF00187325 /* Foundation.framework */; };
 		66F2EBF61A8DC12600D536E9 /* UIBezierPath+Center.m in Sources */ = {isa = PBXBuildFile; fileRef = 660E0FD81A80055300F19D8A /* UIBezierPath+Center.m */; };
 		66F2EBF71A8DC12800D536E9 /* UIBezierPath+Clockwise.m in Sources */ = {isa = PBXBuildFile; fileRef = 667617D01A7EB88200C0B447 /* UIBezierPath+Clockwise.m */; };
@@ -76,6 +78,8 @@
 		6682FF251A8DBACF00187325 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		66B9D28C1A8D5FDE00CAC341 /* PerformanceBezierTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PerformanceBezierTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		66B9D2921A8D5FDF00CAC341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		66D1B7951AFEAC6F00210262 /* UIBezierPath+Trim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Trim.h"; sourceTree = "<group>"; };
+		66D1B7961AFEAC6F00210262 /* UIBezierPath+Trim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Trim.m"; sourceTree = "<group>"; };
 		66D4021C1A7EDA9000043802 /* PerformanceBezierClockwiseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierClockwiseTests.m; sourceTree = "<group>"; };
 		66D4021E1A7EDACA00043802 /* PerformanceBezierAbstractTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceBezierAbstractTest.h; sourceTree = "<group>"; };
 		66D4021F1A7EDACA00043802 /* PerformanceBezierAbstractTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierAbstractTest.m; sourceTree = "<group>"; };
@@ -141,6 +145,8 @@
 				667617C11A7EB79F00C0B447 /* UIBezierPath+NSOSX.m */,
 				667617F41A7EC58700C0B447 /* UIBezierPath+Performance.h */,
 				667617F61A7EC58700C0B447 /* UIBezierPath+Performance.m */,
+				66D1B7951AFEAC6F00210262 /* UIBezierPath+Trim.h */,
+				66D1B7961AFEAC6F00210262 /* UIBezierPath+Trim.m */,
 				663355D51A857A2700C45718 /* UIBezierPath+Uncached.h */,
 				663355D61A857A2700C45718 /* UIBezierPath+Uncached.m */,
 			);
@@ -225,6 +231,7 @@
 				66F2EC061A8DC16100D536E9 /* UIBezierPath+Center.h in Headers */,
 				66F2EC091A8DC16600D536E9 /* UIBezierPath+FirstLast.h in Headers */,
 				66F2EC051A8DC16000D536E9 /* UIBezierPath+Clockwise.h in Headers */,
+				66D1B7971AFEAC6F00210262 /* UIBezierPath+Trim.h in Headers */,
 				66F2EC031A8DC15B00D536E9 /* UIBezierPath+Description.h in Headers */,
 				66F2EC021A8DC15A00D536E9 /* UIBezierPath+NSOSX.h in Headers */,
 				66F2EC071A8DC16300D536E9 /* UIBezierPath+Performance_Private.h in Headers */,
@@ -280,7 +287,9 @@
 		661B30C91A7EB43A008549C7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = MM;
 				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = "Milestone Made";
 				TargetAttributes = {
 					66B9D28B1A8D5FDE00CAC341 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -395,6 +404,7 @@
 				66F2EBF91A8DC13300D536E9 /* UIBezierPath+Description.m in Sources */,
 				66F2EBFA1A8DC13500D536E9 /* UIBezierPath+NSOSX.m in Sources */,
 				66F2EBF81A8DC13100D536E9 /* UIBezierPath+Equals.m in Sources */,
+				66D1B7981AFEAC6F00210262 /* UIBezierPath+Trim.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

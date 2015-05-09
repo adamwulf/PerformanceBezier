@@ -10,8 +10,14 @@
 
 @interface UIBezierPath (NSOSX)
 
+// A flattened version of the path object.
+@property(nonatomic,readonly) UIBezierPath* bezierPathByFlatteningPath;
 // returns the number of elements in this path
-- (NSInteger)elementCount;
+@property(nonatomic,readonly) NSInteger elementCount;
+// YES if the path is made without curves, NO otherwise
+@property(nonatomic,assign) BOOL isFlat;
+
+-(UIBezierPath*) bezierPathByFlatteningPathAndImmutable:(BOOL)returnCopy;
 
 // returns the element at the given index, and also
 // fills the points[] array with the element's points.

@@ -12,3 +12,4 @@
 #import "UIBezierPath+NSOSX.h"
 #import "UIBezierPath+Equals.h"
 #import "UIBezierPath+Center.h"
+#import "UIBezierPath+Trim.h"

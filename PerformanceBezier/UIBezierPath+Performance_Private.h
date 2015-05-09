@@ -3,7 +3,7 @@
 //  DrawKit-iOS
 //
 //  Created by Adam Wulf on 10/16/12.
-//  Copyright (c) 2012 Graceful Construction, LLC. All rights reserved.
+//  Copyright (c) 2012 Milestone Made, LLC. All rights reserved.
 //
 
 #ifndef DrawKit_iOS_UIBezierPath_Performance_Private_h
