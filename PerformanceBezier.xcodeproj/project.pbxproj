@@ -75,6 +75,7 @@
 		667617F61A7EC58700C0B447 /* UIBezierPath+Performance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Performance.m"; sourceTree = "<group>"; };
 		667617FA1A7EC5D400C0B447 /* UIBezierPath+FirstLast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+FirstLast.h"; sourceTree = "<group>"; };
 		667617FB1A7EC5D400C0B447 /* UIBezierPath+FirstLast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+FirstLast.m"; sourceTree = "<group>"; };
+		66767CC71AFEE4BB00443B03 /* SubdivideLicense */ = {isa = PBXFileReference; lastKnownFileType = text; path = SubdivideLicense; sourceTree = "<group>"; };
 		6682FF251A8DBACF00187325 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		66B9D28C1A8D5FDE00CAC341 /* PerformanceBezierTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PerformanceBezierTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		66B9D2921A8D5FDF00CAC341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -112,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				660E0FDB1A80226100F19D8A /* README.md */,
+				66767CC71AFEE4BB00443B03 /* SubdivideLicense */,
 				660E0FDC1A80284C00F19D8A /* LICENSE */,
 				66B9D2831A8D5FDE00CAC341 /* PerformanceBezier */,
 				66B9D2901A8D5FDF00CAC341 /* PerformanceBezierTests */,
