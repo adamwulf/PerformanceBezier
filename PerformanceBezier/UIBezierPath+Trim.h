@@ -13,6 +13,8 @@
 //
 // More information available at
 // http://www.cis.usouthal.edu/~hain/general/Thesis.htm
+//
+// subdivide code license in included SubdiviceLicense file
 
 #import <UIKit/UIKit.h>
 #include <math.h>
