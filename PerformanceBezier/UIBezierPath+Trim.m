@@ -10,7 +10,7 @@
 #import <objc/runtime.h>
 #import <PerformanceBezier/PerformanceBezier.h>
 
-@implementation UIBezierPath (Ahmed)
+@implementation UIBezierPath (Trim)
 
 /**
  * this will trim a specific element from a tvalue to a tvalue
@@ -194,6 +194,11 @@
     return outputPath;
 }
 
++(CGFloat) lengthOfBezier:(const CGPoint[4])bez withAccuracy:(CGFloat)accuracy{
+    return lengthOfBezier(bez, accuracy);
+}
+
+
 #pragma mark - Subdivide helpers by Alastair J. Houghton
 
 // Subdivide a Bézier (50% subdivision)
@@ -288,6 +293,21 @@ CGFloat subdivideBezierAtLength (const CGPoint bez[4],
                                         CGFloat length,
                                         CGFloat acceptableError)
 {
+    return subdivideBezierAtLengthWithCache(bez, bez1, bez2, length, acceptableError, NULL);
+}
+
+/**
+ * will split the input bezier curve at the input length
+ * within a given margin of error
+ *
+ * the two curves will exactly match the original curve
+ */
+CGFloat subdivideBezierAtLengthWithCache(const CGPoint bez[4],
+                                        CGPoint bez1[4],
+                                        CGPoint bez2[4],
+                                        CGFloat length,
+                                        CGFloat acceptableError,
+                                        CGFloat* subBezierlengthCache){
     CGFloat top = 1.0, bottom = 0.0;
     CGFloat t, prevT;
     
@@ -297,10 +317,16 @@ CGFloat subdivideBezierAtLength (const CGPoint bez[4],
         
         subdivideBezierAtT (bez, bez1, bez2, t);
         
-        len1 = lengthOfBezier (bez1, 0.5 * acceptableError);
+        int lengthCacheIndex = (int)floorf(t*1000);
+        len1 = subBezierlengthCache[lengthCacheIndex];
+        if(!len1){
+            len1 = [UIBezierPath lengthOfBezier:bez1 withAccuracy:0.5 * acceptableError];
+            subBezierlengthCache[lengthCacheIndex] = len1;
+        }
         
-        if (fabs (length - len1) < acceptableError)
+        if (fabs (length - len1) < acceptableError){
             return len1;
+        }
         
         if (length > len1) {
             bottom = t;
@@ -310,8 +336,10 @@ CGFloat subdivideBezierAtLength (const CGPoint bez[4],
             t = 0.5 * (bottom + t);
         }
         
-        if (t == prevT)
+        if (t == prevT){
+            subBezierlengthCache[lengthCacheIndex] = len1;
             return len1;
+        }
         
         prevT = t;
     }

@@ -21,11 +21,13 @@
 
 
 
-@interface UIBezierPath (Ahmed)
+@interface UIBezierPath (Trim)
 
 -(UIBezierPath*) bezierPathByTrimmingElement:(NSInteger)elementIndex fromTValue:(double)fromTValue toTValue:(double)toTValue;
 -(UIBezierPath*) bezierPathByTrimmingToElement:(NSInteger)elementIndex andTValue:(double)tValue;
 -(UIBezierPath*) bezierPathByTrimmingFromElement:(NSInteger)elementIndex andTValue:(double)tValue;
+
++(CGFloat) lengthOfBezier:(const CGPoint[4])bez withAccuracy:(CGFloat)accuracy;
 
 
 /*
@@ -65,6 +67,9 @@
 void	subdivideBezierAtT(const CGPoint bez[4], CGPoint bez1[4], CGPoint bez2[4], CGFloat t);
 
 CGFloat subdivideBezierAtLength (const CGPoint bez[4], CGPoint bez1[4], CGPoint bez2[4], CGFloat length, CGFloat acceptableError);
+
+CGFloat subdivideBezierAtLengthWithCache(const CGPoint bez[4], CGPoint bez1[4], CGPoint bez2[4], CGFloat length, CGFloat acceptableError,
+                                         CGFloat* subBezierlengthCache);
 
 CGFloat lengthOfBezier(const  CGPoint bez[4], CGFloat acceptableError);
 
