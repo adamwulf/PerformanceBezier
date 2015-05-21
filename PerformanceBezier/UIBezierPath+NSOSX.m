@@ -13,7 +13,7 @@
 #import "UIBezierPath+Performance_Private.h"
 #import "UIBezierPath+Performance.h"
 #import "UIBezierPath+Uncached.h"
-#import "UIBezierPath+Trim.h"
+#import "UIBezierPath+Util.h"
 
 
 static char ELEMENT_ARRAY;

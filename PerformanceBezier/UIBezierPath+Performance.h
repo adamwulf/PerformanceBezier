@@ -46,11 +46,4 @@ CGPoint bezierPointAtT(const CGPoint bez[4], CGFloat t);
 // for the element at the given index
 -(void) fillBezier:(CGPoint[4])bezier forElement:(NSInteger)elementIndex;
 
-// simple helper function to return the distance of a point to a line
-CGFloat	distanceOfPointToLine(CGPoint point, CGPoint start, CGPoint end);
-
-// returns the distance between two points
-CGFloat distance(const CGPoint p1, const CGPoint p2);
-
-
 @end

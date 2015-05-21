@@ -188,60 +188,6 @@ static char BEZIER_PROPERTIES;
 
 
 
-#pragma mark - Helper
-
-
-// primary algorithm from:
-// http://stackoverflow.com/questions/4089443/find-the-tangent-of-a-point-on-a-cubic-bezier-curve-on-an-iphone
-inline CGPoint bezierTangentAtT(const CGPoint bez[4], CGFloat t)
-{
-    return CGPointMake(bezierTangent(t, bez[0].x, bez[1].x, bez[2].x, bez[3].x),
-                       bezierTangent(t, bez[0].y, bez[1].y, bez[2].y, bez[3].y));
-}
-inline CGFloat bezierTangent(CGFloat t, CGFloat a, CGFloat b, CGFloat c, CGFloat d)
-{
-    CGFloat C1 = ( d - (3.0 * c) + (3.0 * b) - a );
-    CGFloat C2 = ( (3.0 * c) - (6.0 * b) + (3.0 * a) );
-    CGFloat C3 = ( (3.0 * b) - (3.0 * a) );
-    return ( ( 3.0 * C1 * t* t ) + ( 2.0 * C2 * t ) + C3 );
-}
-
-
-/**
- * returns the shortest distance from a point to a line
- */
-CGFloat	distanceOfPointToLine(CGPoint point, CGPoint start, CGPoint end){
-    CGPoint v = CGPointMake(end.x - start.x, end.y - start.y);
-    CGPoint w = CGPointMake(point.x - start.x, point.y - start.y);
-    CGFloat c1 = dotProduct(w, v);
-    CGFloat c2 = dotProduct(v, v);
-    CGFloat d;
-    if (c1 <= 0) {
-        d = distance(point, start);
-    }
-    else if (c2 <= c1) {
-        d = distance(point, end);
-    }
-    else {
-        CGFloat b = c1 / c2;
-        CGPoint Pb = CGPointMake(start.x + b * v.x, start.y + b * v.y);
-        d = distance(point, Pb);
-    }
-    return d;
-}
-/**
- * returns the distance between two points
- */
-CGFloat distance(const CGPoint p1, const CGPoint p2) {
-    return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2));
-}
-/**
- * returns the dot product of two coordinates
- */
-CGFloat dotProduct(const CGPoint p1, const CGPoint p2) {
-    return p1.x * p2.x + p1.y * p2.y;
-}
-
 
 
 

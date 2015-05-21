@@ -10,10 +10,28 @@
 
 @interface UIBezierPath (Util)
 
-+(void) subdivideBezier:(const CGPoint[4])bez intoLeft:(CGPoint[4])bez1 andRight:(CGPoint[4])bez2 atT:(CGFloat)t;
++(CGFloat) lengthOfBezier:(const CGPoint[4])bez withAccuracy:(CGFloat)accuracy;
 
-+(void) subdivideBezier:(const CGPoint[4])bez intoLeft:(CGPoint[4])bez1 andRight:(CGPoint[4])bez2 atLength:(CGFloat)length withAcceptableError:(CGFloat)acceptableError withCache:(CGFloat*) subBezierlengthCache;
+// simple helper function to return the distance of a point to a line
+CGFloat	distanceOfPointToLine(CGPoint point, CGPoint start, CGPoint end);
+
+// returns the distance between two points
+CGFloat distance(const CGPoint p1, const CGPoint p2);
+
+void	subdivideBezierAtT(const CGPoint bez[4], CGPoint bez1[4], CGPoint bez2[4], CGFloat t);
+
+CGFloat subdivideBezierAtLength (const CGPoint bez[4], CGPoint bez1[4], CGPoint bez2[4], CGFloat length, CGFloat acceptableError);
+
+CGFloat subdivideBezierAtLengthWithCache(const CGPoint bez[4], CGPoint bez1[4], CGPoint bez2[4], CGFloat length, CGFloat acceptableError,
+                                         CGFloat* subBezierlengthCache);
+
+CGFloat lengthOfBezier(const  CGPoint bez[4], CGFloat acceptableError);
+
 
 CGPoint lineSegmentIntersection(CGPoint A, CGPoint B, CGPoint C, CGPoint D);
+
+CGPoint bezierTangentAtT(const CGPoint bez[4], CGFloat t);
+
+CGFloat bezierTangent(CGFloat t, CGFloat a, CGFloat b, CGFloat c, CGFloat d);
 
 @end
