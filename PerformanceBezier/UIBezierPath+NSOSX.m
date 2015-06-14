@@ -199,7 +199,7 @@ void countPathElement(void* info, const CGPathElement* element) {
 }
 
 // helper function
-void blockWithElement(void* info, const CGPathElement* element) {
+static void blockWithElement(void* info, const CGPathElement* element) {
     NSMutableDictionary* params = (NSMutableDictionary*) info;
     void (^block)(CGPathElement element,NSUInteger idx) = [params objectForKey:@"block"];
     NSUInteger index = [[params objectForKey:@"index"] unsignedIntegerValue];
