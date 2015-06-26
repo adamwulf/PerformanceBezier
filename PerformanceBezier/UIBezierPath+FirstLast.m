@@ -22,7 +22,7 @@
         }else if(element.type == kCGPathElementAddLineToPoint){
             currPoint = element.points[0];
         }else if(element.type == kCGPathElementCloseSubpath){
-            currPoint = lastPoint;
+            currPoint = firstPoint;
         }else if(element.type == kCGPathElementAddCurveToPoint){
             currPoint = element.points[2];
         }else if(element.type == kCGPathElementAddQuadCurveToPoint){

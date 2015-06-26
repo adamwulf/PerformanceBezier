@@ -111,5 +111,79 @@
     XCTAssertTrue(![[self.complexShape bezierPathByReversingPath] isClockwise], @"clockwise is correct");
 }
 
+- (void)testFirstAndLastPointRect {
+    // This is an example of a functional test case.
+    
+    UIBezierPath* path1 = [UIBezierPath bezierPathWithRect:CGRectMake(10, 10, 20, 20)];
+    XCTAssertEqual([path1 elementCount], 5, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].x, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].y, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].x, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].y, (CGFloat) 10, "element count is correct");
+}
+
+- (void)testFirstAndLastPointLine {
+    // This is an example of a functional test case.
+    
+    UIBezierPath* path1 = [UIBezierPath bezierPath];
+    [path1 moveToPoint:CGPointMake(10, 10)];
+    [path1 addLineToPoint:CGPointMake(30, 30)];
+    XCTAssertEqual([path1 elementCount], 2, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].x, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].y, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].x, (CGFloat) 30, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].y, (CGFloat) 30, "element count is correct");
+}
+
+
+- (void)testFirstAndLastPointCurve {
+    // This is an example of a functional test case.
+    
+    UIBezierPath* path1 = [UIBezierPath bezierPath];
+    [path1 moveToPoint:CGPointMake(10, 10)];
+    [path1 addCurveToPoint:CGPointMake(30, 30) controlPoint1:CGPointMake(15, 15) controlPoint2:CGPointMake(25, 25)];
+    XCTAssertEqual([path1 elementCount], 2, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].x, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].y, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].x, (CGFloat) 30, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].y, (CGFloat) 30, "element count is correct");
+}
+
+- (void)testFirstAndLastPointQuadCurve {
+    // This is an example of a functional test case.
+    
+    UIBezierPath* path1 = [UIBezierPath bezierPath];
+    [path1 moveToPoint:CGPointMake(10, 10)];
+    [path1 addQuadCurveToPoint:CGPointMake(30, 30) controlPoint:CGPointMake(20, 20)];
+    XCTAssertEqual([path1 elementCount], 2, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].x, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].y, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].x, (CGFloat) 30, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].y, (CGFloat) 30, "element count is correct");
+}
+
+- (void)testFirstAndLastPointMoveTo {
+    // This is an example of a functional test case.
+    
+    UIBezierPath* path1 = [UIBezierPath bezierPath];
+    [path1 moveToPoint:CGPointMake(10, 10)];
+    XCTAssertEqual([path1 elementCount], 1, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].x, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].y, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].x, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].y, (CGFloat) 10, "element count is correct");
+}
+
+- (void)testFirstAndLastPointMoveTo2 {
+    // This is an example of a functional test case.
+    
+    UIBezierPath* path1 = [UIBezierPath bezierPathWithRect:CGRectMake(10, 10, 20, 20)];
+    [path1 moveToPoint:CGPointMake(50, 50)];
+    XCTAssertEqual([path1 elementCount], 6, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].x, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].y, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].x, (CGFloat) 50, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].y, (CGFloat) 50, "element count is correct");
+}
 
 @end
