@@ -29,7 +29,7 @@ static CGFloat idealFlatness = .01;
  * https://github.com/techpaa/iProperties
  *
  *
- * this array is for private DrawKit use only
+ * this array is for private PerformanceBezier use only
  *
  * Since iOS doesn't allow for index lookup of CGPath elements (only option is CGPathApply)
  * this array will cache the elements after they've been looked up once

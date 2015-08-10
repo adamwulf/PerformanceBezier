@@ -1,6 +1,6 @@
 //
-//  DrawKitiOSClippingAbstractTest.h
-//  DrawKit-iOS
+//  PerformanceBezierAbstractTest.h
+//  PerformanceBezier
 //
 //  Created by Adam Wulf on 11/20/13.
 //  Copyright (c) 2013 Milestone Made, LLC. All rights reserved.

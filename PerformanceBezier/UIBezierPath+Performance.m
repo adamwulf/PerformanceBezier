@@ -1,6 +1,6 @@
 //
 //  UIBezierPath+Performance.m
-//  DrawKit-iOS
+//  PerformanceBezier
 //
 //  Created by Adam Wulf on 1/31/15.
 //  Copyright (c) 2015 Milestone Made, LLC. All rights reserved.
@@ -95,7 +95,7 @@ static char BEZIER_PROPERTIES;
  * https://github.com/techpaa/iProperties
  *
  *
- * this is for internal DrawKit use only
+ * this is for internal PerformanceBezier use only
  *
  * Since iOS doesn't allow a quick lookup for element count,
  * this property will act as a cache for the element count after

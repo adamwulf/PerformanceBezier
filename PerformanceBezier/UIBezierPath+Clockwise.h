@@ -1,6 +1,6 @@
 //
 //  UIBezierPath+Clockwise.h
-//  DrawKit-iOS
+//  PerformanceBezier
 //
 //  Created by Adam Wulf on 1/7/14.
 //  Copyright (c) 2014 Milestone Made, LLC. All rights reserved.

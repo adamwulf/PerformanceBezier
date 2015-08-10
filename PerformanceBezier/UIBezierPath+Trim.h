@@ -1,6 +1,6 @@
 //
 //  UIBezierPath+Ahmed.h
-//  DrawKit-iOS
+//  PerformanceBezier
 //
 //  Created by Adam Wulf on 10/6/12.
 //  Copyright (c) 2012 Milestone Made, LLC. All rights reserved.

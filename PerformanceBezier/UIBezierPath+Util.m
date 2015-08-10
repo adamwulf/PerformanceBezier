@@ -1,6 +1,6 @@
 //
 //  UIBezierPath+Util.m
-//  ClippingBezier
+//  PerformanceBezier
 //
 //  Created by Adam Wulf on 5/20/15.
 //
