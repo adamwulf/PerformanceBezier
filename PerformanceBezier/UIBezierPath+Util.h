@@ -29,7 +29,7 @@ extern "C" {
     CGFloat subdivideBezierAtLength (const CGPoint bez[4], CGPoint bez1[4], CGPoint bez2[4], CGFloat length, CGFloat acceptableError);
     
     CGFloat subdivideBezierAtLengthWithCache(const CGPoint bez[4], CGPoint bez1[4], CGPoint bez2[4], CGFloat length, CGFloat acceptableError,
-                                             CGFloat* subBezierlengthCache);
+                                             CGFloat* subBezierLengthCache);
     
     CGFloat lengthOfBezier(const  CGPoint bez[4], CGFloat acceptableError);
     

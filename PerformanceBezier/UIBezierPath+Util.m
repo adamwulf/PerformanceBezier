@@ -151,9 +151,15 @@ CGFloat subdivideBezierAtLengthWithCache(const CGPoint bez[4],
                                          CGPoint bez2[4],
                                          CGFloat length,
                                          CGFloat acceptableError,
-                                         CGFloat* subBezierlengthCache){
+                                         CGFloat* subBezierLengthCache){
     CGFloat top = 1.0, bottom = 0.0;
     CGFloat t, prevT;
+    BOOL needsDealloc = NO;
+    
+    if(!subBezierLengthCache){
+        subBezierLengthCache = calloc(1000, sizeof(CGFloat));
+        needsDealloc = YES;
+    }
     
     prevT = t = 0.5;
     for (;;) {
@@ -162,10 +168,10 @@ CGFloat subdivideBezierAtLengthWithCache(const CGPoint bez[4],
         subdivideBezierAtT (bez, bez1, bez2, t);
         
         int lengthCacheIndex = (int)floorf(t*1000);
-        len1 = subBezierlengthCache[lengthCacheIndex];
+        len1 = subBezierLengthCache[lengthCacheIndex];
         if(!len1){
             len1 = [UIBezierPath lengthOfBezier:bez1 withAccuracy:0.5 * acceptableError];
-            subBezierlengthCache[lengthCacheIndex] = len1;
+            subBezierLengthCache[lengthCacheIndex] = len1;
         }
         
         if (fabs (length - len1) < acceptableError){
@@ -181,11 +187,15 @@ CGFloat subdivideBezierAtLengthWithCache(const CGPoint bez[4],
         }
         
         if (t == prevT){
-            subBezierlengthCache[lengthCacheIndex] = len1;
+            subBezierLengthCache[lengthCacheIndex] = len1;
             return len1;
         }
         
         prevT = t;
+    }
+    
+    if(needsDealloc){
+        free(subBezierLengthCache);
     }
 }
 
