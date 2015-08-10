@@ -297,7 +297,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = MM;
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = "Milestone Made";
 				TargetAttributes = {
 					66B9D28B1A8D5FDE00CAC341 = {

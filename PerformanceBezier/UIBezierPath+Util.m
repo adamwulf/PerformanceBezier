@@ -188,14 +188,14 @@ CGFloat subdivideBezierAtLengthWithCache(const CGPoint bez[4],
         
         if (t == prevT){
             subBezierLengthCache[lengthCacheIndex] = len1;
+
+            if(needsDealloc){
+                free(subBezierLengthCache);
+            }
             return len1;
         }
         
         prevT = t;
-    }
-    
-    if(needsDealloc){
-        free(subBezierLengthCache);
     }
 }
 
