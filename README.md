@@ -27,6 +27,8 @@ dramatically affect performance.
 Let me know! I'd love to know where PerformanceBezier is using and how it's affecting your apps. Ping me
 at [@adamwulf](https://twitter.com/adamwulf)!
 
+Also - If you like PerformanceBezier, then you'll _love_ [ClippingBezier](https://github.com/adamwulf/ClippingBezier) - an easy way to find intersecting points, lines, and shapes between two UIBezierPaths.
+
 ## Documentation
 
 View the header files for full documentation.
