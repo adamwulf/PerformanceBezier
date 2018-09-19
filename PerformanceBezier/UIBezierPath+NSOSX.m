@@ -263,13 +263,13 @@ static void blockWithElement(void* info, const CGPathElement* element) {
     return [self bezierPathByFlatteningPathAndImmutable:NO];
 }
 /**
- * @param shouldBeImmutable: YES if this function should return a distinct UIBezier, NO otherwise
+ * @param willBeImmutable: YES if this function should return a distinct UIBezier, NO otherwise
  *
  * if the caller plans to modify the returned path, then shouldBeImmutable should
  * be called with NO.
  *
  * if the caller only plans to iterate over and look at the returned value,
- * then shouldBeImmutable should be YES - this is considerably faster to not
+ * then willBeImmutable should be YES - this is considerably faster to not
  * return a copy if the value will be treated as immutable
  */
 -(UIBezierPath*) bezierPathByFlatteningPathAndImmutable:(BOOL)willBeImmutable{
