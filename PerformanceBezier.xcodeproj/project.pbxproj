@@ -24,7 +24,6 @@
 		66F2EBFC1A8DC13900D536E9 /* UIBezierPath+Uncached.m in Sources */ = {isa = PBXBuildFile; fileRef = 663355D61A857A2700C45718 /* UIBezierPath+Uncached.m */; };
 		66F2EBFD1A8DC13D00D536E9 /* UIBezierPath+FirstLast.m in Sources */ = {isa = PBXBuildFile; fileRef = 667617FB1A7EC5D400C0B447 /* UIBezierPath+FirstLast.m */; };
 		66F2EBFE1A8DC13F00D536E9 /* UIBezierPathProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 667617B81A7EB73A00C0B447 /* UIBezierPathProperties.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		66F2EBFF1A8DC14100D536E9 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 667617D41A7EB9AC00C0B447 /* JRSwizzle.m */; };
 		66F2EC001A8DC15600D536E9 /* UIBezierPath+Uncached.h in Headers */ = {isa = PBXBuildFile; fileRef = 663355D51A857A2700C45718 /* UIBezierPath+Uncached.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		66F2EC011A8DC15800D536E9 /* UIBezierPath+Performance.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617F41A7EC58700C0B447 /* UIBezierPath+Performance.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		66F2EC021A8DC15A00D536E9 /* UIBezierPath+NSOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617C01A7EB79F00C0B447 /* UIBezierPath+NSOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -36,9 +35,10 @@
 		66F2EC081A8DC16500D536E9 /* UIBezierPath+NSOSX_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617BF1A7EB79F00C0B447 /* UIBezierPath+NSOSX_Private.h */; };
 		66F2EC091A8DC16600D536E9 /* UIBezierPath+FirstLast.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617FA1A7EC5D400C0B447 /* UIBezierPath+FirstLast.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		66F2EC0A1A8DC16800D536E9 /* UIBezierPathProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617B71A7EB73A00C0B447 /* UIBezierPathProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		66F2EC0B1A8DC16900D536E9 /* JRSwizzle.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617D31A7EB9AC00C0B447 /* JRSwizzle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		66F2EC0C1A8DC16B00D536E9 /* PerformanceBezier.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617AF1A7EB5CB00C0B447 /* PerformanceBezier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		66F2EC0D1A8DC22000D536E9 /* PerformanceBezier-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 66F2EBEA1A8DC05100D536E9 /* PerformanceBezier-Info.plist */; };
+		EB6328E752139964903275C2 /* libPods-PerformanceBezierTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEC7BB05731F299AA06E4E73 /* libPods-PerformanceBezierTests.a */; };
+		F7F0C6A580F21EBB98494518 /* libPods-PerformanceBezier.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BCA5C19978130D0F8C6458 /* libPods-PerformanceBezier.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +52,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		08C7255CB582FE7F2D4541E7 /* Pods-PerformanceBezier.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PerformanceBezier.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PerformanceBezier/Pods-PerformanceBezier.debug.xcconfig"; sourceTree = "<group>"; };
+		22BCA5C19978130D0F8C6458 /* libPods-PerformanceBezier.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PerformanceBezier.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		660E0FD71A80055300F19D8A /* UIBezierPath+Center.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Center.h"; sourceTree = "<group>"; };
 		660E0FD81A80055300F19D8A /* UIBezierPath+Center.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Center.m"; sourceTree = "<group>"; };
 		660E0FDB1A80226100F19D8A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -70,8 +72,6 @@
 		667617CC1A7EB86200C0B447 /* UIBezierPath+Equals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Equals.m"; sourceTree = "<group>"; };
 		667617CF1A7EB88200C0B447 /* UIBezierPath+Clockwise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Clockwise.h"; sourceTree = "<group>"; };
 		667617D01A7EB88200C0B447 /* UIBezierPath+Clockwise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Clockwise.m"; sourceTree = "<group>"; };
-		667617D31A7EB9AC00C0B447 /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
-		667617D41A7EB9AC00C0B447 /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
 		667617F41A7EC58700C0B447 /* UIBezierPath+Performance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Performance.h"; sourceTree = "<group>"; };
 		667617F51A7EC58700C0B447 /* UIBezierPath+Performance_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Performance_Private.h"; sourceTree = "<group>"; };
 		667617F61A7EC58700C0B447 /* UIBezierPath+Performance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Performance.m"; sourceTree = "<group>"; };
@@ -91,6 +91,10 @@
 		66F2EBE31A8DC05100D536E9 /* PerformanceBezier.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework.static; includeInIndex = 0; path = PerformanceBezier.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		66F2EBE71A8DC05100D536E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		66F2EBEA1A8DC05100D536E9 /* PerformanceBezier-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PerformanceBezier-Info.plist"; sourceTree = "<group>"; };
+		A574B3E82283DD6C1C81706C /* Pods-PerformanceBezier.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PerformanceBezier.release.xcconfig"; path = "Pods/Target Support Files/Pods-PerformanceBezier/Pods-PerformanceBezier.release.xcconfig"; sourceTree = "<group>"; };
+		C003128F8C270206D918834D /* Pods-PerformanceBezierTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PerformanceBezierTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PerformanceBezierTests/Pods-PerformanceBezierTests.release.xcconfig"; sourceTree = "<group>"; };
+		C9D37636204029A354A2EAAC /* Pods-PerformanceBezierTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PerformanceBezierTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PerformanceBezierTests/Pods-PerformanceBezierTests.debug.xcconfig"; sourceTree = "<group>"; };
+		EEC7BB05731F299AA06E4E73 /* libPods-PerformanceBezierTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PerformanceBezierTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +103,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6617530D1A8DC45A0051D5CB /* PerformanceBezier.framework in Frameworks */,
+				EB6328E752139964903275C2 /* libPods-PerformanceBezierTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,6 +112,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				66F2EBE41A8DC05100D536E9 /* Foundation.framework in Frameworks */,
+				F7F0C6A580F21EBB98494518 /* libPods-PerformanceBezier.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,6 +130,7 @@
 				66F2EBE51A8DC05100D536E9 /* Supporting Files */,
 				6682FF241A8DBACF00187325 /* Frameworks */,
 				667617871A7EB50A00C0B447 /* Products */,
+				85A6932415CA57BB963D1AAC /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -164,8 +171,6 @@
 		667617DB1A7EB9B000C0B447 /* Protected */ = {
 			isa = PBXGroup;
 			children = (
-				667617D31A7EB9AC00C0B447 /* JRSwizzle.h */,
-				667617D41A7EB9AC00C0B447 /* JRSwizzle.m */,
 				667617B71A7EB73A00C0B447 /* UIBezierPathProperties.h */,
 				667617B81A7EB73A00C0B447 /* UIBezierPathProperties.m */,
 				667617FA1A7EC5D400C0B447 /* UIBezierPath+FirstLast.h */,
@@ -180,6 +185,8 @@
 			isa = PBXGroup;
 			children = (
 				6682FF251A8DBACF00187325 /* Foundation.framework */,
+				22BCA5C19978130D0F8C6458 /* libPods-PerformanceBezier.a */,
+				EEC7BB05731F299AA06E4E73 /* libPods-PerformanceBezierTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -223,6 +230,17 @@
 			path = PerformanceBezier;
 			sourceTree = "<group>";
 		};
+		85A6932415CA57BB963D1AAC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				08C7255CB582FE7F2D4541E7 /* Pods-PerformanceBezier.debug.xcconfig */,
+				A574B3E82283DD6C1C81706C /* Pods-PerformanceBezier.release.xcconfig */,
+				C9D37636204029A354A2EAAC /* Pods-PerformanceBezierTests.debug.xcconfig */,
+				C003128F8C270206D918834D /* Pods-PerformanceBezierTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -232,7 +250,6 @@
 			files = (
 				66F2EC0C1A8DC16B00D536E9 /* PerformanceBezier.h in Headers */,
 				66F2EC001A8DC15600D536E9 /* UIBezierPath+Uncached.h in Headers */,
-				66F2EC0B1A8DC16900D536E9 /* JRSwizzle.h in Headers */,
 				66F2EC011A8DC15800D536E9 /* UIBezierPath+Performance.h in Headers */,
 				66F2EC0A1A8DC16800D536E9 /* UIBezierPathProperties.h in Headers */,
 				66F2EC041A8DC15E00D536E9 /* UIBezierPath+Equals.h in Headers */,
@@ -255,6 +272,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 66B9D2961A8D5FDF00CAC341 /* Build configuration list for PBXNativeTarget "PerformanceBezierTests" */;
 			buildPhases = (
+				30BEB311E30491A00005B637 /* [CP] Check Pods Manifest.lock */,
 				66B9D2881A8D5FDE00CAC341 /* Sources */,
 				66B9D2891A8D5FDE00CAC341 /* Frameworks */,
 				66B9D28A1A8D5FDE00CAC341 /* Resources */,
@@ -273,6 +291,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 66F2EBF01A8DC05100D536E9 /* Build configuration list for PBXNativeTarget "PerformanceBezier" */;
 			buildPhases = (
+				8EC6CFC7BAD011364899CD81 /* [CP] Check Pods Manifest.lock */,
 				66F2EBF31A8DC05E00D536E9 /* Prepare Build Script */,
 				66F2EBDD1A8DC05100D536E9 /* Sources */,
 				66F2EBDE1A8DC05100D536E9 /* Frameworks */,
@@ -345,6 +364,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		30BEB311E30491A00005B637 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PerformanceBezierTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		66F2EBF31A8DC05E00D536E9 /* Prepare Build Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -387,6 +424,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\nset -e\n\nset +u\nif [[ $UFW_MASTER_SCRIPT_RUNNING ]]\nthen\n# Nothing for the slave script to do\nexit 0\nfi\nset -u\nexport UFW_MASTER_SCRIPT_RUNNING=1\n\n\n# Functions\n\n## List files in the specified directory, storing to the specified array.\n#\n# @param $1 The path to list\n# @param $2 The name of the array to fill\n#\n##\nlist_files ()\n{\n    filelist=$(ls \"$1\")\n    while read line\n    do\n    eval \"$2[\\${#$2[*]}]=\\\"\\$line\\\"\"\n    done <<< \"$filelist\"\n}\n\n\n# Sanity check\n\nif [[ ! -f \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" ]]\nthen\necho \"Framework target \\\"${TARGET_NAME}\\\" had no source files to build from. Make sure your source files have the correct target membership\"\nexit 1\nfi\n\necho \"Target Executable: ${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\"\n\n\n# Gather information\n\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\nUFW_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]\nthen\nUFW_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\nif [[ \"$UFW_SDK_PLATFORM\" = \"iphoneos\" ]]\nthen\nUFW_OTHER_PLATFORM=iphonesimulator\nelse\nUFW_OTHER_PLATFORM=iphoneos\nfi\n\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$UFW_SDK_PLATFORM$ ]]\nthen\nUFW_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${UFW_OTHER_PLATFORM}\"\nelse\necho \"Could not find $UFW_SDK_PLATFORM in $BUILT_PRODUCTS_DIR\"\nexit 1\nfi\n\nONLY_ACTIVE_PLATFORM=${ONLY_ACTIVE_PLATFORM:-$ONLY_ACTIVE_ARCH}\n\n# Short-circuit if all binaries are up to date.\n# We already checked the other platform in the prerun script.\n\nif [[ -f \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\" ]] && [[ -f \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/${PRODUCT_NAME}\" ]] && [[ ! \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\" -nt \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/${PRODUCT_NAME}\" ]]\nthen\nexit 0\nfi\n\nif [ \"${ONLY_ACTIVE_PLATFORM}\" == \"YES\" ]\nthen\necho \"ONLY_ACTIVE_PLATFORM=${ONLY_ACTIVE_PLATFORM}: Skipping other platform build\"\nelse\n# Make sure the other platform gets built\n\necho \"Build other platform\"\n\necho xcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${UFW_OTHER_PLATFORM}${UFW_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" CONFIGURATION_TEMP_DIR=\"${PROJECT_TEMP_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\" $ACTION\nxcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${UFW_OTHER_PLATFORM}${UFW_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" CONFIGURATION_TEMP_DIR=\"${PROJECT_TEMP_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\" $ACTION\n\n\n# Build the fat static library binary\n\necho \"Create universal static library\"\n\necho \"$PLATFORM_DEVELOPER_BIN_DIR/libtool\" -static \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" -o \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}.temp\"\n\"$PLATFORM_DEVELOPER_BIN_DIR/libtool\" -static \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" -o \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}.temp\"\n\necho mv \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}.temp\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}\"\nmv \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}.temp\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}\"\nfi\n\n# Move executable to product name location\n\necho \"Moving Executable\"\necho \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\"\necho \"to\"\necho \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\nmv \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# Build embedded framework structure\n\necho \"Build Embedded Framework\"\n\necho rm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework\"\nrm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework\"\necho mkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/Resources\"\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/Resources\"\necho cp -a \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/\"\ncp -a \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/\"\n\ndeclare -a UFW_FILE_LIST\nlist_files \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" UFW_FILE_LIST\nfor filename in \"${UFW_FILE_LIST[@]}\"\ndo\nif [[ \"${filename}\" != \"Info.plist\" ]] && [[ ! \"${filename}\" =~ .*\\.lproj$ ]]\nthen\necho ln -sfh \"../${WRAPPER_NAME}/Resources/${filename}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/Resources/${filename}\"\nln -sfh \"../${WRAPPER_NAME}/Resources/${filename}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/Resources/${filename}\"\nfi\ndone\n\n\nif [ \"${ONLY_ACTIVE_PLATFORM}\" != \"YES\" ]\nthen\n# Replace other platform's framework with a copy of this one (so that both have the same universal binary)\n\necho \"Copy from $UFW_SDK_PLATFORM to $UFW_OTHER_PLATFORM\"\n\necho rm -rf \"${BUILD_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\"\nrm -rf \"${BUILD_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\"\necho cp -a \"${BUILD_DIR}/${CONFIGURATION}-${UFW_SDK_PLATFORM}\" \"${BUILD_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\"\ncp -a \"${BUILD_DIR}/${CONFIGURATION}-${UFW_SDK_PLATFORM}\" \"${BUILD_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\"\nfi\n";
 		};
+		8EC6CFC7BAD011364899CD81 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PerformanceBezier-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -407,7 +462,6 @@
 				66F2EBF71A8DC12800D536E9 /* UIBezierPath+Clockwise.m in Sources */,
 				66F2EBFD1A8DC13D00D536E9 /* UIBezierPath+FirstLast.m in Sources */,
 				66F2EBFC1A8DC13900D536E9 /* UIBezierPath+Uncached.m in Sources */,
-				66F2EBFF1A8DC14100D536E9 /* JRSwizzle.m in Sources */,
 				66F2EBFB1A8DC13700D536E9 /* UIBezierPath+Performance.m in Sources */,
 				66F2EBFE1A8DC13F00D536E9 /* UIBezierPathProperties.m in Sources */,
 				66AB566D1B0D9830005E6FB1 /* UIBezierPath+Util.m in Sources */,
@@ -510,6 +564,7 @@
 		};
 		66B9D2971A8D5FDF00CAC341 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C9D37636204029A354A2EAAC /* Pods-PerformanceBezierTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -563,6 +618,7 @@
 		};
 		66B9D2981A8D5FDF00CAC341 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C003128F8C270206D918834D /* Pods-PerformanceBezierTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -611,6 +667,7 @@
 		};
 		66F2EBF11A8DC05100D536E9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 08C7255CB582FE7F2D4541E7 /* Pods-PerformanceBezier.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -658,6 +715,7 @@
 		};
 		66F2EBF21A8DC05100D536E9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A574B3E82283DD6C1C81706C /* Pods-PerformanceBezier.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
