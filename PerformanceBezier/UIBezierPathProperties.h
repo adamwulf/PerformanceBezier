@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface UIBezierPathProperties : NSObject
+@interface UIBezierPathProperties : NSObject<NSSecureCoding>
 @property (nonatomic) BOOL isClosed;
 @property (nonatomic) BOOL knowsIfClosed;
 @property (nonatomic) BOOL isFlat;

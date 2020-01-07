@@ -32,6 +32,10 @@
 @synthesize hasFirstPoint;
 @synthesize firstPoint;
 
++(BOOL)supportsSecureCoding{
+    return YES;
+}
+
 - (id)initWithCoder:(NSCoder *)decoder{
     self = [super init];
     if (!self) {
