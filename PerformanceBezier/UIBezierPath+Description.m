@@ -49,7 +49,7 @@
 +(void)load{
     @autoreleasepool {
         NSError *error = nil;
-        [UIBezierPath jr_swizzleMethod:@selector(description)
+        [UIBezierPath mmpb_swizzleMethod:@selector(description)
                             withMethod:@selector(swizzle_description)
                                  error:&error];
     }

@@ -5,9 +5,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSObject (JRSwizzle)
+@interface NSObject (PerformanceBezierJRSwizzle)
 
-+ (BOOL)jr_swizzleMethod:(SEL)origSel_ withMethod:(SEL)altSel_ error:(NSError**)error_;
-+ (BOOL)jr_swizzleClassMethod:(SEL)origSel_ withClassMethod:(SEL)altSel_ error:(NSError**)error_;
++ (BOOL)mmpb_swizzleMethod:(SEL)origSel_ withMethod:(SEL)altSel_ error:(NSError**)error_;
++ (BOOL)mmpb_swizzleClassMethod:(SEL)origSel_ withClassMethod:(SEL)altSel_ error:(NSError**)error_;
 
 @end

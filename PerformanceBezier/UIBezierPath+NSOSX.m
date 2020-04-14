@@ -502,16 +502,16 @@ static void blockWithElement(void* info, const CGPathElement* element) {
 +(void)load{
     @autoreleasepool {
         NSError *error = nil;
-        [UIBezierPath jr_swizzleMethod:@selector(removeAllPoints)
+        [UIBezierPath mmpb_swizzleMethod:@selector(removeAllPoints)
                             withMethod:@selector(nsosx_swizzle_removeAllPoints)
                                  error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(applyTransform:)
+        [UIBezierPath mmpb_swizzleMethod:@selector(applyTransform:)
                             withMethod:@selector(nsosx_swizzle_applyTransform:)
                                  error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(copy)
+        [UIBezierPath mmpb_swizzleMethod:@selector(copy)
                             withMethod:@selector(nsosx_swizzle_copy)
                                  error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(dealloc)
+        [UIBezierPath mmpb_swizzleMethod:@selector(dealloc)
                             withMethod:@selector(nsosx_swizzle_dealloc)
                                  error:&error];
     }

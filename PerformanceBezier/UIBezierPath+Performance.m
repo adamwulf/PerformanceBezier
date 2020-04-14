@@ -425,55 +425,55 @@ static char BEZIER_PROPERTIES;
 +(void)load{
     @autoreleasepool {
         NSError *error = nil;
-        [UIBezierPath jr_swizzleClassMethod:@selector(bezierPathWithRect:)
+        [UIBezierPath mmpb_swizzleClassMethod:@selector(bezierPathWithRect:)
                             withClassMethod:@selector(swizzle_bezierPathWithRect:)
                                       error:&error];
-        [UIBezierPath jr_swizzleClassMethod:@selector(bezierPathWithOvalInRect:)
+        [UIBezierPath mmpb_swizzleClassMethod:@selector(bezierPathWithOvalInRect:)
                             withClassMethod:@selector(swizzle_bezierPathWithOvalInRect:)
                                       error:&error];
-        [UIBezierPath jr_swizzleClassMethod:@selector(bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:)
+        [UIBezierPath mmpb_swizzleClassMethod:@selector(bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:)
                             withClassMethod:@selector(swizzle_bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:)
                                       error:&error];
-        [UIBezierPath jr_swizzleClassMethod:@selector(bezierPathWithRoundedRect:cornerRadius:)
+        [UIBezierPath mmpb_swizzleClassMethod:@selector(bezierPathWithRoundedRect:cornerRadius:)
                             withClassMethod:@selector(swizzle_bezierPathWithRoundedRect:cornerRadius:)
                                       error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(moveToPoint:)
+        [UIBezierPath mmpb_swizzleMethod:@selector(moveToPoint:)
                             withMethod:@selector(swizzle_moveToPoint:)
                                  error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(addLineToPoint:)
+        [UIBezierPath mmpb_swizzleMethod:@selector(addLineToPoint:)
                             withMethod:@selector(swizzle_addLineToPoint:)
                                  error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(addCurveToPoint:controlPoint1:controlPoint2:)
+        [UIBezierPath mmpb_swizzleMethod:@selector(addCurveToPoint:controlPoint1:controlPoint2:)
                             withMethod:@selector(swizzle_addCurveToPoint:controlPoint1:controlPoint2:)
                                  error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(addQuadCurveToPoint:controlPoint:)
+        [UIBezierPath mmpb_swizzleMethod:@selector(addQuadCurveToPoint:controlPoint:)
                             withMethod:@selector(swizzle_quadCurveToPoint:controlPoint:)
                                  error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(closePath)
+        [UIBezierPath mmpb_swizzleMethod:@selector(closePath)
                             withMethod:@selector(swizzle_closePath)
                                  error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(addArcWithCenter:radius:startAngle:endAngle:clockwise:)
+        [UIBezierPath mmpb_swizzleMethod:@selector(addArcWithCenter:radius:startAngle:endAngle:clockwise:)
                             withMethod:@selector(swizzle_arcWithCenter:radius:startAngle:endAngle:clockwise:)
                                  error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(removeAllPoints)
+        [UIBezierPath mmpb_swizzleMethod:@selector(removeAllPoints)
                             withMethod:@selector(swizzle_removeAllPoints)
                                  error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(appendPath:)
+        [UIBezierPath mmpb_swizzleMethod:@selector(appendPath:)
                             withMethod:@selector(swizzle_appendPath:)
                                  error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(copy)
+        [UIBezierPath mmpb_swizzleMethod:@selector(copy)
                             withMethod:@selector(swizzle_copy)
                                  error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(initWithCoder:)
+        [UIBezierPath mmpb_swizzleMethod:@selector(initWithCoder:)
                             withMethod:@selector(swizzle_initWithCoder:)
                                  error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(encodeWithCoder:)
+        [UIBezierPath mmpb_swizzleMethod:@selector(encodeWithCoder:)
                             withMethod:@selector(swizzle_encodeWithCoder:)
                                  error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(applyTransform:)
+        [UIBezierPath mmpb_swizzleMethod:@selector(applyTransform:)
                             withMethod:@selector(ahmed_swizzle_applyTransform:)
                                  error:&error];
-        [UIBezierPath jr_swizzleMethod:@selector(dealloc)
+        [UIBezierPath mmpb_swizzleMethod:@selector(dealloc)
                             withMethod:@selector(ahmed_swizzle_dealloc)
                                  error:&error];
     }

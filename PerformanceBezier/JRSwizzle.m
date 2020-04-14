@@ -29,7 +29,7 @@
 
 @implementation NSObject (JRSwizzle)
 
-+ (BOOL)jr_swizzleMethod:(SEL)origSel_ withMethod:(SEL)altSel_ error:(NSError**)error_ {
++ (BOOL)mmpb_swizzleMethod:(SEL)origSel_ withMethod:(SEL)altSel_ error:(NSError**)error_ {
 #if OBJC_API_VERSION >= 2
 	Method origMethod = class_getInstanceMethod(self, origSel_);
 	if (!origMethod) {
@@ -127,8 +127,8 @@
 #endif
 }
 
-+ (BOOL)jr_swizzleClassMethod:(SEL)origSel_ withClassMethod:(SEL)altSel_ error:(NSError**)error_ {
-	return [GetClass((id)self) jr_swizzleMethod:origSel_ withMethod:altSel_ error:error_];
++ (BOOL)mmpb_swizzleClassMethod:(SEL)origSel_ withClassMethod:(SEL)altSel_ error:(NSError**)error_ {
+	return [GetClass((id)self) mmpb_swizzleMethod:origSel_ withMethod:altSel_ error:error_];
 }
 
 @end
