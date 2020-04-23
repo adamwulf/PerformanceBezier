@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "UIBezierPathProperties.h"
 
-CGPoint bezierPointAtT(const CGPoint bez[4], CGFloat t);
-
 @interface UIBezierPath (Performance)
 
 -(UIBezierPathProperties*) pathProperties;

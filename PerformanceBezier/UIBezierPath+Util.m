@@ -13,8 +13,26 @@
 
 @implementation UIBezierPath (Util)
 
-+(CGFloat) lengthOfBezier:(const CGPoint[4])bez withAccuracy:(CGFloat)accuracy{
-    return lengthOfBezier(bez, accuracy);
++(CGFloat) lengthOfBezier:(const CGPoint[4])bez withAccuracy:(CGFloat)acceptableError{
+    CGFloat   polyLen = 0.0;
+    CGFloat   chordLen = [[self class] distance:bez[0] p2:bez[3]];
+    CGFloat   retLen, errLen;
+    NSUInteger n;
+    
+    for (n = 0; n < 3; ++n)
+        polyLen += [[self class] distance:bez[n] p2:bez[n + 1]];
+    
+    errLen = polyLen - chordLen;
+    
+    if (errLen > acceptableError) {
+        CGPoint left[4], right[4];
+        [UIBezierPath subdivideBezier:bez bez1:left bez2:right];
+        retLen = [[self class] lengthOfBezier:left withAccuracy:acceptableError] + [[self class] lengthOfBezier:right withAccuracy:acceptableError];
+    } else {
+        retLen = 0.5 * (polyLen + chordLen);
+    }
+    
+    return retLen;
 }
 
 #pragma mark - Subdivide helpers by Alastair J. Houghton
@@ -52,34 +70,14 @@
  */
 
 // Subdivide a Bézier (50% subdivision)
-inline static void subdivideBezier(const CGPoint bez[4], CGPoint bez1[4], CGPoint bez2[4])
-{
-    CGPoint q;
-    
-    bez1[0].x = bez[0].x;
-    bez1[0].y = bez[0].y;
-    bez2[3].x = bez[3].x;
-    bez2[3].y = bez[3].y;
-    
-    q.x = (bez[1].x + bez[2].x) / 2.0;
-    q.y = (bez[1].y + bez[2].y) / 2.0;
-    bez1[1].x = (bez[0].x + bez[1].x) / 2.0;
-    bez1[1].y = (bez[0].y + bez[1].y) / 2.0;
-    bez2[2].x = (bez[2].x + bez[3].x) / 2.0;
-    bez2[2].y = (bez[2].y + bez[3].y) / 2.0;
-    
-    bez1[2].x = (bez1[1].x + q.x) / 2.0;
-    bez1[2].y = (bez1[1].y + q.y) / 2.0;
-    bez2[1].x = (q.x + bez2[2].x) / 2.0;
-    bez2[1].y = (q.y + bez2[2].y) / 2.0;
-    
-    bez1[3].x = bez2[0].x = (bez1[2].x + bez2[1].x) / 2.0;
-    bez1[3].y = bez2[0].y = (bez1[2].y + bez2[1].y) / 2.0;
+
++(void)subdivideBezier:(const CGPoint[4])bez bez1:(CGPoint[4])bez1 bez2:(CGPoint[4])bez2{
+    [[self class] subdivideBezierAtT:bez bez1:bez1 bez2:bez2 t:.5];
 }
 
 // Subdivide a Bézier (specific division)
-void subdivideBezierAtT(const CGPoint bez[4], CGPoint bez1[4], CGPoint bez2[4], CGFloat t)
-{
+
++(void)subdivideBezierAtT:(const CGPoint[4])bez bez1:(CGPoint[4])bez1 bez2:(CGPoint[4])bez2 t:(CGFloat)t{
     CGPoint q;
     CGFloat mt = 1 - t;
     
@@ -104,40 +102,10 @@ void subdivideBezierAtT(const CGPoint bez[4], CGPoint bez1[4], CGPoint bez2[4], 
     bez1[3].y = bez2[0].y = mt * bez1[2].y + t * bez2[1].y;
 }
 
-
-// Length of a curve
-CGFloat lengthOfBezier(const  CGPoint bez[4], CGFloat acceptableError)
-{
-    CGFloat   polyLen = 0.0;
-    CGFloat   chordLen = distance(bez[0], bez[3]);
-    CGFloat   retLen, errLen;
-    NSUInteger n;
-    
-    for (n = 0; n < 3; ++n)
-        polyLen += distance(bez[n], bez[n + 1]);
-    
-    errLen = polyLen - chordLen;
-    
-    if (errLen > acceptableError) {
-        CGPoint left[4], right[4];
-        subdivideBezier (bez, left, right);
-        retLen = (lengthOfBezier (left, acceptableError)
-                  + lengthOfBezier (right, acceptableError));
-    } else {
-        retLen = 0.5 * (polyLen + chordLen);
-    }
-    
-    return retLen;
-}
-
-// Split a Bézier curve at a specific length
-CGFloat subdivideBezierAtLength (const CGPoint bez[4],
-                                 CGPoint bez1[4],
-                                 CGPoint bez2[4],
-                                 CGFloat length,
-                                 CGFloat acceptableError)
-{
-    return subdivideBezierAtLengthWithCache(bez, bez1, bez2, length, acceptableError, NULL);
+//
+//// Split a Bézier curve at a specific length
++(CGFloat)subdivideBezier:(const CGPoint [4])bez bez1:(CGPoint[4])bez1 bez2:(CGPoint[4])bez2 atLength:(CGFloat)length acceptableError:(CGFloat)acceptableError{
+    return [[self class] subdivideBezier:bez bez1:bez1 bez2:bez2 atLength:length acceptableError:acceptableError withCache:NULL];
 }
 
 /**
@@ -146,12 +114,7 @@ CGFloat subdivideBezierAtLength (const CGPoint bez[4],
  *
  * the two curves will exactly match the original curve
  */
-CGFloat subdivideBezierAtLengthWithCache(const CGPoint bez[4],
-                                         CGPoint bez1[4],
-                                         CGPoint bez2[4],
-                                         CGFloat length,
-                                         CGFloat acceptableError,
-                                         CGFloat* subBezierLengthCache){
++(CGFloat)subdivideBezier:(const CGPoint [4])bez bez1:(CGPoint[4])bez1 bez2:(CGPoint[4])bez2 atLength:(CGFloat)length acceptableError:(CGFloat)acceptableError withCache:(CGFloat*) subBezierLengthCache{
     CGFloat top = 1.0, bottom = 0.0;
     CGFloat t, prevT;
     BOOL needsDealloc = NO;
@@ -165,7 +128,7 @@ CGFloat subdivideBezierAtLengthWithCache(const CGPoint bez[4],
     for (;;) {
         CGFloat len1;
         
-        subdivideBezierAtT (bez, bez1, bez2, t);
+        [UIBezierPath subdivideBezierAtT:bez bez1:bez1 bez2:bez2 t:t];
         
         int lengthCacheIndex = (int)floorf(t*1000);
         len1 = subBezierLengthCache[lengthCacheIndex];
@@ -210,7 +173,7 @@ CGFloat subdivideBezierAtLengthWithCache(const CGPoint bez[4],
 //  Returns NO if there is no determinable intersection point, in which case X,Y will
 //  be unmodified.
 
-CGPoint lineSegmentIntersection(CGPoint A, CGPoint B, CGPoint C, CGPoint D) {
++(CGPoint)lineSegmentIntersectionPointA:(CGPoint)A pointB:(CGPoint)B pointC:(CGPoint)C pointD:(CGPoint)D {
     
     double  distAB, theCos, theSin, newX, ABpos ;
     
@@ -263,13 +226,12 @@ CGPoint lineSegmentIntersection(CGPoint A, CGPoint B, CGPoint C, CGPoint D) {
 
 // primary algorithm from:
 // http://stackoverflow.com/questions/4089443/find-the-tangent-of-a-point-on-a-cubic-bezier-curve-on-an-iphone
-CGPoint bezierTangentAtT(const CGPoint bez[4], CGFloat t)
-{
-    return CGPointMake(bezierTangent(t, bez[0].x, bez[1].x, bez[2].x, bez[3].x),
-                       bezierTangent(t, bez[0].y, bez[1].y, bez[2].y, bez[3].y));
++(CGPoint)bezierTangentAtT:(const CGPoint[4])bez t:(CGFloat)t{
+    return CGPointMake([[self class] bezierTangent:t a:bez[0].x b:bez[1].x c:bez[2].x d:bez[3].x],
+                       [[self class] bezierTangent:t a:bez[0].y b:bez[1].y c:bez[2].y d:bez[3].y]);
 }
-CGFloat bezierTangent(CGFloat t, CGFloat a, CGFloat b, CGFloat c, CGFloat d)
-{
+
++(CGFloat)bezierTangent:(CGFloat)t a:(CGFloat)a b:(CGFloat)b c:(CGFloat)c d:(CGFloat)d{
     CGFloat C1 = ( d - (3.0 * c) + (3.0 * b) - a );
     CGFloat C2 = ( (3.0 * c) - (6.0 * b) + (3.0 * a) );
     CGFloat C3 = ( (3.0 * b) - (3.0 * a) );
@@ -280,35 +242,37 @@ CGFloat bezierTangent(CGFloat t, CGFloat a, CGFloat b, CGFloat c, CGFloat d)
 /**
  * returns the shortest distance from a point to a line
  */
-CGFloat	distanceOfPointToLine(CGPoint point, CGPoint start, CGPoint end){
++(CGFloat)distanceOfPointToLine:(CGPoint)point start:(CGPoint)start end:(CGPoint)end{
     CGPoint v = CGPointMake(end.x - start.x, end.y - start.y);
     CGPoint w = CGPointMake(point.x - start.x, point.y - start.y);
-    CGFloat c1 = dotProduct(w, v);
-    CGFloat c2 = dotProduct(v, v);
+    CGFloat c1 = [[self class] dotProduct:w p2:v];
+    CGFloat c2 = [[self class] dotProduct:v p2:v];
     CGFloat d;
     if (c1 <= 0) {
-        d = distance(point, start);
+        d = [[self class] distance:point p2:start];
     }
     else if (c2 <= c1) {
-        d = distance(point, end);
+        d = [[self class] distance:point p2:end];
     }
     else {
         CGFloat b = c1 / c2;
         CGPoint Pb = CGPointMake(start.x + b * v.x, start.y + b * v.y);
-        d = distance(point, Pb);
+        d = [[self class] distance:point p2:Pb];
     }
     return d;
 }
+
 /**
  * returns the distance between two points
  */
-CGFloat distance(const CGPoint p1, const CGPoint p2) {
++(CGFloat)distance:(const CGPoint)p1 p2:(const CGPoint) p2{
     return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2));
 }
+
 /**
  * returns the dot product of two coordinates
  */
-CGFloat dotProduct(const CGPoint p1, const CGPoint p2) {
++(CGFloat)dotProduct:(const CGPoint)p1 p2:(const CGPoint) p2{
     return p1.x * p2.x + p1.y * p2.y;
 }
 

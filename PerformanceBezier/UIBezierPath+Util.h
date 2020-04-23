@@ -12,37 +12,18 @@
 
 +(CGFloat) lengthOfBezier:(const CGPoint[4])bez withAccuracy:(CGFloat)accuracy;
 
++(void)subdivideBezierAtT:(const CGPoint[4])bez bez1:(CGPoint[4])bez1 bez2:(CGPoint[4])bez2 t:(CGFloat)t;
+
++(CGFloat)distanceOfPointToLine:(CGPoint)point start:(CGPoint)start end:(CGPoint)end;
+
++(CGFloat)distance:(const CGPoint)p1 p2:(const CGPoint) p2;
+
++(CGPoint)bezierTangentAtT:(const CGPoint[4])bez t:(CGFloat)t;
+
++(CGFloat)subdivideBezier:(const CGPoint [4])bez bez1:(CGPoint[4])bez1 bez2:(CGPoint[4])bez2 atLength:(CGFloat)length acceptableError:(CGFloat)acceptableError;
+
++(CGFloat)subdivideBezier:(const CGPoint [4])bez bez1:(CGPoint[4])bez1 bez2:(CGPoint[4])bez2 atLength:(CGFloat)length acceptableError:(CGFloat)acceptableError withCache:(CGFloat*) subBezierLengthCache;
+
++(CGPoint)lineSegmentIntersectionPointA:(CGPoint)A pointB:(CGPoint)B pointC:(CGPoint)C pointD:(CGPoint)D;
+
 @end
-
-#if defined __cplusplus
-extern "C" {
-#endif
-    
-    // simple helper function to return the distance of a point to a line
-    CGFloat	distanceOfPointToLine(CGPoint point, CGPoint start, CGPoint end);
-    
-    // returns the distance between two points
-    CGFloat distance(const CGPoint p1, const CGPoint p2);
-    
-    void	subdivideBezierAtT(const CGPoint bez[4], CGPoint bez1[4], CGPoint bez2[4], CGFloat t);
-    
-    CGFloat subdivideBezierAtLength (const CGPoint bez[4], CGPoint bez1[4], CGPoint bez2[4], CGFloat length, CGFloat acceptableError);
-    
-    CGFloat subdivideBezierAtLengthWithCache(const CGPoint bez[4], CGPoint bez1[4], CGPoint bez2[4], CGFloat length, CGFloat acceptableError,
-                                             CGFloat* subBezierLengthCache);
-    
-    CGFloat lengthOfBezier(const  CGPoint bez[4], CGFloat acceptableError);
-    
-    
-    CGPoint lineSegmentIntersection(CGPoint A, CGPoint B, CGPoint C, CGPoint D);
-    
-    CGPoint bezierTangentAtT(const CGPoint bez[4], CGFloat t);
-    
-    CGFloat bezierTangent(CGFloat t, CGFloat a, CGFloat b, CGFloat c, CGFloat d);
-    
-    
-    
-#if defined __cplusplus
-};
-#endif
-

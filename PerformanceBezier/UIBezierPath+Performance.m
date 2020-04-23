@@ -7,10 +7,10 @@
 //
 
 #import "UIBezierPath+Performance.h"
-#import "UIBezierPath+Performance_Private.h"
 #import "UIBezierPath+FirstLast.h"
 #import "UIBezierPath+NSOSX.h"
 #import "UIBezierPath+Uncached.h"
+#import "UIBezierPath+Util.h"
 #import <objc/runtime.h>
 #import "JRSwizzle.h"
 
@@ -176,12 +176,38 @@ static char BEZIER_PROPERTIES;
 
 
 
-+(CGPoint) pointAtT:(CGFloat)t forBezier:(CGPoint*)bez{
-    return bezierPointAtT(bez, t);
+/**
+* calculate the point on a bezier at time t
+* where 0 < t < 1
+*/
++(CGPoint) pointAtT:(CGFloat)t forBezier:(CGPoint[4])bez{
+    
+    CGPoint q;
+    CGFloat mt = 1 - t;
+    
+    CGPoint bez1[4];
+    CGPoint bez2[4];
+    
+    q.x = mt * bez[1].x + t * bez[2].x;
+    q.y = mt * bez[1].y + t * bez[2].y;
+    bez1[1].x = mt * bez[0].x + t * bez[1].x;
+    bez1[1].y = mt * bez[0].y + t * bez[1].y;
+    bez2[2].x = mt * bez[2].x + t * bez[3].x;
+    bez2[2].y = mt * bez[2].y + t * bez[3].y;
+    
+    bez1[2].x = mt * bez1[1].x + t * q.x;
+    bez1[2].y = mt * bez1[1].y + t * q.y;
+    bez2[1].x = mt * q.x + t * bez2[2].x;
+    bez2[1].y = mt * q.y + t * bez2[2].y;
+    
+    bez1[3].x = bez2[0].x = mt * bez1[2].x + t * bez2[1].x;
+    bez1[3].y = bez2[0].y = mt * bez1[2].y + t * bez2[1].y;
+    
+    return CGPointMake(bez1[3].x, bez1[3].y);
 }
 
 +(CGPoint) tangentAtT:(CGFloat)t forBezier:(CGPoint*)bez{
-    return bezierTangentAtT(bez, t);
+    return [[self class] bezierTangentAtT:bez t:t];
 }
 
 
@@ -490,36 +516,6 @@ static char BEZIER_PROPERTIES;
 }
 
 
-
-/**
- * calculate the point on a bezier at time t
- * where 0 < t < 1
- */
-CGPoint bezierPointAtT(const CGPoint bez[4], CGFloat t)
-{
-    CGPoint q;
-    CGFloat mt = 1 - t;
-    
-    CGPoint bez1[4];
-    CGPoint bez2[4];
-    
-    q.x = mt * bez[1].x + t * bez[2].x;
-    q.y = mt * bez[1].y + t * bez[2].y;
-    bez1[1].x = mt * bez[0].x + t * bez[1].x;
-    bez1[1].y = mt * bez[0].y + t * bez[1].y;
-    bez2[2].x = mt * bez[2].x + t * bez[3].x;
-    bez2[2].y = mt * bez[2].y + t * bez[3].y;
-    
-    bez1[2].x = mt * bez1[1].x + t * q.x;
-    bez1[2].y = mt * bez1[1].y + t * q.y;
-    bez2[1].x = mt * q.x + t * bez2[2].x;
-    bez2[1].y = mt * q.y + t * bez2[2].y;
-    
-    bez1[3].x = bez2[0].x = mt * bez1[2].x + t * bez2[1].x;
-    bez1[3].y = bez2[0].y = mt * bez1[2].y + t * bez2[1].y;
-    
-    return CGPointMake(bez1[3].x, bez1[3].y);
-}
 
 @end
 

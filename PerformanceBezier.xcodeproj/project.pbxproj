@@ -32,7 +32,6 @@
 		66F2EC041A8DC15E00D536E9 /* UIBezierPath+Equals.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617CB1A7EB86200C0B447 /* UIBezierPath+Equals.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		66F2EC051A8DC16000D536E9 /* UIBezierPath+Clockwise.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617CF1A7EB88200C0B447 /* UIBezierPath+Clockwise.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		66F2EC061A8DC16100D536E9 /* UIBezierPath+Center.h in Headers */ = {isa = PBXBuildFile; fileRef = 660E0FD71A80055300F19D8A /* UIBezierPath+Center.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		66F2EC071A8DC16300D536E9 /* UIBezierPath+Performance_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617F51A7EC58700C0B447 /* UIBezierPath+Performance_Private.h */; };
 		66F2EC081A8DC16500D536E9 /* UIBezierPath+NSOSX_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617BF1A7EB79F00C0B447 /* UIBezierPath+NSOSX_Private.h */; };
 		66F2EC091A8DC16600D536E9 /* UIBezierPath+FirstLast.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617FA1A7EC5D400C0B447 /* UIBezierPath+FirstLast.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		66F2EC0A1A8DC16800D536E9 /* UIBezierPathProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617B71A7EB73A00C0B447 /* UIBezierPathProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -73,7 +72,6 @@
 		667617D31A7EB9AC00C0B447 /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
 		667617D41A7EB9AC00C0B447 /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
 		667617F41A7EC58700C0B447 /* UIBezierPath+Performance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Performance.h"; sourceTree = "<group>"; };
-		667617F51A7EC58700C0B447 /* UIBezierPath+Performance_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Performance_Private.h"; sourceTree = "<group>"; };
 		667617F61A7EC58700C0B447 /* UIBezierPath+Performance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Performance.m"; sourceTree = "<group>"; };
 		667617FA1A7EC5D400C0B447 /* UIBezierPath+FirstLast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+FirstLast.h"; sourceTree = "<group>"; };
 		667617FB1A7EC5D400C0B447 /* UIBezierPath+FirstLast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+FirstLast.m"; sourceTree = "<group>"; };
@@ -171,7 +169,6 @@
 				667617FA1A7EC5D400C0B447 /* UIBezierPath+FirstLast.h */,
 				667617FB1A7EC5D400C0B447 /* UIBezierPath+FirstLast.m */,
 				667617BF1A7EB79F00C0B447 /* UIBezierPath+NSOSX_Private.h */,
-				667617F51A7EC58700C0B447 /* UIBezierPath+Performance_Private.h */,
 			);
 			name = Protected;
 			sourceTree = "<group>";
@@ -243,7 +240,6 @@
 				66D1B7971AFEAC6F00210262 /* UIBezierPath+Trim.h in Headers */,
 				66F2EC031A8DC15B00D536E9 /* UIBezierPath+Description.h in Headers */,
 				66F2EC021A8DC15A00D536E9 /* UIBezierPath+NSOSX.h in Headers */,
-				66F2EC071A8DC16300D536E9 /* UIBezierPath+Performance_Private.h in Headers */,
 				66F2EC081A8DC16500D536E9 /* UIBezierPath+NSOSX_Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -649,7 +645,10 @@
 				INFOPLIST_FILE = PerformanceBezier/Info.plist;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_PLATFORM = YES;
-				OTHER_LDFLAGS = "-ObjC++";
+				OTHER_LDFLAGS = (
+					"-ObjC++",
+					"-all_load",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.milestonemade.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -690,7 +689,10 @@
 				INFOPLIST_FILE = PerformanceBezier/Info.plist;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_PLATFORM = YES;
-				OTHER_LDFLAGS = "-ObjC++";
+				OTHER_LDFLAGS = (
+					"-ObjC++",
+					"-all_load",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.milestonemade.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

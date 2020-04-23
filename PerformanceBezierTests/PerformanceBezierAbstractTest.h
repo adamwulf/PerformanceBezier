@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Milestone Made, LLC. All rights reserved.
 //
 
-#import "PerformanceBezier.h"
+#import <PerformanceBezier/PerformanceBezier.h>
 
 @interface PerformanceBezierAbstractTest : XCTestCase
 
