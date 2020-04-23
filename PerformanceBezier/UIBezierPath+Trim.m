@@ -46,12 +46,12 @@
                 previousEndpoint = element.points[2];
                 
                 CGPoint left[4], right[4];
-                subdivideBezierAtT(bez, left, right, toTValue);
+                [UIBezierPath subdivideBezierAtT:bez bez1:left bez2:right t:toTValue];
                 bez[0] = left[0];
                 bez[1] = left[1];
                 bez[2] = left[2];
                 bez[3] = left[3];
-                subdivideBezierAtT(bez, left, right, fromTValue / toTValue);
+                [UIBezierPath subdivideBezierAtT:bez bez1:left bez2:right t:fromTValue / toTValue];
                 [outputPath moveToPoint:right[0]];
                 [outputPath addCurveToPoint:right[3] controlPoint1:right[1] controlPoint2:right[2]];
             }else if(element.type == kCGPathElementAddLineToPoint){
@@ -109,7 +109,7 @@
                 previousEndpoint = element.points[2];
                 
                 CGPoint left[4], right[4];
-                subdivideBezierAtT(bez, left, right, tValue);
+                [UIBezierPath subdivideBezierAtT:bez bez1:left bez2:right t:tValue];
                 [outputPath moveToPoint:right[0]];
                 [outputPath addCurveToPoint:right[3] controlPoint1:right[1] controlPoint2:right[2]];
             }else if(element.type == kCGPathElementAddLineToPoint){
@@ -165,7 +165,7 @@
                 previousEndpoint = element.points[2];
                 
                 CGPoint left[4], right[4];
-                subdivideBezierAtT(bez, left, right, tValue);
+                [UIBezierPath subdivideBezierAtT:bez bez1:left bez2:right t:tValue];
                 [outputPath addCurveToPoint:left[3] controlPoint1:left[1] controlPoint2:left[2]];
             }else if(element.type == kCGPathElementAddLineToPoint){
                 // line
@@ -195,15 +195,15 @@
 }
 
 +(void) subdivideBezier:(const CGPoint[4])bez intoLeft:(CGPoint[4])bez1 andRight:(CGPoint[4])bez2 atT:(CGFloat)t{
-    subdivideBezierAtT(bez, bez1, bez2, t);
+    [UIBezierPath subdivideBezierAtT:bez bez1:bez1 bez2:bez2 t:t];
 }
 
 +(void) subdivideBezier:(const CGPoint[4])bez intoLeft:(CGPoint[4])bez1 andRight:(CGPoint[4])bez2{
-    subdivideBezierAtT(bez, bez1, bez2, .5);
+    [UIBezierPath subdivideBezierAtT:bez bez1:bez1 bez2:bez2 t:.5];
 }
 
 +(void) subdivideBezier:(const CGPoint[4])bez intoLeft:(CGPoint[4])bez1 andRight:(CGPoint[4])bez2 atLength:(CGFloat)length withAcceptableError:(CGFloat)acceptableError withCache:(CGFloat*) subBezierlengthCache{
-    subdivideBezierAtLengthWithCache(bez, bez1, bez2, length, acceptableError,subBezierlengthCache);
+    [self subdivideBezier:bez bez1:bez1 bez2:bez2 atLength:length acceptableError:acceptableError withCache:subBezierlengthCache];
 }
 
 @end

@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.license         = {:type => 'CC BY', :file => 'LICENSE' }
 
   s.source          = { :git => "https://github.com/adamwulf/PerformanceBezier.git", :tag => s.version}
-  s.source_files    = ['PerformanceBezier/PerformanceBezier.h', 'PerformanceBezier/UIBezierPath*.{h,m}']
+  s.source_files    = ['PerformanceBezier/PerformanceBezier.h', 'PerformanceBezier/UIBezierPath*.{h,m}', 'PerformanceBezier/JR*.{h,m}']
   s.private_header_files = ['PerformanceBezier/*_Private.h', 'PerformanceBezier/JRSwizzle.h']
   s.public_header_files = 'PerformanceBezier/*.h'
 

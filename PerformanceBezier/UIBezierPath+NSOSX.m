@@ -10,7 +10,6 @@
 #import <objc/runtime.h>
 #import "JRSwizzle.h"
 #import "UIBezierPath+NSOSX_Private.h"
-#import "UIBezierPath+Performance_Private.h"
 #import "UIBezierPath+Performance.h"
 #import "UIBezierPath+Uncached.h"
 #import "UIBezierPath+Util.h"
@@ -343,9 +342,9 @@ static void blockWithElement(void* info, const CGPathElement* element) {
                     // a line segement between the start/end points
                     // vs the curve
                     
-                    CGPoint onCurve = bezierPointAtT(bez, .5);
+                    CGPoint onCurve = [[self class] pointAtT:.5 forBezier:bez];
                     
-                    CGFloat error = distanceOfPointToLine(onCurve, startPoint, bez[2]);
+                    CGFloat error = [[self class] distanceOfPointToLine:onCurve start:startPoint end:bez[2]];
                     
                     
                     //
@@ -361,7 +360,7 @@ static void blockWithElement(void* info, const CGPathElement* element) {
                     else
                     {
                         CGPoint bez1[4], bez2[4];
-                        subdivideBezierAtT(bez, bez1, bez2, .5);
+                        [UIBezierPath subdivideBezierAtT:bez bez1:bez1 bez2:bez2 t:.5];
                         // now we've split the curve in half, and have
                         // two bezier curves bez1 and bez2. recur
                         // on these two halves
