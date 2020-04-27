@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name            = "PerformanceBezier"
-  s.version         = "1.0.0"
+  s.version         = "1.0.1"
   s.summary         = "A small library to dramatically speed up common operations on UIBezierPath, and also bring its functionality closer to NSBezierPath."
   s.author          = {
       'Adam Wulf' => 'adam.wulf@gmail.com',
@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
 
   s.source          = { :git => "https://github.com/adamwulf/PerformanceBezier.git", :tag => s.version}
   s.source_files    = ['PerformanceBezier/PerformanceBezier.h', 'PerformanceBezier/UIBezierPath*.{h,m}']
-  s.private_header_files = 'PerformanceBezier/*_Private.h'
+  s.private_header_files = ['PerformanceBezier/*_Private.h', 'PerformanceBezier/JRSwizzle.h']
   s.public_header_files = 'PerformanceBezier/*.h'
 
 

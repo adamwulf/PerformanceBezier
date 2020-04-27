@@ -36,7 +36,7 @@
 		66F2EC081A8DC16500D536E9 /* UIBezierPath+NSOSX_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617BF1A7EB79F00C0B447 /* UIBezierPath+NSOSX_Private.h */; };
 		66F2EC091A8DC16600D536E9 /* UIBezierPath+FirstLast.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617FA1A7EC5D400C0B447 /* UIBezierPath+FirstLast.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		66F2EC0A1A8DC16800D536E9 /* UIBezierPathProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617B71A7EB73A00C0B447 /* UIBezierPathProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		66F2EC0B1A8DC16900D536E9 /* JRSwizzle.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617D31A7EB9AC00C0B447 /* JRSwizzle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66F2EC0B1A8DC16900D536E9 /* JRSwizzle.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617D31A7EB9AC00C0B447 /* JRSwizzle.h */; };
 		66F2EC0C1A8DC16B00D536E9 /* PerformanceBezier.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617AF1A7EB5CB00C0B447 /* PerformanceBezier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		66F2EC0D1A8DC22000D536E9 /* PerformanceBezier-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 66F2EBEA1A8DC05100D536E9 /* PerformanceBezier-Info.plist */; };
 /* End PBXBuildFile section */
