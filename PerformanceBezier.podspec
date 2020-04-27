@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.homepage        = "https://github.com/adamwulf/PerformanceBezier"
   s.license         = {:type => 'CC BY', :file => 'LICENSE' }
 
-  s.source          = { :git => "https://github.com/thaya-cameraxis/PerformanceBezier.git", :tag => s.version}
+  s.source          = { :git => "https://github.com/adamwulf/PerformanceBezier.git", :tag => s.version}
   s.source_files    = ['PerformanceBezier/PerformanceBezier.h', 'PerformanceBezier/UIBezierPath*.{h,m}']
   s.private_header_files = 'PerformanceBezier/*_Private.h'
   s.public_header_files = 'PerformanceBezier/*.h'
@@ -18,9 +18,8 @@ Pod::Spec.new do |s|
   s.ios.deployment_target   = "8.0"
 
   s.framework = 'Foundation', 'UIKit'
-  s.dependency 'JRSwizzle'
 
   s.requires_arc = false
-  s.xcconfig = { 'OTHER_LDFLAGS' => '-ObjC++ -lstdc++' }
+  s.xcconfig = { 'OTHER_LDFLAGS' => '-ObjC++ -lstdc++', "CLANG_CXX_LANGUAGE_STANDARD" => "gnu++0x", "CLANG_CXX_LIBRARY" => "libc++"  }
 
 end
