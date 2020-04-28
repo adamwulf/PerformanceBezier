@@ -422,7 +422,7 @@ static char BEZIER_PROPERTIES;
 +(UIBezierPath*) swizzle_bezierPathWithOvalInRect:(CGRect)rect{
     UIBezierPath* path = [UIBezierPath swizzle_bezierPathWithOvalInRect:rect];
     UIBezierPathProperties* props = [path pathProperties];
-    props.isFlat = YES;
+    props.isFlat = NO;
     props.knowsIfClosed = YES;
     props.isClosed = YES;
     return path;
@@ -431,7 +431,7 @@ static char BEZIER_PROPERTIES;
 +(UIBezierPath*) swizzle_bezierPathWithRoundedRect:(CGRect)rect byRoundingCorners:(UIRectCorner)corners cornerRadii:(CGSize)cornerRadii{
     UIBezierPath* path = [UIBezierPath swizzle_bezierPathWithRoundedRect:rect byRoundingCorners:corners cornerRadii:cornerRadii];
     UIBezierPathProperties* props = [path pathProperties];
-    props.isFlat = YES;
+    props.isFlat = NO;
     props.knowsIfClosed = YES;
     props.isClosed = YES;
     return path;
@@ -440,7 +440,7 @@ static char BEZIER_PROPERTIES;
 +(UIBezierPath*) swizzle_bezierPathWithRoundedRect:(CGRect)rect cornerRadius:(CGFloat)cornerRadii{
     UIBezierPath* path = [UIBezierPath swizzle_bezierPathWithRoundedRect:rect cornerRadius:cornerRadii];
     UIBezierPathProperties* props = [path pathProperties];
-    props.isFlat = YES;
+    props.isFlat = NO;
     props.knowsIfClosed = YES;
     props.isClosed = YES;
     return path;

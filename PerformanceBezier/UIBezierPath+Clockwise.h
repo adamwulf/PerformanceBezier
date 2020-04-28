@@ -15,4 +15,6 @@
 // around in clockwise direction
 -(BOOL) isClockwise;
 
+-(CGFloat) area;
+
 @end

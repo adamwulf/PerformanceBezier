@@ -186,4 +186,18 @@
     XCTAssertEqual([path1 lastPoint].y, (CGFloat) 50, "element count is correct");
 }
 
+- (void)testSquareArea {
+    // This is an example of a functional test case.
+    
+    UIBezierPath* path1 = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 20, 20)];
+    XCTAssertEqual([path1 area], 400, "area is correct");
+}
+
+- (void)testCircleArea {
+    // This is an example of a functional test case.
+    
+    UIBezierPath* path1 = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, 20, 20)];
+    XCTAssertEqual([self round:[path1 area] to:5], 312.1234, "area is correct");
+}
+
 @end

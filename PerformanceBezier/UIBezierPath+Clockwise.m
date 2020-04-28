@@ -11,8 +11,7 @@
 
 @implementation UIBezierPath (Clockwise)
 
--(BOOL) isClockwise{
-    
+- (CGFloat) signedArea{
     __block CGPoint lastMoveTo = CGPointZero;
     __block CGPoint lastPoint = CGPointZero;
     __block CGFloat sum = 0;
@@ -38,9 +37,21 @@
             lastPoint = lastMoveTo;
         }
     }];
-    return sum >= 0;
+    
+    return sum / 2.0;
 }
 
+/// Calculates the area of a path
+/// @discussion For paths that contain curve elements, the path is flattened using `idealFlatness`
+/// and the area calculated from the flattened path. This will cause some error compared to a true
+/// geometric area.
+- (CGFloat) area{
+    return ABS([[self bezierPathByFlatteningPath] signedArea]);
+}
+
+-(BOOL) isClockwise{
+    return [self signedArea] >= 0;
+}
 
 - (CGFloat) calculateAreaFor:(CGPoint)point1 andPoint:(CGPoint)point2{
     return (point2.x - point1.x) * (point2.y + point1.y);
