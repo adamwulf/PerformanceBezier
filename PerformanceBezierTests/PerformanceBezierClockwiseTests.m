@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Milestone Made, LLC. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
 #import "PerformanceBezierAbstractTest.h"
+#import <XCTest/XCTest.h>
 
 @interface PerformanceBezierClockwiseTests : PerformanceBezierAbstractTest
 
@@ -29,75 +29,75 @@
 
 - (void)testLinearCounterClockwise
 {
-    UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    UIBezierPath *simplePath = [UIBezierPath bezierPath];
     [simplePath moveToPoint:CGPointMake(100, 100)];
     [simplePath addLineToPoint:CGPointMake(200, 100)];
     [simplePath addLineToPoint:CGPointMake(200, 99)];
-    
+
     XCTAssertTrue(![simplePath isClockwise], @"clockwise is correct");
 }
 
 - (void)testLinearClockwise
 {
-    UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    UIBezierPath *simplePath = [UIBezierPath bezierPath];
     [simplePath moveToPoint:CGPointMake(100, 100)];
     [simplePath addLineToPoint:CGPointMake(200, 100)];
     [simplePath addLineToPoint:CGPointMake(200, 101)];
-    
+
     XCTAssertTrue(![simplePath isClockwise], @"clockwise is correct");
 }
 
 - (void)testLinearEmptyShape
 {
-    UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    UIBezierPath *simplePath = [UIBezierPath bezierPath];
     [simplePath moveToPoint:CGPointMake(100, 100)];
     [simplePath addLineToPoint:CGPointMake(200, 100)];
     [simplePath addLineToPoint:CGPointMake(200, 101)];
     [simplePath closePath];
-    
+
     XCTAssertTrue([simplePath isClockwise], @"clockwise is correct");
 }
 
 - (void)testLinearEmptyShape2
 {
-    UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    UIBezierPath *simplePath = [UIBezierPath bezierPath];
     [simplePath moveToPoint:CGPointMake(100, 100)];
     [simplePath addLineToPoint:CGPointMake(200, 100)];
     [simplePath addLineToPoint:CGPointMake(200, 99)];
     [simplePath closePath];
-    
+
     XCTAssertTrue(![simplePath isClockwise], @"clockwise is correct");
 }
 
 - (void)testSimpleClockwiseCurve
 {
-    UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    UIBezierPath *simplePath = [UIBezierPath bezierPath];
     [simplePath moveToPoint:CGPointMake(100, 100)];
     [simplePath addCurveToPoint:CGPointMake(200, 100) controlPoint1:CGPointMake(100, 0) controlPoint2:CGPointMake(200, 0)];
-    
+
     XCTAssertTrue([simplePath isClockwise], @"clockwise is correct");
 }
 
 - (void)testSimpleCounterClockwiseCurve
 {
-    UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    UIBezierPath *simplePath = [UIBezierPath bezierPath];
     [simplePath moveToPoint:CGPointMake(100, 100)];
     [simplePath addCurveToPoint:CGPointMake(200, 100) controlPoint1:CGPointMake(100, 200) controlPoint2:CGPointMake(200, 200)];
-    
+
     XCTAssertTrue(![simplePath isClockwise], @"clockwise is correct");
 }
 
 - (void)testSimplePath
 {
-    UIBezierPath* simplePath = [UIBezierPath bezierPathWithArcCenter:CGPointZero radius:10 startAngle:0 endAngle:M_PI clockwise:YES];
-    
+    UIBezierPath *simplePath = [UIBezierPath bezierPathWithArcCenter:CGPointZero radius:10 startAngle:0 endAngle:M_PI clockwise:YES];
+
     XCTAssertTrue([simplePath isClockwise], @"clockwise is correct");
 }
 
 - (void)testSimplePath2
 {
-    UIBezierPath* simplePath = [UIBezierPath bezierPathWithArcCenter:CGPointZero radius:10 startAngle:0 endAngle:M_PI clockwise:NO];
-    
+    UIBezierPath *simplePath = [UIBezierPath bezierPathWithArcCenter:CGPointZero radius:10 startAngle:0 endAngle:M_PI clockwise:NO];
+
     XCTAssertTrue(![simplePath isClockwise], @"clockwise is correct");
 }
 
@@ -111,93 +111,124 @@
     XCTAssertTrue(![[self.complexShape bezierPathByReversingPath] isClockwise], @"clockwise is correct");
 }
 
-- (void)testFirstAndLastPointRect {
+- (void)testFirstAndLastPointRect
+{
     // This is an example of a functional test case.
-    
-    UIBezierPath* path1 = [UIBezierPath bezierPathWithRect:CGRectMake(10, 10, 20, 20)];
+
+    UIBezierPath *path1 = [UIBezierPath bezierPathWithRect:CGRectMake(10, 10, 20, 20)];
     XCTAssertEqual([path1 elementCount], 5, "element count is correct");
-    XCTAssertEqual([path1 firstPoint].x, (CGFloat) 10, "element count is correct");
-    XCTAssertEqual([path1 firstPoint].y, (CGFloat) 10, "element count is correct");
-    XCTAssertEqual([path1 lastPoint].x, (CGFloat) 10, "element count is correct");
-    XCTAssertEqual([path1 lastPoint].y, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].x, (CGFloat)10, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].y, (CGFloat)10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].x, (CGFloat)10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].y, (CGFloat)10, "element count is correct");
 }
 
-- (void)testFirstAndLastPointLine {
+- (void)testFirstAndLastPointLine
+{
     // This is an example of a functional test case.
-    
-    UIBezierPath* path1 = [UIBezierPath bezierPath];
+
+    UIBezierPath *path1 = [UIBezierPath bezierPath];
     [path1 moveToPoint:CGPointMake(10, 10)];
     [path1 addLineToPoint:CGPointMake(30, 30)];
     XCTAssertEqual([path1 elementCount], 2, "element count is correct");
-    XCTAssertEqual([path1 firstPoint].x, (CGFloat) 10, "element count is correct");
-    XCTAssertEqual([path1 firstPoint].y, (CGFloat) 10, "element count is correct");
-    XCTAssertEqual([path1 lastPoint].x, (CGFloat) 30, "element count is correct");
-    XCTAssertEqual([path1 lastPoint].y, (CGFloat) 30, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].x, (CGFloat)10, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].y, (CGFloat)10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].x, (CGFloat)30, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].y, (CGFloat)30, "element count is correct");
 }
 
 
-- (void)testFirstAndLastPointCurve {
+- (void)testFirstAndLastPointCurve
+{
     // This is an example of a functional test case.
-    
-    UIBezierPath* path1 = [UIBezierPath bezierPath];
+
+    UIBezierPath *path1 = [UIBezierPath bezierPath];
     [path1 moveToPoint:CGPointMake(10, 10)];
     [path1 addCurveToPoint:CGPointMake(30, 30) controlPoint1:CGPointMake(15, 15) controlPoint2:CGPointMake(25, 25)];
     XCTAssertEqual([path1 elementCount], 2, "element count is correct");
-    XCTAssertEqual([path1 firstPoint].x, (CGFloat) 10, "element count is correct");
-    XCTAssertEqual([path1 firstPoint].y, (CGFloat) 10, "element count is correct");
-    XCTAssertEqual([path1 lastPoint].x, (CGFloat) 30, "element count is correct");
-    XCTAssertEqual([path1 lastPoint].y, (CGFloat) 30, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].x, (CGFloat)10, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].y, (CGFloat)10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].x, (CGFloat)30, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].y, (CGFloat)30, "element count is correct");
 }
 
-- (void)testFirstAndLastPointQuadCurve {
+- (void)testFirstAndLastPointQuadCurve
+{
     // This is an example of a functional test case.
-    
-    UIBezierPath* path1 = [UIBezierPath bezierPath];
+
+    UIBezierPath *path1 = [UIBezierPath bezierPath];
     [path1 moveToPoint:CGPointMake(10, 10)];
     [path1 addQuadCurveToPoint:CGPointMake(30, 30) controlPoint:CGPointMake(20, 20)];
     XCTAssertEqual([path1 elementCount], 2, "element count is correct");
-    XCTAssertEqual([path1 firstPoint].x, (CGFloat) 10, "element count is correct");
-    XCTAssertEqual([path1 firstPoint].y, (CGFloat) 10, "element count is correct");
-    XCTAssertEqual([path1 lastPoint].x, (CGFloat) 30, "element count is correct");
-    XCTAssertEqual([path1 lastPoint].y, (CGFloat) 30, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].x, (CGFloat)10, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].y, (CGFloat)10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].x, (CGFloat)30, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].y, (CGFloat)30, "element count is correct");
 }
 
-- (void)testFirstAndLastPointMoveTo {
+- (void)testFirstAndLastPointMoveTo
+{
     // This is an example of a functional test case.
-    
-    UIBezierPath* path1 = [UIBezierPath bezierPath];
+
+    UIBezierPath *path1 = [UIBezierPath bezierPath];
     [path1 moveToPoint:CGPointMake(10, 10)];
     XCTAssertEqual([path1 elementCount], 1, "element count is correct");
-    XCTAssertEqual([path1 firstPoint].x, (CGFloat) 10, "element count is correct");
-    XCTAssertEqual([path1 firstPoint].y, (CGFloat) 10, "element count is correct");
-    XCTAssertEqual([path1 lastPoint].x, (CGFloat) 10, "element count is correct");
-    XCTAssertEqual([path1 lastPoint].y, (CGFloat) 10, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].x, (CGFloat)10, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].y, (CGFloat)10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].x, (CGFloat)10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].y, (CGFloat)10, "element count is correct");
 }
 
-- (void)testFirstAndLastPointMoveTo2 {
+- (void)testFirstAndLastPointMoveTo2
+{
     // This is an example of a functional test case.
-    
-    UIBezierPath* path1 = [UIBezierPath bezierPathWithRect:CGRectMake(10, 10, 20, 20)];
+
+    UIBezierPath *path1 = [UIBezierPath bezierPathWithRect:CGRectMake(10, 10, 20, 20)];
     [path1 moveToPoint:CGPointMake(50, 50)];
     XCTAssertEqual([path1 elementCount], 6, "element count is correct");
-    XCTAssertEqual([path1 firstPoint].x, (CGFloat) 10, "element count is correct");
-    XCTAssertEqual([path1 firstPoint].y, (CGFloat) 10, "element count is correct");
-    XCTAssertEqual([path1 lastPoint].x, (CGFloat) 50, "element count is correct");
-    XCTAssertEqual([path1 lastPoint].y, (CGFloat) 50, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].x, (CGFloat)10, "element count is correct");
+    XCTAssertEqual([path1 firstPoint].y, (CGFloat)10, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].x, (CGFloat)50, "element count is correct");
+    XCTAssertEqual([path1 lastPoint].y, (CGFloat)50, "element count is correct");
 }
 
-- (void)testSquareArea {
+- (void)testSquareArea
+{
     // This is an example of a functional test case.
-    
-    UIBezierPath* path1 = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 20, 20)];
+
+    UIBezierPath *path1 = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 20, 20)];
     XCTAssertEqual([path1 area], 400, "area is correct");
 }
 
-- (void)testCircleArea {
+- (void)testCircleArea
+{
     // This is an example of a functional test case.
-    
-    UIBezierPath* path1 = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, 20, 20)];
+
+    UIBezierPath *path1 = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, 20, 20)];
     XCTAssertEqual([self round:[path1 area] to:5], 312.1234, "area is correct");
+}
+
+- (void)testInvalidClose
+{
+    UIBezierPath *path1 = [UIBezierPath bezierPath];
+    [path1 closePath];
+
+    XCTAssert([path1 isEqualToBezierPath:[UIBezierPath bezierPath]]);
+    XCTAssertEqual([path1 elementCount], 0);
+
+    path1 = [UIBezierPath bezierPath];
+    [path1 moveToPoint:CGPointMake(10, 10)];
+    [path1 addLineToPoint:CGPointMake(100, 100)];
+    [path1 closePath];
+    [path1 closePath];
+
+    UIBezierPath *other = [UIBezierPath bezierPath];
+    [other moveToPoint:CGPointMake(10, 10)];
+    [other addLineToPoint:CGPointMake(100, 100)];
+    [other closePath];
+
+    XCTAssert([path1 isEqualToBezierPath:other]);
+    XCTAssertEqual([path1 elementCount], 3);
 }
 
 @end
