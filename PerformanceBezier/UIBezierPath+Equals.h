@@ -13,6 +13,6 @@
 // returns YES if the input path is equal
 // to the current path. convenience wrapper
 // around CGPathEqualToPath
--(BOOL) isEqualToBezierPath:(UIBezierPath*)path;
+- (BOOL)isEqualToBezierPath:(UIBezierPath *)path;
 
 @end

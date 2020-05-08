@@ -7,8 +7,8 @@
 //
 
 #import "UIBezierPath+Description.h"
-#import "UIBezierPath+NSOSX.h"
 #import "JRSwizzle.h"
+#import "UIBezierPath+NSOSX.h"
 
 @implementation UIBezierPath (Description)
 
@@ -19,39 +19,41 @@
 // from the debugger, and copy the result directly back into
 // code. Perfect for printing out runtime generated beziers
 // for use later in tests.
--(NSString*) swizzle_description{
-    __block NSString* str = @"path = [UIBezierPath bezierPath];\n";
-    [self iteratePathWithBlock:^(CGPathElement ele, NSUInteger idx){
-        if(ele.type == kCGPathElementAddCurveToPoint){
-            CGPoint curveTo = ele.points[2];
-            CGPoint ctrl1 = ele.points[0];
-            CGPoint ctrl2 = ele.points[1];
-            str = [str stringByAppendingFormat:@"[path addCurveToPoint:CGPointMake(%f, %f) controlPoint1:CGPointMake(%f, %f) controlPoint2:CGPointMake(%f, %f)];\n", curveTo.x, curveTo.y, ctrl1.x, ctrl1.y, ctrl2.x, ctrl2.y];
-        }else if(ele.type == kCGPathElementAddLineToPoint){
-            CGPoint lineTo = ele.points[0];
-            str = [str stringByAppendingFormat:@"[path addLineToPoint:CGPointMake(%f, %f)];\n", lineTo.x, lineTo.y];
-        }else if(ele.type == kCGPathElementAddQuadCurveToPoint){
-            CGPoint curveTo = ele.points[2];
-            CGPoint ctrl = ele.points[0];
-            str = [str stringByAppendingFormat:@"[path addQuadCurveToPoint:CGPointMake(%f, %f) controlPoint:CGPointMake(%f, %f)];\n", curveTo.x, curveTo.y, ctrl.x, ctrl.y];
-        }else if(ele.type == kCGPathElementCloseSubpath){
-            [self closePath];
-            str = [str stringByAppendingString:@"[path closePath];\n"];
-        }else if(ele.type == kCGPathElementMoveToPoint){
-            CGPoint moveTo = ele.points[0];
-            str = [str stringByAppendingFormat:@"[path moveToPoint:CGPointMake(%f, %f)];\n", moveTo.x, moveTo.y];
-        }
+- (NSString *)swizzle_description
+{
+    __block NSString *str = @"path = [UIBezierPath bezierPath];\n";
+    [self iteratePathWithBlock:^(CGPathElement ele, NSUInteger idx) {
+      if (ele.type == kCGPathElementAddCurveToPoint) {
+          CGPoint curveTo = ele.points[2];
+          CGPoint ctrl1 = ele.points[0];
+          CGPoint ctrl2 = ele.points[1];
+          str = [str stringByAppendingFormat:@"[path addCurveToPoint:CGPointMake(%f, %f) controlPoint1:CGPointMake(%f, %f) controlPoint2:CGPointMake(%f, %f)];\n", curveTo.x, curveTo.y, ctrl1.x, ctrl1.y, ctrl2.x, ctrl2.y];
+      } else if (ele.type == kCGPathElementAddLineToPoint) {
+          CGPoint lineTo = ele.points[0];
+          str = [str stringByAppendingFormat:@"[path addLineToPoint:CGPointMake(%f, %f)];\n", lineTo.x, lineTo.y];
+      } else if (ele.type == kCGPathElementAddQuadCurveToPoint) {
+          CGPoint curveTo = ele.points[2];
+          CGPoint ctrl = ele.points[0];
+          str = [str stringByAppendingFormat:@"[path addQuadCurveToPoint:CGPointMake(%f, %f) controlPoint:CGPointMake(%f, %f)];\n", curveTo.x, curveTo.y, ctrl.x, ctrl.y];
+      } else if (ele.type == kCGPathElementCloseSubpath) {
+          [self closePath];
+          str = [str stringByAppendingString:@"[path closePath];\n"];
+      } else if (ele.type == kCGPathElementMoveToPoint) {
+          CGPoint moveTo = ele.points[0];
+          str = [str stringByAppendingFormat:@"[path moveToPoint:CGPointMake(%f, %f)];\n", moveTo.x, moveTo.y];
+      }
     }];
     return str;
 }
 
 
-+(void)load{
++ (void)load
+{
     @autoreleasepool {
         NSError *error = nil;
         [UIBezierPath mmpb_swizzleMethod:@selector(description)
-                            withMethod:@selector(swizzle_description)
-                                 error:&error];
+                              withMethod:@selector(swizzle_description)
+                                   error:&error];
     }
 }
 @end

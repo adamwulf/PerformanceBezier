@@ -9,17 +9,17 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface UIBezierPathProperties : NSObject<NSSecureCoding>
-@property (nonatomic) BOOL isClosed;
-@property (nonatomic) BOOL knowsIfClosed;
-@property (nonatomic) BOOL isFlat;
-@property (nonatomic) BOOL hasLastPoint;
-@property (nonatomic) CGPoint lastPoint;
-@property (nonatomic) BOOL hasFirstPoint;
-@property (nonatomic) CGPoint firstPoint;
-@property (nonatomic) CGFloat tangentAtEnd;
-@property (nonatomic) NSInteger cachedElementCount;
-@property (nonatomic, retain) UIBezierPath* bezierPathByFlatteningPath;
-@property (nonatomic) BOOL lastAddedElementWasMoveTo;
+@interface UIBezierPathProperties : NSObject <NSSecureCoding>
+@property(nonatomic) BOOL isClosed;
+@property(nonatomic) BOOL knowsIfClosed;
+@property(nonatomic) BOOL isFlat;
+@property(nonatomic) BOOL hasLastPoint;
+@property(nonatomic) CGPoint lastPoint;
+@property(nonatomic) BOOL hasFirstPoint;
+@property(nonatomic) CGPoint firstPoint;
+@property(nonatomic) CGFloat tangentAtEnd;
+@property(nonatomic) NSInteger cachedElementCount;
+@property(nonatomic, retain) UIBezierPath *bezierPathByFlatteningPath;
+@property(nonatomic) BOOL lastAddedElementWasMoveTo;
 
 @end

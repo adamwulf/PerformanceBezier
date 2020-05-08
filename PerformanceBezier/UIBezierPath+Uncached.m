@@ -13,7 +13,8 @@
 
 
 #ifdef MMPreventBezierPerformance
--(void) simulateNoBezierCaching{
+- (void)simulateNoBezierCaching
+{
     [self iteratePathWithBlock:^(CGPathElement ele, NSUInteger idx){
         // noop
     }];

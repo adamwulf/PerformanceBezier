@@ -11,7 +11,7 @@
 @interface UIBezierPath (Uncached)
 
 #ifdef MMPreventBezierPerformance
--(void) simulateNoBezierCaching;
+- (void)simulateNoBezierCaching;
 #endif
 
 @end

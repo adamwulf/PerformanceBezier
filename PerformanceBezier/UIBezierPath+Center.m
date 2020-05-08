@@ -11,7 +11,8 @@
 @implementation UIBezierPath (Center)
 
 
--(CGPoint) center{
+- (CGPoint)center
+{
     return CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
 }
 

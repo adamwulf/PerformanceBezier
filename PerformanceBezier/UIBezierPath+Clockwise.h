@@ -13,8 +13,8 @@
 //
 // returns YES if the path elements curve
 // around in clockwise direction
--(BOOL) isClockwise;
+- (BOOL)isClockwise;
 
--(CGFloat) area;
+- (CGFloat)area;
 
 @end

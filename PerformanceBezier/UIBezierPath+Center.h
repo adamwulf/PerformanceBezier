@@ -12,6 +12,6 @@
 
 // returns a point in the center of
 // the path's bounds
--(CGPoint) center;
+- (CGPoint)center;
 
 @end

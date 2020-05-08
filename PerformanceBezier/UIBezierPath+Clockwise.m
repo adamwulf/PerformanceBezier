@@ -11,33 +11,34 @@
 
 @implementation UIBezierPath (Clockwise)
 
-- (CGFloat) signedArea{
+- (CGFloat)signedArea
+{
     __block CGPoint lastMoveTo = CGPointZero;
     __block CGPoint lastPoint = CGPointZero;
     __block CGFloat sum = 0;
-    [self iteratePathWithBlock:^(CGPathElement element, NSUInteger idx){
-        if(element.type == kCGPathElementMoveToPoint){
-            lastMoveTo = element.points[0];
-            lastPoint = lastMoveTo;
-        }else if(element.type == kCGPathElementAddLineToPoint){
-            sum += [self calculateAreaFor:element.points[0] andPoint:lastPoint];
-            lastPoint = element.points[0];
-        }else if(element.type == kCGPathElementAddQuadCurveToPoint){
-            sum += [self calculateAreaFor:element.points[0] andPoint:lastPoint];
-            sum += [self calculateAreaFor:element.points[1] andPoint:element.points[0]];
-            lastPoint = element.points[1];
-        }else if(element.type == kCGPathElementAddCurveToPoint){
-            sum += [self calculateAreaFor:element.points[0] andPoint:lastPoint];
-            sum += [self calculateAreaFor:element.points[1] andPoint:element.points[0]];
-            sum += [self calculateAreaFor:element.points[2] andPoint:element.points[1]];
-            lastPoint = element.points[2];
-        }else if(element.type == kCGPathElementCloseSubpath){
-            sum += [self calculateAreaFor:lastMoveTo andPoint:lastPoint];
-            lastPoint = element.points[0];
-            lastPoint = lastMoveTo;
-        }
+    [self iteratePathWithBlock:^(CGPathElement element, NSUInteger idx) {
+      if (element.type == kCGPathElementMoveToPoint) {
+          lastMoveTo = element.points[0];
+          lastPoint = lastMoveTo;
+      } else if (element.type == kCGPathElementAddLineToPoint) {
+          sum += [self calculateAreaFor:element.points[0] andPoint:lastPoint];
+          lastPoint = element.points[0];
+      } else if (element.type == kCGPathElementAddQuadCurveToPoint) {
+          sum += [self calculateAreaFor:element.points[0] andPoint:lastPoint];
+          sum += [self calculateAreaFor:element.points[1] andPoint:element.points[0]];
+          lastPoint = element.points[1];
+      } else if (element.type == kCGPathElementAddCurveToPoint) {
+          sum += [self calculateAreaFor:element.points[0] andPoint:lastPoint];
+          sum += [self calculateAreaFor:element.points[1] andPoint:element.points[0]];
+          sum += [self calculateAreaFor:element.points[2] andPoint:element.points[1]];
+          lastPoint = element.points[2];
+      } else if (element.type == kCGPathElementCloseSubpath) {
+          sum += [self calculateAreaFor:lastMoveTo andPoint:lastPoint];
+          lastPoint = element.points[0];
+          lastPoint = lastMoveTo;
+      }
     }];
-    
+
     return sum / 2.0;
 }
 
@@ -45,15 +46,18 @@
 /// @discussion For paths that contain curve elements, the path is flattened using `idealFlatness`
 /// and the area calculated from the flattened path. This will cause some error compared to a true
 /// geometric area.
-- (CGFloat) area{
+- (CGFloat)area
+{
     return ABS([[self bezierPathByFlatteningPath] signedArea]);
 }
 
--(BOOL) isClockwise{
+- (BOOL)isClockwise
+{
     return [self signedArea] >= 0;
 }
 
-- (CGFloat) calculateAreaFor:(CGPoint)point1 andPoint:(CGPoint)point2{
+- (CGFloat)calculateAreaFor:(CGPoint)point1 andPoint:(CGPoint)point2
+{
     return (point2.x - point1.x) * (point2.y + point1.y);
 }
 

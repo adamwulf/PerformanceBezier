@@ -8,7 +8,7 @@
 
 #import "UIBezierPathProperties.h"
 
-@implementation UIBezierPathProperties{
+@implementation UIBezierPathProperties {
     BOOL isFlat;
     BOOL knowsIfClosed;
     BOOL isClosed;
@@ -18,7 +18,7 @@
     CGPoint firstPoint;
     CGFloat tangentAtEnd;
     NSInteger cachedElementCount;
-    UIBezierPath* bezierPathByFlatteningPath;
+    UIBezierPath *bezierPathByFlatteningPath;
 }
 
 @synthesize isFlat;
@@ -32,11 +32,13 @@
 @synthesize hasFirstPoint;
 @synthesize firstPoint;
 
-+(BOOL)supportsSecureCoding{
++ (BOOL)supportsSecureCoding
+{
     return YES;
 }
 
-- (id)initWithCoder:(NSCoder *)decoder{
+- (id)initWithCoder:(NSCoder *)decoder
+{
     self = [super init];
     if (!self) {
         return nil;
@@ -53,7 +55,8 @@
     return self;
 }
 
--(void) encodeWithCoder:(NSCoder *)aCoder{
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
     [aCoder encodeBool:isFlat forKey:@"pathProperties_isFlat"];
     [aCoder encodeBool:knowsIfClosed forKey:@"pathProperties_knowsIfClosed"];
     [aCoder encodeBool:isClosed forKey:@"pathProperties_isClosed"];
@@ -67,15 +70,17 @@
 
 // for some reason the iPad 1 on iOS 5 needs to have this
 // method coded and not synthesized.
--(void) setBezierPathByFlatteningPath:(UIBezierPath *)_bezierPathByFlatteningPath{
-    if(bezierPathByFlatteningPath != _bezierPathByFlatteningPath){
+- (void)setBezierPathByFlatteningPath:(UIBezierPath *)_bezierPathByFlatteningPath
+{
+    if (bezierPathByFlatteningPath != _bezierPathByFlatteningPath) {
         [bezierPathByFlatteningPath release];
         [_bezierPathByFlatteningPath retain];
     }
     bezierPathByFlatteningPath = _bezierPathByFlatteningPath;
 }
 
--(void) dealloc{
+- (void)dealloc
+{
     [bezierPathByFlatteningPath release];
     bezierPathByFlatteningPath = nil;
     [super dealloc];

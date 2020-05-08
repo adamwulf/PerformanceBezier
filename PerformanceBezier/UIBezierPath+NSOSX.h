@@ -11,13 +11,13 @@
 @interface UIBezierPath (NSOSX)
 
 // A flattened version of the path object.
-@property(nonatomic,readonly) UIBezierPath* bezierPathByFlatteningPath;
+@property(nonatomic, readonly) UIBezierPath *bezierPathByFlatteningPath;
 // returns the number of elements in this path
-@property(nonatomic,readonly) NSInteger elementCount;
+@property(nonatomic, readonly) NSInteger elementCount;
 // YES if the path is made without curves, NO otherwise
-@property(nonatomic,assign) BOOL isFlat;
+@property(nonatomic, assign) BOOL isFlat;
 
--(UIBezierPath*) bezierPathByFlatteningPathAndImmutable:(BOOL)returnCopy;
+- (UIBezierPath *)bezierPathByFlatteningPathAndImmutable:(BOOL)returnCopy;
 
 // returns the element at the given index, and also
 // fills the points[] array with the element's points.
@@ -36,19 +36,19 @@
 - (void)setAssociatedPoints:(CGPoint[])points atIndex:(NSInteger)index;
 
 // returns the bounds of the path including its control points
--(CGRect) controlPointBounds;
+- (CGRect)controlPointBounds;
 
 // iterate over each element in the path with the input block
--(void) iteratePathWithBlock:(void (^)(CGPathElement element,NSUInteger idx))block;
+- (void)iteratePathWithBlock:(void (^)(CGPathElement element, NSUInteger idx))block;
 
 // helper method to return the number of points for any input element
 // based on its type. ie, an element of type
 // kCGPathElementAddCurveToPoint returns 3
-+(NSInteger) numberOfPointsForElement:(CGPathElement)element;
++ (NSInteger)numberOfPointsForElement:(CGPathElement)element;
 
 // helper method to copy a path element to a new element.
 // Note: you are responsible for calling free(yourElement.points)
 // when you are done with its return value.
-+(CGPathElement*) copyCGPathElement:(CGPathElement*)element;
++ (CGPathElement *)copyCGPathElement:(CGPathElement *)element;
 
 @end

@@ -12,10 +12,10 @@
 
 // calculates the first point of the path,
 // useful if its not already cached
--(CGPoint) lastPointCalculated;
+- (CGPoint)lastPointCalculated;
 
 // calculates the last point of the path,
 // useful if its not already cached
--(CGPoint) firstPointCalculated;
+- (CGPoint)firstPointCalculated;
 
 @end
