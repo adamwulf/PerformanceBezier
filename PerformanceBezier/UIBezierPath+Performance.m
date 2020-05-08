@@ -330,6 +330,12 @@ static char BEZIER_PROPERTIES;
     [self swizzle_quadCurveToPoint:point controlPoint:ctrl1];
 }
 -(void) swizzle_closePath{
+    if([self isClosed]){
+        // don't close the path multiple times, otherwise our cache
+        // will record incorrect cachedElementCount
+        return;
+    }
+    
     UIBezierPathProperties* props = [self pathProperties];
     props.isClosed = YES;
     props.knowsIfClosed = YES;
