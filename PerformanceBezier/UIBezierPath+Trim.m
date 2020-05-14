@@ -71,6 +71,65 @@
     return outputPath;
 }
 
+/**
+ * Trim the bezier path from T=0 of the input element. If necessary, a moveTo element will be prepended
+ * to the output path so that the returned path starts at the same place that the element does in this path.
+ * `[bezierPathByTrimmingFromElement:1]` effectively creates a copy of the existing path
+ */
+-(UIBezierPath*) bezierPathByTrimmingFromElement:(NSInteger)elementIndex {
+    if(elementIndex == 0){
+        return [self copy];
+    }
+
+    __block CGPoint lastMoveTo = [self firstPoint];
+    __block CGPoint lastPoint = [self firstPoint];
+    UIBezierPath *retPath = [UIBezierPath bezierPath];
+    [self iteratePathWithBlock:^(CGPathElement element, NSUInteger idx) {
+        if (idx == elementIndex && element.type != kCGPathElementMoveToPoint){
+            [retPath moveToPoint:lastPoint];
+        }
+        if (idx >= elementIndex){
+            switch (element.type) {
+                case kCGPathElementMoveToPoint:
+                    [retPath moveToPoint:element.points[0]];
+                    break;
+                case kCGPathElementAddCurveToPoint:
+                    [retPath addCurveToPoint:element.points[2] controlPoint1:element.points[0] controlPoint2:element.points[1]];
+                    break;
+                case kCGPathElementAddQuadCurveToPoint:
+                    [retPath addQuadCurveToPoint:element.points[1] controlPoint:element.points[0]];
+                    break;
+                case kCGPathElementAddLineToPoint:
+                    [retPath addLineToPoint:element.points[0]];
+                    break;
+                case kCGPathElementCloseSubpath:
+                    [retPath closePath];
+                    break;
+            }
+        }
+        switch (element.type) {
+            case kCGPathElementMoveToPoint:
+                lastMoveTo = element.points[0];
+                lastPoint = element.points[0];
+                break;
+            case kCGPathElementAddCurveToPoint:
+                lastPoint = element.points[2];
+                break;
+            case kCGPathElementAddQuadCurveToPoint:
+                lastPoint = element.points[1];
+                break;
+            case kCGPathElementAddLineToPoint:
+                lastPoint = element.points[0];
+                break;
+            case kCGPathElementCloseSubpath:
+                lastPoint = lastMoveTo;
+                break;
+        }
+    }];
+
+    return retPath;
+}
+
 
 /**
  * this will trim a uibezier path from the input element index

@@ -22,6 +22,8 @@
 
 @interface UIBezierPath (Trim)
 
+-(UIBezierPath*) bezierPathByTrimmingFromElement:(NSInteger)elementIndex;
+
 - (UIBezierPath *)bezierPathByTrimmingElement:(NSInteger)elementIndex fromTValue:(double)fromTValue toTValue:(double)toTValue;
 - (UIBezierPath *)bezierPathByTrimmingToElement:(NSInteger)elementIndex andTValue:(double)tValue;
 - (UIBezierPath *)bezierPathByTrimmingFromElement:(NSInteger)elementIndex andTValue:(double)tValue;
