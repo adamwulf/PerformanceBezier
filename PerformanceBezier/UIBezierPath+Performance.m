@@ -174,6 +174,13 @@ static char BEZIER_PROPERTIES;
     if (elementIndex >= [self elementCount] || elementIndex < 0) {
         @throw [NSException exceptionWithName:@"BezierElementException" reason:@"Element index is out of range" userInfo:nil];
     }
+    if (elementIndex == 0){
+        // instead of calculating the tangent of the moveTo,
+        // we'll calculate the tangent at the very start
+        // of the element after the moveTo
+        elementIndex += 1;
+        tVal = 0;
+    }
 
     CGPoint bezier[4];
 
@@ -186,6 +193,46 @@ static char BEZIER_PROPERTIES;
     tan.y = tan.y / mag;
 
     return tan;
+}
+
+- (CGFloat)lengthOfElement:(NSInteger)elementIndex withAcceptableError:(CGFloat)acceptableError
+{
+    if (elementIndex >= [self elementCount] || elementIndex < 0) {
+        @throw [NSException exceptionWithName:@"BezierElementException" reason:@"Element index is out of range" userInfo:nil];
+    }
+    if (elementIndex == 0) {
+        return 0;
+    }
+    
+    UIBezierPathProperties *props = [self pathProperties];
+
+    if (!props.elementLengths){
+        props.elementLengths = [NSMutableDictionary dictionary];
+    }
+    NSNumber *errorKey = @(acceptableError);
+    NSMutableDictionary<NSNumber*, NSNumber*> *lengthsForError = props.elementLengths[errorKey];
+
+    if (!lengthsForError){
+        lengthsForError = [NSMutableDictionary dictionary];
+        props.elementLengths[errorKey] = lengthsForError;
+    }
+    
+    NSNumber *indexKey = @(elementIndex);
+    NSNumber *cachedLen = lengthsForError[indexKey];
+    
+    if (cachedLen){
+        return [cachedLen doubleValue];
+    }
+
+    CGPoint bezier[4];
+
+    [self fillBezier:bezier forElement:elementIndex];
+    
+    CGFloat len = [UIBezierPath lengthOfBezier:bezier withAccuracy:acceptableError];
+    
+    lengthsForError[indexKey] = @(len);
+    
+    return len;
 }
 
 /**

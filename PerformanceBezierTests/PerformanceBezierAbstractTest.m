@@ -9,8 +9,6 @@
 #import "PerformanceBezierAbstractTest.h"
 #import <XCTest/XCTest.h>
 
-#define kIntersectionPointPrecision .1
-
 @implementation PerformanceBezierAbstractTest {
     UIBezierPath *complexShape;
 }
