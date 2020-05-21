@@ -38,6 +38,7 @@
 		66F2EC0B1A8DC16900D536E9 /* JRSwizzle.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617D31A7EB9AC00C0B447 /* JRSwizzle.h */; };
 		66F2EC0C1A8DC16B00D536E9 /* PerformanceBezier.h in Headers */ = {isa = PBXBuildFile; fileRef = 667617AF1A7EB5CB00C0B447 /* PerformanceBezier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		66F2EC0D1A8DC22000D536E9 /* PerformanceBezier-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 66F2EBEA1A8DC05100D536E9 /* PerformanceBezier-Info.plist */; };
+		C51D49D424771241002BECC8 /* PerformanceBezierElementTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C51D49D324771241002BECC8 /* PerformanceBezierElementTest.m */; };
 		C5976A48246DE9D10018C3C5 /* PerformanceBezierTrimTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C5976A47246DE9D10018C3C5 /* PerformanceBezierTrimTest.m */; };
 /* End PBXBuildFile section */
 
@@ -90,6 +91,7 @@
 		66F2EBE31A8DC05100D536E9 /* PerformanceBezier.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework.static; includeInIndex = 0; path = PerformanceBezier.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		66F2EBE71A8DC05100D536E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		66F2EBEA1A8DC05100D536E9 /* PerformanceBezier-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PerformanceBezier-Info.plist"; sourceTree = "<group>"; };
+		C51D49D324771241002BECC8 /* PerformanceBezierElementTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierElementTest.m; sourceTree = "<group>"; };
 		C5976A47246DE9D10018C3C5 /* PerformanceBezierTrimTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierTrimTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -200,6 +202,7 @@
 				66D4021F1A7EDACA00043802 /* PerformanceBezierAbstractTest.m */,
 				66D4021C1A7EDA9000043802 /* PerformanceBezierClockwiseTests.m */,
 				C5976A47246DE9D10018C3C5 /* PerformanceBezierTrimTest.m */,
+				C51D49D324771241002BECC8 /* PerformanceBezierElementTest.m */,
 				66B9D2911A8D5FDF00CAC341 /* Supporting Files */,
 			);
 			path = PerformanceBezierTests;
@@ -396,6 +399,7 @@
 			files = (
 				66B9D2A61A8D609200CAC341 /* PerformanceBezierAbstractTest.m in Sources */,
 				C5976A48246DE9D10018C3C5 /* PerformanceBezierTrimTest.m in Sources */,
+				C51D49D424771241002BECC8 /* PerformanceBezierElementTest.m in Sources */,
 				66B9D2A71A8D609300CAC341 /* PerformanceBezierClockwiseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

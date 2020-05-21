@@ -153,8 +153,10 @@ static char BEZIER_PROPERTIES;
         //                                bezier[0].y + (thisElement.points[0].y - bezier[0].y)/3);
         //        bezier[2] = CGPointMake(bezier[0].x + (thisElement.points[0].x - bezier[0].x)*2/3,
         //                                bezier[0].y + (thisElement.points[0].y - bezier[0].y)*2/3);
-        bezier[1] = bezier[0];
-        bezier[2] = thisElement.points[0];
+        CGPoint midPoint = CGPointMake((bezier[0].x + thisElement.points[0].x) / 2.0,
+                                       (bezier[0].y + thisElement.points[0].y) / 2.0);
+        bezier[1] = midPoint;
+        bezier[2] = midPoint;
         bezier[3] = thisElement.points[0];
     } else if (thisElement.type == kCGPathElementAddQuadCurveToPoint) {
         bezier[1] = thisElement.points[0];
@@ -172,16 +174,19 @@ static char BEZIER_PROPERTIES;
     if (elementIndex >= [self elementCount] || elementIndex < 0) {
         @throw [NSException exceptionWithName:@"BezierElementException" reason:@"Element index is out of range" userInfo:nil];
     }
-    if (elementIndex == 0) {
-        return self.firstPoint;
-    }
 
     CGPoint bezier[4];
 
     [self fillBezier:bezier forElement:elementIndex];
-    return [UIBezierPath tangentAtT:tVal forBezier:bezier];
-}
+    CGPoint tan = [UIBezierPath tangentAtT:tVal forBezier:bezier];
+    CGFloat mag = sqrt(tan.x*tan.x + tan.y*tan.y);
+    
+    // noramlize
+    tan.x = tan.x / mag;
+    tan.y = tan.y / mag;
 
+    return tan;
+}
 
 /**
 * calculate the point on a bezier at time t
