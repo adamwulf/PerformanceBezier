@@ -8,6 +8,11 @@
 
 #import "UIBezierPathProperties.h"
 
+typedef struct LengthCacheItem {
+    CGFloat acceptableError;
+    CGFloat length;
+} LengthCacheItem;
+
 @implementation UIBezierPathProperties {
     BOOL isFlat;
     BOOL knowsIfClosed;
@@ -19,6 +24,8 @@
     CGFloat tangentAtEnd;
     NSInteger cachedElementCount;
     UIBezierPath *bezierPathByFlatteningPath;
+    LengthCacheItem* elementLengthCache;
+    NSInteger lengthCacheCount;
 }
 
 @synthesize isFlat;
@@ -37,6 +44,15 @@
     return YES;
 }
 
+- (instancetype)init {
+    if(self = [super init]){
+        elementLengthCache = nil;
+        lengthCacheCount = 0;
+    }
+    
+    return self;
+}
+
 - (id)initWithCoder:(NSCoder *)decoder
 {
     self = [super init];
@@ -52,6 +68,7 @@
     firstPoint = [decoder decodeCGPointForKey:@"pathProperties_firstPoint"];
     tangentAtEnd = [decoder decodeFloatForKey:@"pathProperties_tangentAtEnd"];
     cachedElementCount = [decoder decodeIntegerForKey:@"pathProperties_cachedElementCount"];
+    lengthCacheCount = 0;
     return self;
 }
 
@@ -83,8 +100,44 @@
 {
     [bezierPathByFlatteningPath release];
     bezierPathByFlatteningPath = nil;
+    
+    if (lengthCacheCount > 0 && elementLengthCache){
+        free(elementLengthCache);
+        elementLengthCache = nil;
+        lengthCacheCount = 0;
+    }
+    
     [super dealloc];
 }
 
+/// Returns -1 if we do not have cached information for this element that matches the input acceptableError
+-(CGFloat)cachedLengthForElementIndex:(NSInteger)index acceptableError:(CGFloat)error{
+    if (index < 0 || index >= lengthCacheCount){
+        return -1;
+    }
+    
+    if (elementLengthCache[index].acceptableError == error){
+        return elementLengthCache[index].length;
+    }
+    
+    return -1;
+}
+
+-(void)cacheLength:(CGFloat)length forElementIndex:(NSInteger)index acceptableError:(CGFloat)error{    
+    if (lengthCacheCount == 0){
+        elementLengthCache = calloc(100, sizeof(LengthCacheItem));
+        lengthCacheCount = 100;
+    } else if (index > lengthCacheCount) {
+        // increase our cache size
+        LengthCacheItem* oldCache = elementLengthCache;
+        NSInteger oldLength = lengthCacheCount;
+        lengthCacheCount *= 2;
+        elementLengthCache = calloc(lengthCacheCount, sizeof(LengthCacheItem));
+        memcpy(elementLengthCache, oldCache, oldLength * sizeof(LengthCacheItem));
+    }
+
+    elementLengthCache[index].length = length;
+    elementLengthCache[index].acceptableError = error;
+}
 
 @end

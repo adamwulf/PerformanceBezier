@@ -21,7 +21,8 @@
 @property(nonatomic) NSInteger cachedElementCount;
 @property(nonatomic, retain) UIBezierPath *bezierPathByFlatteningPath;
 @property(nonatomic) BOOL lastAddedElementWasMoveTo;
-// cache calculated lengths of elements by precision and elementIndex
-@property(nonatomic, strong) NSMutableDictionary<NSNumber*, NSMutableDictionary<NSNumber*, NSNumber*>*>* elementLengths;
+
+-(CGFloat)cachedLengthForElementIndex:(NSInteger)index acceptableError:(CGFloat)error;
+-(void)cacheLength:(CGFloat)length forElementIndex:(NSInteger)index acceptableError:(CGFloat)error;
 
 @end

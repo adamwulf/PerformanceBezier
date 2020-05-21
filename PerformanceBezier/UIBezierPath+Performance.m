@@ -206,22 +206,10 @@ static char BEZIER_PROPERTIES;
     
     UIBezierPathProperties *props = [self pathProperties];
 
-    if (!props.elementLengths){
-        props.elementLengths = [NSMutableDictionary dictionary];
-    }
-    NSNumber *errorKey = @(acceptableError);
-    NSMutableDictionary<NSNumber*, NSNumber*> *lengthsForError = props.elementLengths[errorKey];
-
-    if (!lengthsForError){
-        lengthsForError = [NSMutableDictionary dictionary];
-        props.elementLengths[errorKey] = lengthsForError;
-    }
+    CGFloat cached = [props cachedLengthForElementIndex:elementIndex acceptableError:acceptableError];
     
-    NSNumber *indexKey = @(elementIndex);
-    NSNumber *cachedLen = lengthsForError[indexKey];
-    
-    if (cachedLen){
-        return [cachedLen doubleValue];
+    if(cached != -1){
+        return cached;
     }
 
     CGPoint bezier[4];
@@ -230,7 +218,7 @@ static char BEZIER_PROPERTIES;
     
     CGFloat len = [UIBezierPath lengthOfBezier:bezier withAccuracy:acceptableError];
     
-    lengthsForError[indexKey] = @(len);
+    [props cacheLength:len forElementIndex:elementIndex acceptableError:acceptableError];
     
     return len;
 }
