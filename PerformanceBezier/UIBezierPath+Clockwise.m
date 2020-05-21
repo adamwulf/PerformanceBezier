@@ -11,6 +11,7 @@
 
 @implementation UIBezierPath (Clockwise)
 
+/// https://mathopenref.com/coordpolygonarea2.html
 - (CGFloat)signedArea
 {
     __block CGPoint lastMoveTo = CGPointZero;
