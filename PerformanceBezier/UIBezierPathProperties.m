@@ -125,8 +125,9 @@ typedef struct LengthCacheItem {
 
 -(void)cacheLength:(CGFloat)length forElementIndex:(NSInteger)index acceptableError:(CGFloat)error{    
     if (lengthCacheCount == 0){
-        elementLengthCache = calloc(100, sizeof(LengthCacheItem));
-        lengthCacheCount = 100;
+        const NSInteger DefaultCount = 256;
+        elementLengthCache = calloc(DefaultCount, sizeof(LengthCacheItem));
+        lengthCacheCount = DefaultCount;
     } else if (index >= lengthCacheCount) {
         // increase our cache size
         LengthCacheItem* oldCache = elementLengthCache;
@@ -134,6 +135,7 @@ typedef struct LengthCacheItem {
         lengthCacheCount *= 2;
         elementLengthCache = calloc(lengthCacheCount, sizeof(LengthCacheItem));
         memcpy(elementLengthCache, oldCache, oldLength * sizeof(LengthCacheItem));
+        free(oldCache);
     }
 
     elementLengthCache[index].length = length;
