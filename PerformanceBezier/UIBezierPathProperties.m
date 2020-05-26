@@ -127,7 +127,7 @@ typedef struct LengthCacheItem {
     if (lengthCacheCount == 0){
         elementLengthCache = calloc(100, sizeof(LengthCacheItem));
         lengthCacheCount = 100;
-    } else if (index > lengthCacheCount) {
+    } else if (index >= lengthCacheCount) {
         // increase our cache size
         LengthCacheItem* oldCache = elementLengthCache;
         NSInteger oldLength = lengthCacheCount;
