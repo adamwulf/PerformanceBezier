@@ -35,6 +35,12 @@
     CGFloat len = [simplePath lengthOfElement:1 withAcceptableError:kIntersectionPointPrecision];
     
     XCTAssertEqual(len, 100);
+    
+    simplePath = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:simplePath]];
+    
+    len = [simplePath lengthOfElement:1 withAcceptableError:kIntersectionPointPrecision];
+    
+    XCTAssertEqual(len, 100);
 }
 
 @end

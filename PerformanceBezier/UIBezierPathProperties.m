@@ -26,6 +26,7 @@ typedef struct LengthCacheItem {
     UIBezierPath *bezierPathByFlatteningPath;
     LengthCacheItem* elementLengthCache;
     NSInteger lengthCacheCount;
+    NSObject *lock;
 }
 
 @synthesize isFlat;
@@ -48,6 +49,7 @@ typedef struct LengthCacheItem {
     if(self = [super init]){
         elementLengthCache = nil;
         lengthCacheCount = 0;
+        lock = [[NSObject alloc] init];
     }
     
     return self;
@@ -69,6 +71,7 @@ typedef struct LengthCacheItem {
     tangentAtEnd = [decoder decodeFloatForKey:@"pathProperties_tangentAtEnd"];
     cachedElementCount = [decoder decodeIntegerForKey:@"pathProperties_cachedElementCount"];
     lengthCacheCount = 0;
+    lock = [[NSObject alloc] init];
     return self;
 }
 
@@ -101,10 +104,12 @@ typedef struct LengthCacheItem {
     [bezierPathByFlatteningPath release];
     bezierPathByFlatteningPath = nil;
     
-    if (lengthCacheCount > 0 && elementLengthCache){
-        free(elementLengthCache);
-        elementLengthCache = nil;
-        lengthCacheCount = 0;
+    @synchronized (lock) {
+        if (lengthCacheCount > 0 && elementLengthCache){
+            free(elementLengthCache);
+            elementLengthCache = nil;
+            lengthCacheCount = 0;
+        }
     }
     
     [super dealloc];
@@ -112,34 +117,38 @@ typedef struct LengthCacheItem {
 
 /// Returns -1 if we do not have cached information for this element that matches the input acceptableError
 -(CGFloat)cachedLengthForElementIndex:(NSInteger)index acceptableError:(CGFloat)error{
-    if (index < 0 || index >= lengthCacheCount){
-        return -1;
-    }
+    @synchronized (lock) {
+        if (index < 0 || index >= lengthCacheCount){
+            return -1;
+        }
     
-    if (elementLengthCache[index].acceptableError == error){
-        return elementLengthCache[index].length;
+        if (elementLengthCache[index].acceptableError == error){
+            return elementLengthCache[index].length;
+        }
     }
     
     return -1;
 }
 
 -(void)cacheLength:(CGFloat)length forElementIndex:(NSInteger)index acceptableError:(CGFloat)error{    
-    if (lengthCacheCount == 0){
-        const NSInteger DefaultCount = 256;
-        elementLengthCache = calloc(DefaultCount, sizeof(LengthCacheItem));
-        lengthCacheCount = DefaultCount;
-    } else if (index >= lengthCacheCount) {
-        // increase our cache size
-        LengthCacheItem* oldCache = elementLengthCache;
-        NSInteger oldLength = lengthCacheCount;
-        lengthCacheCount *= 2;
-        elementLengthCache = calloc(lengthCacheCount, sizeof(LengthCacheItem));
-        memcpy(elementLengthCache, oldCache, oldLength * sizeof(LengthCacheItem));
-        free(oldCache);
-    }
+    @synchronized (lock) {
+        if (lengthCacheCount == 0){
+            const NSInteger DefaultCount = 256;
+            elementLengthCache = calloc(DefaultCount, sizeof(LengthCacheItem));
+            lengthCacheCount = DefaultCount;
+        } else if (index >= lengthCacheCount) {
+            // increase our cache size
+            LengthCacheItem* oldCache = elementLengthCache;
+            NSInteger oldLength = lengthCacheCount;
+            lengthCacheCount *= 2;
+            elementLengthCache = calloc(lengthCacheCount, sizeof(LengthCacheItem));
+            memcpy(elementLengthCache, oldCache, oldLength * sizeof(LengthCacheItem));
+            free(oldCache);
+        }
 
-    elementLengthCache[index].length = length;
-    elementLengthCache[index].acceptableError = error;
+        elementLengthCache[index].length = length;
+        elementLengthCache[index].acceptableError = error;
+    }
 }
 
 @end
