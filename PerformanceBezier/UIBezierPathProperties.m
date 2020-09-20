@@ -111,7 +111,10 @@ typedef struct LengthCacheItem {
             lengthCacheCount = 0;
         }
     }
-    
+
+    [lock release];
+    lock = nil;
+
     [super dealloc];
 }
 
