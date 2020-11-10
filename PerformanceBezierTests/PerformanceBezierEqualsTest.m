@@ -34,4 +34,22 @@
     XCTAssert([path1 isEqualToBezierPath:path2 withAccuracy:.1]);
 }
 
+- (void)testFlatOutline {
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    path.lineCapStyle = kCGLineCapButt;
+    path.lineWidth = 50;
+    [path moveToPoint:CGPointMake(310.430087, 518.485281)];
+    [path addLineToPoint:CGPointMake(320.279654, 511.430087)];
+
+    CGPathRef cgCopy = CGPathCreateCopyByStrokingPath(path.CGPath,
+                                                      NULL,
+                                                      path.lineWidth,
+                                                      path.lineCapStyle,
+                                                      path.lineJoinStyle,
+                                                      path.miterLimit);
+    UIBezierPath *copyBez = [UIBezierPath bezierPathWithCGPath:cgCopy];
+
+    XCTAssertEqual(path.isFlat, copyBez.isFlat);
+}
+
 @end

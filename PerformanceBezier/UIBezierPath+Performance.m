@@ -286,6 +286,20 @@ static char BEZIER_PROPERTIES;
     return self;
 }
 
++ (id)swizzle_bezierPathWithCGPath:(CGPathRef)cgPath
+{
+    UIBezierPath *path = [UIBezierPath swizzle_bezierPathWithCGPath:cgPath];
+    __block BOOL endsWithMoveTo = false;
+    __block BOOL isFlat = true;
+    [path iteratePathWithBlock:^(CGPathElement element, NSUInteger idx) {
+        endsWithMoveTo = element.type == kCGPathElementMoveToPoint;
+        isFlat = isFlat && element.type != kCGPathElementAddCurveToPoint && element.type != kCGPathElementAddQuadCurveToPoint;
+    }];
+    path.pathProperties.lastAddedElementWasMoveTo = endsWithMoveTo;
+    path.pathProperties.isFlat = isFlat;
+    return path;
+}
+
 - (void)swizzle_encodeWithCoder:(NSCoder *)aCoder
 {
     [self swizzle_encodeWithCoder:aCoder];
@@ -567,6 +581,9 @@ static char BEZIER_PROPERTIES;
         [UIBezierPath mmpb_swizzleMethod:@selector(dealloc)
                               withMethod:@selector(ahmed_swizzle_dealloc)
                                    error:&error];
+        [UIBezierPath mmpb_swizzleClassMethod:@selector(bezierPathWithCGPath:)
+                              withClassMethod:@selector(swizzle_bezierPathWithCGPath:)
+                                        error:&error];
     }
 }
 
