@@ -41,6 +41,7 @@
 		C51D49D424771241002BECC8 /* PerformanceBezierElementTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C51D49D324771241002BECC8 /* PerformanceBezierElementTest.m */; };
 		C57B2FB3247871A200C4D44B /* PerformanceBezierEqualsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C57B2FB2247871A200C4D44B /* PerformanceBezierEqualsTest.m */; };
 		C5976A48246DE9D10018C3C5 /* PerformanceBezierTrimTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C5976A47246DE9D10018C3C5 /* PerformanceBezierTrimTest.m */; };
+		C59C619F255C6FDA00B1898C /* PerformanceBezierDescriptionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C59C619E255C6FDA00B1898C /* PerformanceBezierDescriptionTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,7 @@
 		C51D49D324771241002BECC8 /* PerformanceBezierElementTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierElementTest.m; sourceTree = "<group>"; };
 		C57B2FB2247871A200C4D44B /* PerformanceBezierEqualsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierEqualsTest.m; sourceTree = "<group>"; };
 		C5976A47246DE9D10018C3C5 /* PerformanceBezierTrimTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierTrimTest.m; sourceTree = "<group>"; };
+		C59C619E255C6FDA00B1898C /* PerformanceBezierDescriptionTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierDescriptionTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,6 +208,7 @@
 				C5976A47246DE9D10018C3C5 /* PerformanceBezierTrimTest.m */,
 				C51D49D324771241002BECC8 /* PerformanceBezierElementTest.m */,
 				C57B2FB2247871A200C4D44B /* PerformanceBezierEqualsTest.m */,
+				C59C619E255C6FDA00B1898C /* PerformanceBezierDescriptionTest.m */,
 				66B9D2911A8D5FDF00CAC341 /* Supporting Files */,
 			);
 			path = PerformanceBezierTests;
@@ -400,6 +403,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C59C619F255C6FDA00B1898C /* PerformanceBezierDescriptionTest.m in Sources */,
 				66B9D2A61A8D609200CAC341 /* PerformanceBezierAbstractTest.m in Sources */,
 				C5976A48246DE9D10018C3C5 /* PerformanceBezierTrimTest.m in Sources */,
 				C51D49D424771241002BECC8 /* PerformanceBezierElementTest.m in Sources */,

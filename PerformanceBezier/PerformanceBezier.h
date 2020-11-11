@@ -10,6 +10,7 @@
 
 #import "UIBezierPath+Center.h"
 #import "UIBezierPath+Clockwise.h"
+#import "UIBezierPath+Description.h"
 #import "UIBezierPath+Equals.h"
 #import "UIBezierPath+NSOSX.h"
 #import "UIBezierPath+Performance.h"

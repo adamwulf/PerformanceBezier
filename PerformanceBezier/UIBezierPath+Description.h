@@ -10,4 +10,7 @@
 
 @interface UIBezierPath (Description)
 
+/// Generate a string of Obj-C or Swift source code to build this same path
+- (NSString *)descriptionInSwift:(BOOL)showSwift;
+
 @end

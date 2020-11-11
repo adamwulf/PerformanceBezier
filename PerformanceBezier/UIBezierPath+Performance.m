@@ -309,8 +309,10 @@ static char BEZIER_PROPERTIES;
 {
     // reset our path properties
     BOOL isClosed = [self pathProperties].isClosed;
+    BOOL knowsIfClosed = [self pathProperties].knowsIfClosed;
     UIBezierPathProperties *props = [[[UIBezierPathProperties alloc] init] autorelease];
     props.isClosed = isClosed;
+    props.knowsIfClosed = knowsIfClosed;
     objc_setAssociatedObject(self, &BEZIER_PROPERTIES, props, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [self ahmed_swizzle_applyTransform:transform];
 }
