@@ -25,7 +25,9 @@ typedef struct LengthCacheItem {
     NSInteger cachedElementCount;
     UIBezierPath *bezierPathByFlatteningPath;
     LengthCacheItem* elementLengthCache;
+    LengthCacheItem* totalLengthCache;
     NSInteger lengthCacheCount;
+    NSInteger totalLengthCacheCount;
     NSObject *lock;
 }
 
@@ -48,7 +50,9 @@ typedef struct LengthCacheItem {
 - (instancetype)init {
     if(self = [super init]){
         elementLengthCache = nil;
+        totalLengthCache = nil;
         lengthCacheCount = 0;
+        totalLengthCacheCount = 0;
         lock = [[NSObject alloc] init];
     }
     
@@ -110,6 +114,11 @@ typedef struct LengthCacheItem {
             elementLengthCache = nil;
             lengthCacheCount = 0;
         }
+        if (totalLengthCacheCount > 0 && totalLengthCache){
+            free(totalLengthCache);
+            totalLengthCache = nil;
+            totalLengthCacheCount = 0;
+        }
     }
 
     [lock release];
@@ -151,6 +160,42 @@ typedef struct LengthCacheItem {
 
         elementLengthCache[index].length = length;
         elementLengthCache[index].acceptableError = error;
+    }
+}
+
+/// Returns -1 if we do not have cached information for this element that matches the input acceptableError
+-(CGFloat)cachedTotalLengthOfPathAfterElementIndex:(NSInteger)index acceptableError:(CGFloat)error {
+    @synchronized (lock) {
+        if (index < 0 || index >= totalLengthCacheCount){
+            return -1;
+        }
+
+        if (totalLengthCache[index].acceptableError == error){
+            return totalLengthCache[index].length;
+        }
+    }
+
+    return -1;
+}
+
+-(void)cacheTotalLengthOfPath:(CGFloat)length afterElementIndex:(NSInteger)index acceptableError:(CGFloat)error {
+    @synchronized (lock) {
+        if (totalLengthCacheCount == 0){
+            const NSInteger DefaultCount = 256;
+            totalLengthCache = calloc(DefaultCount, sizeof(LengthCacheItem));
+            totalLengthCacheCount = DefaultCount;
+        } else if (index >= totalLengthCacheCount) {
+            // increase our cache size
+            LengthCacheItem* oldCache = totalLengthCache;
+            NSInteger oldLength = totalLengthCacheCount;
+            totalLengthCacheCount *= 2;
+            totalLengthCache = calloc(totalLengthCacheCount, sizeof(LengthCacheItem));
+            memcpy(totalLengthCache, oldCache, oldLength * sizeof(LengthCacheItem));
+            free(oldCache);
+        }
+
+        totalLengthCache[index].length = length;
+        totalLengthCache[index].acceptableError = error;
     }
 }
 
