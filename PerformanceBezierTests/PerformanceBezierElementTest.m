@@ -24,6 +24,85 @@
     
     XCTAssertEqual(tangent.x, 1);
     XCTAssertEqual(tangent.y, 0);
+
+    tangent = [simplePath tangentOnPathAtElement:0 andTValue:0];
+
+    XCTAssertEqual(tangent.x, 1);
+    XCTAssertEqual(tangent.y, 0);
+
+    tangent = [simplePath tangentOnPathAtElement:0 andTValue:1];
+
+    XCTAssertEqual(tangent.x, 1);
+    XCTAssertEqual(tangent.y, 0);
+
+    tangent = [simplePath tangentOnPathAtElement:0 andTValue:.5];
+
+    XCTAssertEqual(tangent.x, 1);
+    XCTAssertEqual(tangent.y, 0);
+}
+
+- (void)testEndTangent {
+    UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    [simplePath moveToPoint:CGPointMake(0, 0)];
+    [simplePath addLineToPoint:CGPointMake(100, 0)];
+    [simplePath addLineToPoint:CGPointMake(100, 100)];
+    [simplePath addLineToPoint:CGPointMake(0, 100)];
+    [simplePath closePath];
+
+    CGPoint tangent = [simplePath tangentOnPathAtElement:4 andTValue:0];
+
+    XCTAssertEqual(tangent.x, 0);
+    XCTAssertEqual(tangent.y, -1);
+
+    tangent = [simplePath tangentOnPathAtElement:4 andTValue:1];
+
+    XCTAssertEqual(tangent.x, 0);
+    XCTAssertEqual(tangent.y, -1);
+}
+
+- (void)testEndTangent2 {
+    UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    [simplePath moveToPoint:CGPointMake(0, 0)];
+    [simplePath addLineToPoint:CGPointMake(100, 0)];
+    [simplePath addLineToPoint:CGPointMake(100, 100)];
+    [simplePath addLineToPoint:CGPointMake(0, 100)];
+    [simplePath addLineToPoint:CGPointMake(0, 0)];
+    [simplePath closePath];
+
+    CGPoint tangent = [simplePath tangentOnPathAtElement:5 andTValue:0];
+
+    XCTAssertEqual(tangent.x, 0);
+    XCTAssertEqual(tangent.y, -1);
+
+    tangent = [simplePath tangentOnPathAtElement:5 andTValue:1];
+
+    XCTAssertEqual(tangent.x, 0);
+    XCTAssertEqual(tangent.y, -1);
+
+    tangent = [simplePath tangentOnPathAtElement:4 andTValue:1];
+
+    XCTAssertEqual(tangent.x, 0);
+    XCTAssertEqual(tangent.y, -1);
+}
+
+- (void)testCornerTangent {
+    UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    [simplePath moveToPoint:CGPointMake(0, 0)];
+    [simplePath addLineToPoint:CGPointMake(100, 0)];
+    [simplePath addLineToPoint:CGPointMake(100, 100)];
+    [simplePath addLineToPoint:CGPointMake(0, 100)];
+    [simplePath addLineToPoint:CGPointMake(0, 0)];
+    [simplePath closePath];
+
+    CGPoint tangent = [simplePath tangentOnPathAtElement:1 andTValue:1];
+
+    XCTAssertEqual(tangent.x, 1);
+    XCTAssertEqual(tangent.y, 0);
+
+    tangent = [simplePath tangentOnPathAtElement:2 andTValue:0];
+
+    XCTAssertEqual(tangent.x, 0);
+    XCTAssertEqual(tangent.y, 1);
 }
 
 - (void)testElementLength {

@@ -180,6 +180,20 @@ static char BEZIER_PROPERTIES;
         // of the element after the moveTo
         elementIndex += 1;
         tVal = 0;
+    } else if ([self elementAtIndex:elementIndex].type == kCGPathElementCloseSubpath) {
+        CGPoint points[3];
+        CGPathElement ele = [self elementAtIndex:elementIndex - 1 associatedPoints:points];
+        CGPoint elePoint = points[[UIBezierPath numberOfPointsForElement:ele] - 1];
+        CGPoint firstPoint = [self firstPoint];
+        if(elementIndex > 1 && CGPointEqualToPoint(firstPoint, elePoint)) {
+            // it's a close path that won't create a line to the start of the path, we're already here.
+            // so instead get the tangent at the end of the previous element
+            return [self tangentOnPathAtElement:elementIndex - 1 andTValue:1.0];
+        } else {
+            CGPoint tan = CGPointMake(firstPoint.x - elePoint.x, firstPoint.y - elePoint.y);
+            CGFloat mag = sqrt(tan.x * tan.x + tan.y * tan.y);
+            return CGPointMake(tan.x / mag, tan.y / mag);
+        }
     }
 
     CGPoint bezier[4];
