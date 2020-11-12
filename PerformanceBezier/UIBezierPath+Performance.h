@@ -38,7 +38,7 @@
 // returns the length of the element within the path
 - (CGFloat)lengthOfElement:(NSInteger)elementIndex withAcceptableError:(CGFloat)acceptableError;
 
-// returns the total length of the up to and including the element at the given index
+// returns the total length of the path up to and including the element at the given index
 - (CGFloat)totalLengthOfPathAfterElement:(NSInteger)elementIndex withAcceptableError:(CGFloat)acceptableError;
 
 // for the input bezier curve [start, ctrl1, ctrl2, end]
