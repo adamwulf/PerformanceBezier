@@ -397,9 +397,11 @@ static char BEZIER_PROPERTIES;
 }
 - (void)swizzle_closePath
 {
-    if ([self isClosed]) {
+    if ([self elementAtIndex:[self elementCount] - 1].type == kCGPathElementCloseSubpath) {
         // don't close the path multiple times, otherwise our cache
-        // will record incorrect cachedElementCount
+        // will record incorrect cachedElementCount.
+        // we can't check isClosed here, as the UIBezierPath might contain
+        // multiple subpaths, some of which might be closed and have flipped our isClosed cache.
         return;
     }
 
