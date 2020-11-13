@@ -82,54 +82,7 @@ static char BEZIER_PROPERTIES;
 
 - (CGFloat)length
 {
-    CGFloat const accuracy = .5;
-    NSInteger elementCount = [self elementCount];
-    if (elementCount > 1) {
-        CGFloat cachedLengthForLastPathElement = [[self pathProperties] cachedLengthOfPathThroughElementIndex:elementCount - 1 acceptableError:accuracy];
-        if (cachedLengthForLastPathElement >= 0) {
-            return  cachedLengthForLastPathElement;
-        }
-    }
-
-    __block CGFloat length = 0;
-    __block CGPoint lastMoveToPoint = CGPointNotFound;
-    __block CGPoint lastElementEndPoint = CGPointNotFound;
-    [self iteratePathWithBlock:^(CGPathElement element, NSUInteger idx) {
-
-        CGFloat lengthOfElement = 0;
-        if (element.type == kCGPathElementMoveToPoint) {
-            lastElementEndPoint = element.points[0];
-            lastMoveToPoint = element.points[0];
-        } else if (element.type == kCGPathElementCloseSubpath) {
-            lengthOfElement = [UIBezierPath distance:lastElementEndPoint p2:lastMoveToPoint];
-            lastElementEndPoint = lastMoveToPoint;
-        } else if (element.type == kCGPathElementAddLineToPoint) {
-            lengthOfElement = [UIBezierPath distance:lastElementEndPoint p2:element.points[0]];
-            lastElementEndPoint = element.points[0];
-        } else if (element.type == kCGPathElementAddQuadCurveToPoint ||
-                   element.type == kCGPathElementAddCurveToPoint) {
-            CGPoint bez[4];
-            bez[0] = lastElementEndPoint;
-
-            if (element.type == kCGPathElementAddQuadCurveToPoint) {
-                bez[1] = element.points[0];
-                bez[2] = element.points[0];
-                bez[3] = element.points[1];
-                lastElementEndPoint = element.points[1];
-            } else if (element.type == kCGPathElementAddCurveToPoint) {
-                bez[1] = element.points[0];
-                bez[2] = element.points[1];
-                bez[3] = element.points[2];
-                lastElementEndPoint = element.points[2];
-            }
-            lengthOfElement = [UIBezierPath lengthOfBezier:bez withAccuracy:accuracy];
-        }
-
-        length += lengthOfElement;
-        [[self pathProperties] cacheLength:length forElementIndex:idx acceptableError:accuracy];
-        [[self pathProperties] cacheLengthOfPath:length throughElementIndex:idx acceptableError:accuracy];
-    }];
-    return length;
+    return [self lengthOfPathThroughElement:[self elementCount] - 1 withAcceptableError:0.5];
 }
 
 - (CGFloat)tangentAtEnd
@@ -318,23 +271,12 @@ static char BEZIER_PROPERTIES;
     if (elementIndex == 0) {
         return lengthOfElement;
     } else {
-        NSInteger elementIndexToCheck = elementIndex - 1;
-        CGFloat lengthToAdd = lengthOfElement;
-        while (elementIndexToCheck >= 0) {
-            CGFloat cachedPreviousLength = [props cachedLengthOfPathThroughElementIndex:elementIndexToCheck acceptableError:acceptableError];
-            if (cachedPreviousLength != -1) {
-                CGFloat totalLengthOfPathForElement = cachedPreviousLength + lengthToAdd;
-                [props cacheLengthOfPath:totalLengthOfPathForElement throughElementIndex:elementIndex acceptableError:acceptableError];
-                break;
-            } else {
-                CGFloat lengthOfElement = [self lengthOfElement:elementIndexToCheck withAcceptableError:acceptableError];
-                lengthToAdd += lengthOfElement;
-                elementIndexToCheck--;
-            }
-        }
-    }
+        CGFloat lengthUntilElement = [self lengthOfPathThroughElement:elementIndex - 1 withAcceptableError:acceptableError];
+        CGFloat lengthThroughElement = lengthUntilElement + lengthOfElement;
+        [props cacheLengthOfPath:lengthThroughElement throughElementIndex:elementIndex acceptableError:acceptableError];
 
-    return 0;
+        return lengthThroughElement;
+    }
 }
 
 /**

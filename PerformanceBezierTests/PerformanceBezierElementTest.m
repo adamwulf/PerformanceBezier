@@ -122,4 +122,53 @@
     XCTAssertEqual(len, 100);
 }
 
+- (void)testLengthThroughElement {
+    UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    [simplePath moveToPoint:CGPointMake(100, 100)];
+    [simplePath addLineToPoint:CGPointMake(200, 100)];
+    [simplePath addLineToPoint:CGPointMake(200, 99)];
+
+    CGFloat len = [simplePath lengthOfPathThroughElement:0 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 0);
+
+    len = [simplePath lengthOfPathThroughElement:1 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 100);
+
+    len = [simplePath lengthOfPathThroughElement:2 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 101);
+
+    simplePath = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:simplePath]];
+
+    len = [simplePath lengthOfPathThroughElement:0 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 0);
+
+    len = [simplePath lengthOfPathThroughElement:1 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 100);
+
+    len = [simplePath lengthOfPathThroughElement:2 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 101);
+}
+
+/// Tests same as above, ensuring recursion will calculate correctly
+- (void)testLengthThroughElement2 {
+    UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    [simplePath moveToPoint:CGPointMake(100, 100)];
+    [simplePath addLineToPoint:CGPointMake(200, 100)];
+    [simplePath addLineToPoint:CGPointMake(200, 99)];
+
+    CGFloat len = [simplePath lengthOfPathThroughElement:2 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 101);
+
+    len = [simplePath lengthOfPathThroughElement:1 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 100);
+}
+
 @end
