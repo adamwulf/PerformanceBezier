@@ -164,7 +164,7 @@ typedef struct LengthCacheItem {
 }
 
 /// Returns -1 if we do not have cached information for this element that matches the input acceptableError
--(CGFloat)cachedTotalLengthOfPathAfterElementIndex:(NSInteger)index acceptableError:(CGFloat)error {
+-(CGFloat)cachedLengthOfPathThroughElementIndex:(NSInteger)index acceptableError:(CGFloat)error {
     @synchronized (lock) {
         if (index < 0 || index >= totalLengthCacheCount){
             return -1;
@@ -178,7 +178,7 @@ typedef struct LengthCacheItem {
     return -1;
 }
 
--(void)cacheTotalLengthOfPath:(CGFloat)length afterElementIndex:(NSInteger)index acceptableError:(CGFloat)error {
+-(void)cacheLengthOfPath:(CGFloat)length throughElementIndex:(NSInteger)index acceptableError:(CGFloat)error {
     @synchronized (lock) {
         if (totalLengthCacheCount == 0){
             const NSInteger DefaultCount = 256;

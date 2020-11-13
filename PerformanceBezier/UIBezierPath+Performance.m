@@ -12,9 +12,8 @@
 #import "UIBezierPath+NSOSX.h"
 #import "UIBezierPath+Uncached.h"
 #import "UIBezierPath+Util.h"
+#import "PerformanceBezier.h"
 #import <objc/runtime.h>
-
-#define CGPointNotFound CGPointMake(CGFLOAT_MAX, CGFLOAT_MAX)
 
 static char BEZIER_PROPERTIES;
 
@@ -86,7 +85,7 @@ static char BEZIER_PROPERTIES;
     CGFloat const accuracy = .5;
     NSInteger elementCount = [self elementCount];
     if (elementCount > 1) {
-        CGFloat cachedLengthForLastPathElement = [[self pathProperties] cachedTotalLengthOfPathAfterElementIndex:elementCount - 1 acceptableError:accuracy];
+        CGFloat cachedLengthForLastPathElement = [[self pathProperties] cachedLengthOfPathThroughElementIndex:elementCount - 1 acceptableError:accuracy];
         if (cachedLengthForLastPathElement >= 0) {
             return  cachedLengthForLastPathElement;
         }
@@ -128,7 +127,7 @@ static char BEZIER_PROPERTIES;
 
         length += lengthOfElement;
         [[self pathProperties] cacheLength:length forElementIndex:idx acceptableError:accuracy];
-        [[self pathProperties] cacheTotalLengthOfPath:length afterElementIndex:idx acceptableError:accuracy];
+        [[self pathProperties] cacheLengthOfPath:length throughElementIndex:idx acceptableError:accuracy];
     }];
     return length;
 }
@@ -291,16 +290,17 @@ static char BEZIER_PROPERTIES;
 
     if (elementIndex > 0) {
         // build up the cache for the total length of the path up to a given element index as we go
-        CGFloat totalLengthOfPathBefore = [self totalLengthOfPathAfterElement:elementIndex - 1 withAcceptableError:acceptableError];
+        CGFloat totalLengthOfPathBefore = [self lengthOfPathThroughElement:elementIndex - 1 withAcceptableError:acceptableError];
         if (totalLengthOfPathBefore != -1) {
-            [props cacheTotalLengthOfPath:totalLengthOfPathBefore + len afterElementIndex:elementIndex acceptableError:acceptableError];
+            [props cacheLengthOfPath:totalLengthOfPathBefore + len throughElementIndex:elementIndex acceptableError:acceptableError];
         }
     }
     
     return len;
 }
 
-- (CGFloat)totalLengthOfPathAfterElement:(NSInteger)elementIndex withAcceptableError:(CGFloat)acceptableError
+/// Returns the length of the path from the start of the path up to and including this element through t = 1.
+- (CGFloat)lengthOfPathThroughElement:(NSInteger)elementIndex withAcceptableError:(CGFloat)acceptableError
 {
     if (elementIndex >= [self elementCount] || elementIndex < 0) {
         @throw [NSException exceptionWithName:@"BezierElementException" reason:@"Element index is out of range" userInfo:nil];
@@ -308,7 +308,7 @@ static char BEZIER_PROPERTIES;
 
     UIBezierPathProperties *props = [self pathProperties];
 
-    CGFloat cached = [props cachedTotalLengthOfPathAfterElementIndex:elementIndex acceptableError:acceptableError];
+    CGFloat cached = [props cachedLengthOfPathThroughElementIndex:elementIndex acceptableError:acceptableError];
 
     if(cached != -1){
         return cached;
@@ -321,10 +321,10 @@ static char BEZIER_PROPERTIES;
         NSInteger elementIndexToCheck = elementIndex - 1;
         CGFloat lengthToAdd = lengthOfElement;
         while (elementIndexToCheck >= 0) {
-            CGFloat cachedPreviousLength = [props cachedTotalLengthOfPathAfterElementIndex:elementIndexToCheck acceptableError:acceptableError];
+            CGFloat cachedPreviousLength = [props cachedLengthOfPathThroughElementIndex:elementIndexToCheck acceptableError:acceptableError];
             if (cachedPreviousLength != -1) {
                 CGFloat totalLengthOfPathForElement = cachedPreviousLength + lengthToAdd;
-                [props cacheTotalLengthOfPath:totalLengthOfPathForElement afterElementIndex:elementIndex acceptableError:acceptableError];
+                [props cacheLengthOfPath:totalLengthOfPathForElement throughElementIndex:elementIndex acceptableError:acceptableError];
                 break;
             } else {
                 CGFloat lengthOfElement = [self lengthOfElement:elementIndexToCheck withAcceptableError:acceptableError];

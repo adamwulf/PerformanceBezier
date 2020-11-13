@@ -25,7 +25,7 @@
 -(CGFloat)cachedLengthForElementIndex:(NSInteger)index acceptableError:(CGFloat)error;
 -(void)cacheLength:(CGFloat)length forElementIndex:(NSInteger)index acceptableError:(CGFloat)error;
 
--(CGFloat)cachedTotalLengthOfPathAfterElementIndex:(NSInteger)index acceptableError:(CGFloat)error;
--(void)cacheTotalLengthOfPath:(CGFloat)length afterElementIndex:(NSInteger)index acceptableError:(CGFloat)error;
+-(CGFloat)cachedLengthOfPathThroughElementIndex:(NSInteger)index acceptableError:(CGFloat)error;
+-(void)cacheLengthOfPath:(CGFloat)length throughElementIndex:(NSInteger)index acceptableError:(CGFloat)error;
 
 @end
