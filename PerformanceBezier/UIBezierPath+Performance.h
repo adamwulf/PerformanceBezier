@@ -29,11 +29,17 @@
 // returns NO otherwise
 - (BOOL)isClosed;
 
+// returns the total length of the path
+- (CGFloat)length;
+
 // returns the tangent of the bezier path at the given t value
 - (CGPoint)tangentOnPathAtElement:(NSInteger)elementIndex andTValue:(CGFloat)tVal;
 
 // returns the length of the element within the path
 - (CGFloat)lengthOfElement:(NSInteger)elementIndex withAcceptableError:(CGFloat)acceptableError;
+
+// returns the total length of the path up to and including the element at the given index
+- (CGFloat)lengthOfPathThroughElement:(NSInteger)elementIndex withAcceptableError:(CGFloat)acceptableError;
 
 // for the input bezier curve [start, ctrl1, ctrl2, end]
 // return the point at the input T value

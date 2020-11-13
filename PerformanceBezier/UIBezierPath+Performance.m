@@ -12,6 +12,7 @@
 #import "UIBezierPath+NSOSX.h"
 #import "UIBezierPath+Uncached.h"
 #import "UIBezierPath+Util.h"
+#import "PerformanceBezier.h"
 #import <objc/runtime.h>
 
 static char BEZIER_PROPERTIES;
@@ -78,6 +79,12 @@ static char BEZIER_PROPERTIES;
     }
     return props.isClosed;
 }
+
+- (CGFloat)length
+{
+    return [self lengthOfPathThroughElement:[self elementCount] - 1 withAcceptableError:0.5];
+}
+
 - (CGFloat)tangentAtEnd
 {
 #ifdef MMPreventBezierPerformance
@@ -233,8 +240,43 @@ static char BEZIER_PROPERTIES;
     CGFloat len = [UIBezierPath lengthOfBezier:bezier withAccuracy:acceptableError];
     
     [props cacheLength:len forElementIndex:elementIndex acceptableError:acceptableError];
+
+    if (elementIndex > 0) {
+        // build up the cache for the total length of the path up to a given element index as we go
+        CGFloat totalLengthOfPathBefore = [self lengthOfPathThroughElement:elementIndex - 1 withAcceptableError:acceptableError];
+        if (totalLengthOfPathBefore != -1) {
+            [props cacheLengthOfPath:totalLengthOfPathBefore + len throughElementIndex:elementIndex acceptableError:acceptableError];
+        }
+    }
     
     return len;
+}
+
+/// Returns the length of the path from the start of the path up to and including this element through t = 1.
+- (CGFloat)lengthOfPathThroughElement:(NSInteger)elementIndex withAcceptableError:(CGFloat)acceptableError
+{
+    if (elementIndex >= [self elementCount] || elementIndex < 0) {
+        @throw [NSException exceptionWithName:@"BezierElementException" reason:@"Element index is out of range" userInfo:nil];
+    }
+
+    UIBezierPathProperties *props = [self pathProperties];
+
+    CGFloat cached = [props cachedLengthOfPathThroughElementIndex:elementIndex acceptableError:acceptableError];
+
+    if(cached != -1){
+        return cached;
+    }
+
+    CGFloat lengthOfElement = [self lengthOfElement:elementIndex withAcceptableError:acceptableError];
+    if (elementIndex == 0) {
+        return lengthOfElement;
+    } else {
+        CGFloat lengthUntilElement = [self lengthOfPathThroughElement:elementIndex - 1 withAcceptableError:acceptableError];
+        CGFloat lengthThroughElement = lengthUntilElement + lengthOfElement;
+        [props cacheLengthOfPath:lengthThroughElement throughElementIndex:elementIndex acceptableError:acceptableError];
+
+        return lengthThroughElement;
+    }
 }
 
 /**
