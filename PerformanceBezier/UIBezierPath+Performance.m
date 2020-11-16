@@ -286,11 +286,11 @@ static char BEZIER_PROPERTIES;
     CGFloat cached = -1;
     do {
         firstToCache -= 1;
-        cached = [props cachedLengthForElementIndex:firstToCache acceptableError:acceptableError];
+        cached = [props cachedLengthOfPathThroughElementIndex:firstToCache acceptableError:acceptableError];
     } while (cached == -1 && firstToCache > 0);
 
     // we eitehr have a cached value with a > 0 index, or our index is 0
-    CGFloat lengthSoFar = (firstToCache == 0) ? 0 : [props cachedLengthForElementIndex:firstToCache acceptableError:acceptableError];
+    CGFloat lengthSoFar = (firstToCache == 0) ? 0 : [props cachedLengthOfPathThroughElementIndex:firstToCache acceptableError:acceptableError];
 
     // for all the items after our cache hit up through the element we need
     // we should calculate, cache, and add to our total length

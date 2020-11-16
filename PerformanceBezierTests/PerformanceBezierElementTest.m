@@ -188,6 +188,11 @@
     len = [path length];
 
     XCTAssertEqual(len, 2800);
+
+    // read from cache
+    len = [path length];
+
+    XCTAssertEqual(len, 2800);
 }
 
 
