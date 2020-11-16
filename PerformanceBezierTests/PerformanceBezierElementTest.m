@@ -171,4 +171,24 @@
     XCTAssertEqual(len, 100);
 }
 
+/// Tests same as above, ensuring recursion will calculate correctly
+- (void)testMultipleSubpaths {
+    UIBezierPath *path;
+    path = [UIBezierPath bezierPathWithRect:CGRectMake(100, 100, 600, 400)];
+    [path appendPath:[[UIBezierPath bezierPathWithRect:CGRectMake(150, 150, 200, 200)] bezierPathByReversingPath]];
+
+    CGFloat len = [path lengthOfPathThroughElement:2 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 1000);
+
+    len = [path lengthOfPathThroughElement:1 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 600);
+
+    len = [path length];
+
+    XCTAssertEqual(len, 2800);
+}
+
+
 @end

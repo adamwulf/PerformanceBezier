@@ -151,9 +151,24 @@ static char BEZIER_PROPERTIES;
     }
 
     if (thisElement.type == kCGPathElementCloseSubpath) {
+        // the distance of a closeSubpath element is from the last point on the subpath
+        // and the intial moveTo element of that subpath. If we can't find a moveTo,
+        // then this is a malformed path and we'll return a single point bezier for this element
+        NSInteger moveToIndex = elementIndex;
+        CGPathElement previousMoveTo = previousElement;
+        while (previousMoveTo.type != kCGPathElementMoveToPoint && moveToIndex > 0) {
+            moveToIndex -= 1;
+            previousMoveTo = [self elementAtIndex:moveToIndex];
+        }
         bezier[1] = bezier[0];
-        bezier[2] = self.firstPoint;
-        bezier[3] = self.firstPoint;
+        if (previousMoveTo.type == kCGPathElementMoveToPoint) {
+            bezier[2] = previousMoveTo.points[0];
+            bezier[3] = previousMoveTo.points[0];
+        } else {
+            // path definition error, we weren't able to find a moveTo element
+            bezier[2] = bezier[0];
+            bezier[3] = bezier[0];
+        }
     } else if (thisElement.type == kCGPathElementMoveToPoint ||
                thisElement.type == kCGPathElementAddLineToPoint) {
         //        bezier[1] = CGPointMake(bezier[0].x + (thisElement.points[0].x - bezier[0].x)/3,
@@ -281,14 +296,18 @@ static char BEZIER_PROPERTIES;
     // we should calculate, cache, and add to our total length
     for (NSInteger indexToCache = firstToCache + 1; indexToCache <= elementIndex; indexToCache++) {
         CGPoint bezier[4];
+        CGPathElement ele = [self elementAtIndex:indexToCache];
 
-        [self fillBezier:bezier forElement:indexToCache];
+        // skip calculating distance between the previous element and the start of a new subpath
+        if (ele.type != kCGPathElementMoveToPoint) {
+            [self fillBezier:bezier forElement:indexToCache];
 
-        CGFloat len = [UIBezierPath lengthOfBezier:bezier withAccuracy:acceptableError];
+            CGFloat len = [UIBezierPath lengthOfBezier:bezier withAccuracy:acceptableError];
 
-        [props cacheLength:len forElementIndex:indexToCache acceptableError:acceptableError];
-        // build up the cache for the total length of the path up to a given element index as we go
-        lengthSoFar += len;
+            [props cacheLength:len forElementIndex:indexToCache acceptableError:acceptableError];
+            // build up the cache for the total length of the path up to a given element index as we go
+            lengthSoFar += len;
+        }
 
         [props cacheLengthOfPath:lengthSoFar throughElementIndex:indexToCache acceptableError:acceptableError];
     }
