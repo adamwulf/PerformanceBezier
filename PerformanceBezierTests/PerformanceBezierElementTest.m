@@ -195,5 +195,14 @@
     XCTAssertEqual(len, 2800);
 }
 
+/// Tests same as above, ensuring recursion will calculate correctly
+- (void)testEmptyPathLength {
+    UIBezierPath *path = [UIBezierPath bezierPath];
+
+    CGFloat len = [path length];
+
+    XCTAssertEqual(len, 0);
+}
+
 
 @end

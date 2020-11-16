@@ -82,7 +82,11 @@ static char BEZIER_PROPERTIES;
 
 - (CGFloat)length
 {
-    return [self lengthOfPathThroughElement:[self elementCount] - 1 withAcceptableError:0.5];
+    if ([self elementCount] > 0) {
+        return [self lengthOfPathThroughElement:[self elementCount] - 1 withAcceptableError:0.5];
+    } else {
+        return 0;
+    }
 }
 
 - (CGFloat)tangentAtEnd
