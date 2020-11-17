@@ -53,4 +53,20 @@
 // for the element at the given index
 - (void)fillBezier:(CGPoint[4])bezier forElement:(NSInteger)elementIndex;
 
+/// for a path that contains multiple subpaths, this will return the range of element indexes
+/// for the subpath that contains the input elementIndex
+- (NSRange)subpathRangeForElement:(NSInteger)elementIndex;
+
+/// returns if the curve change its position at all between t=0 => t=1 through elementIndex
+///
+/// for instance, the curve:
+/// moveTo(0,0), lineTo(100,0), lineTo(100,0), closePath()
+/// would return
+/// NO for 0, YES for 1, NO for 2, YES for 3
+/// or for instance, the curve:
+/// moveTo(0,0), lineTo(100,0), lineTo(0,0), closePath()
+/// would return
+/// NO for 0, YES for 1, YES for 2, NO for 3
+- (BOOL)changesPositionDuringElement:(NSInteger)elementIndex;
+
 @end

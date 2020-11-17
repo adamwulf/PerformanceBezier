@@ -204,5 +204,304 @@
     XCTAssertEqual(len, 0);
 }
 
+- (void)testSubpathRangeForIndexClosePath
+{
+    NSRange key = NSMakeRange(0, 4);
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path addLineToPoint:CGPointMake(0, 100)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path closePath];
+
+    NSRange rng = [path subpathRangeForElement:0];
+
+    XCTAssertEqual(rng.location, key.location);
+    XCTAssertEqual(rng.length, key.length);
+
+    rng = [path subpathRangeForElement:1];
+
+    XCTAssertEqual(rng.location, key.location);
+    XCTAssertEqual(rng.length, key.length);
+
+    rng = [path subpathRangeForElement:2];
+
+    XCTAssertEqual(rng.location, key.location);
+    XCTAssertEqual(rng.length, key.length);
+
+    rng = [path subpathRangeForElement:3];
+
+    XCTAssertEqual(rng.location, key.location);
+    XCTAssertEqual(rng.length, key.length);
+}
+
+- (void)testSubpathRangeForIndexOpenPath
+{
+    NSRange key = NSMakeRange(0, 3);
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path addLineToPoint:CGPointMake(0, 100)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+
+    NSRange rng = [path subpathRangeForElement:0];
+
+    XCTAssertEqual(rng.location, key.location);
+    XCTAssertEqual(rng.length, key.length);
+
+    rng = [path subpathRangeForElement:1];
+
+    XCTAssertEqual(rng.location, key.location);
+    XCTAssertEqual(rng.length, key.length);
+
+    rng = [path subpathRangeForElement:2];
+
+    XCTAssertEqual(rng.location, key.location);
+    XCTAssertEqual(rng.length, key.length);
+}
+
+- (void)testSubpathRangeForIndexMultiplePaths
+{
+    NSRange key1 = NSMakeRange(0, 3);
+    NSRange key2 = NSMakeRange(3, 3);
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path addLineToPoint:CGPointMake(0, 100)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path addLineToPoint:CGPointMake(0, 100)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+
+    NSRange rng = [path subpathRangeForElement:0];
+
+    XCTAssertEqual(rng.location, key1.location);
+    XCTAssertEqual(rng.length, key1.length);
+
+    rng = [path subpathRangeForElement:1];
+
+    XCTAssertEqual(rng.location, key1.location);
+    XCTAssertEqual(rng.length, key1.length);
+
+    rng = [path subpathRangeForElement:2];
+
+    XCTAssertEqual(rng.location, key1.location);
+    XCTAssertEqual(rng.length, key1.length);
+
+    rng = [path subpathRangeForElement:3];
+
+    XCTAssertEqual(rng.location, key2.location);
+    XCTAssertEqual(rng.length, key2.length);
+
+    rng = [path subpathRangeForElement:4];
+
+    XCTAssertEqual(rng.location, key2.location);
+    XCTAssertEqual(rng.length, key2.length);
+
+    rng = [path subpathRangeForElement:5];
+
+    XCTAssertEqual(rng.location, key2.location);
+    XCTAssertEqual(rng.length, key2.length);
+}
+
+- (void)testSubpathRangeForIndexAdjacentMoveTo
+{
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path moveToPoint:CGPointMake(0, 0)];
+
+    NSRange rng = [path subpathRangeForElement:0];
+
+    XCTAssertEqual(rng.location, 0);
+    XCTAssertEqual(rng.length, 1);
+
+    rng = [path subpathRangeForElement:1];
+
+    XCTAssertEqual(rng.location, 1);
+    XCTAssertEqual(rng.length, 1);
+
+    rng = [path subpathRangeForElement:2];
+
+    XCTAssertEqual(rng.location, 2);
+    XCTAssertEqual(rng.length, 1);
+}
+
+- (void)testSubpathRangeForIndexTinyPaths
+{
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path closePath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path closePath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path closePath];
+
+    NSRange rng = [path subpathRangeForElement:0];
+
+    XCTAssertEqual(rng.location, 0);
+    XCTAssertEqual(rng.length, 2);
+
+    rng = [path subpathRangeForElement:1];
+
+    XCTAssertEqual(rng.location, 0);
+    XCTAssertEqual(rng.length, 2);
+
+    rng = [path subpathRangeForElement:2];
+
+    XCTAssertEqual(rng.location, 2);
+    XCTAssertEqual(rng.length, 2);
+
+    rng = [path subpathRangeForElement:3];
+
+    XCTAssertEqual(rng.location, 2);
+    XCTAssertEqual(rng.length, 2);
+
+    rng = [path subpathRangeForElement:4];
+
+    XCTAssertEqual(rng.location, 4);
+    XCTAssertEqual(rng.length, 2);
+
+    rng = [path subpathRangeForElement:5];
+
+    XCTAssertEqual(rng.location, 4);
+    XCTAssertEqual(rng.length, 2);
+}
+
+- (void)testSubpathChangesDuring
+{
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path closePath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path closePath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path closePath];
+
+    XCTAssertFalse([path changesPositionDuringElement:0]);
+    XCTAssertFalse([path changesPositionDuringElement:1]);
+    XCTAssertFalse([path changesPositionDuringElement:2]);
+    XCTAssertFalse([path changesPositionDuringElement:3]);
+    XCTAssertFalse([path changesPositionDuringElement:4]);
+    XCTAssertFalse([path changesPositionDuringElement:5]);
+}
+
+- (void)testSubpathChangesDuring2
+{
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path closePath];
+    [path moveToPoint:CGPointMake(100, 0)];
+    [path closePath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path closePath];
+
+    XCTAssertFalse([path changesPositionDuringElement:0]);
+    XCTAssertTrue([path changesPositionDuringElement:1]);
+    XCTAssertTrue([path changesPositionDuringElement:2]);
+    XCTAssertFalse([path changesPositionDuringElement:3]);
+    XCTAssertFalse([path changesPositionDuringElement:4]);
+    XCTAssertFalse([path changesPositionDuringElement:5]);
+}
+
+- (void)testSubpathChangesDuring3
+{
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path addLineToPoint:CGPointMake(0, 0)];
+    [path closePath];
+
+    XCTAssertFalse([path changesPositionDuringElement:0]);
+    XCTAssertTrue([path changesPositionDuringElement:1]);
+    XCTAssertTrue([path changesPositionDuringElement:2]);
+    XCTAssertFalse([path changesPositionDuringElement:3]);
+}
+
+- (void)testSubpathChangesDuring4
+{
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path addLineToPoint:CGPointMake(0, 0)];
+    [path closePath];
+
+    XCTAssertFalse([path changesPositionDuringElement:0]);
+    XCTAssertTrue([path changesPositionDuringElement:1]);
+    XCTAssertFalse([path changesPositionDuringElement:2]);
+    XCTAssertFalse([path changesPositionDuringElement:3]);
+    XCTAssertFalse([path changesPositionDuringElement:4]);
+    XCTAssertFalse([path changesPositionDuringElement:5]);
+    XCTAssertTrue([path changesPositionDuringElement:6]);
+    XCTAssertFalse([path changesPositionDuringElement:7]);
+}
+
+- (void)testSubpathChangesDuring5
+{
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path closePath];
+
+    XCTAssertFalse([path changesPositionDuringElement:0]);
+    XCTAssertTrue([path changesPositionDuringElement:1]);
+    XCTAssertFalse([path changesPositionDuringElement:2]);
+    XCTAssertFalse([path changesPositionDuringElement:3]);
+    XCTAssertFalse([path changesPositionDuringElement:4]);
+    XCTAssertFalse([path changesPositionDuringElement:5]);
+    XCTAssertTrue([path changesPositionDuringElement:6]);
+}
+
+- (void)testSubpathChangesDuring6
+{
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path addQuadCurveToPoint:CGPointMake(100, 0) controlPoint:CGPointMake(100, 0)];
+    [path addQuadCurveToPoint:CGPointMake(200, 0) controlPoint:CGPointMake(100, 0)];
+    [path addQuadCurveToPoint:CGPointMake(100, 0) controlPoint:CGPointMake(100, 0)];
+    [path addQuadCurveToPoint:CGPointMake(100, 0) controlPoint:CGPointMake(200, 0)];
+    [path addQuadCurveToPoint:CGPointMake(100, 0) controlPoint:CGPointMake(100, 0)];
+    [path closePath];
+
+    XCTAssertFalse([path changesPositionDuringElement:0]);
+    XCTAssertTrue([path changesPositionDuringElement:1]);
+    XCTAssertFalse([path changesPositionDuringElement:2]);
+    XCTAssertTrue([path changesPositionDuringElement:3]);
+    XCTAssertTrue([path changesPositionDuringElement:4]);
+    XCTAssertTrue([path changesPositionDuringElement:5]);
+    XCTAssertFalse([path changesPositionDuringElement:6]);
+    XCTAssertTrue([path changesPositionDuringElement:7]);
+}
+
+- (void)testSubpathChangesDuring7
+{
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path addLineToPoint:CGPointMake(100, 0)];
+    [path addCurveToPoint:CGPointMake(100, 0) controlPoint1:CGPointMake(100, 0) controlPoint2:CGPointMake(100, 0)];
+    [path addCurveToPoint:CGPointMake(200, 0) controlPoint1:CGPointMake(100, 0) controlPoint2:CGPointMake(100, 0)];
+    [path addCurveToPoint:CGPointMake(100, 0) controlPoint1:CGPointMake(100, 0) controlPoint2:CGPointMake(100, 0)];
+    [path addCurveToPoint:CGPointMake(100, 0) controlPoint1:CGPointMake(200, 0) controlPoint2:CGPointMake(100, 0)];
+    [path addCurveToPoint:CGPointMake(100, 0) controlPoint1:CGPointMake(100, 0) controlPoint2:CGPointMake(100, 0)];
+    [path addCurveToPoint:CGPointMake(100, 0) controlPoint1:CGPointMake(100, 0) controlPoint2:CGPointMake(200, 0)];
+    [path closePath];
+
+    XCTAssertFalse([path changesPositionDuringElement:0]);
+    XCTAssertTrue([path changesPositionDuringElement:1]);
+    XCTAssertFalse([path changesPositionDuringElement:2]);
+    XCTAssertTrue([path changesPositionDuringElement:3]);
+    XCTAssertTrue([path changesPositionDuringElement:4]);
+    XCTAssertTrue([path changesPositionDuringElement:5]);
+    XCTAssertFalse([path changesPositionDuringElement:6]);
+    XCTAssertTrue([path changesPositionDuringElement:7]);
+    XCTAssertTrue([path changesPositionDuringElement:8]);
+}
 
 @end

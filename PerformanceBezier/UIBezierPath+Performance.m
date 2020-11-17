@@ -697,5 +697,57 @@ static char BEZIER_PROPERTIES;
     return atan2f(point1.y - point2.y, point1.x - point2.x);
 }
 
+- (NSRange)subpathRangeForElement:(NSInteger)elementIndex
+{
+    NSInteger firstIndex = elementIndex;
+    NSInteger lastIndex = [self elementAtIndex:elementIndex].type == kCGPathElementMoveToPoint ? elementIndex + 1 : elementIndex;
+
+    while ([self elementAtIndex:firstIndex].type != kCGPathElementMoveToPoint && firstIndex > 0) {
+        firstIndex -= 1;
+    }
+
+    while ([self elementAtIndex:lastIndex].type != kCGPathElementMoveToPoint &&
+           [self elementAtIndex:lastIndex].type != kCGPathElementCloseSubpath &&
+           lastIndex < [self elementCount] - 1) {
+        lastIndex += 1;
+    }
+
+    if ([self elementAtIndex:lastIndex].type == kCGPathElementMoveToPoint) {
+        lastIndex -= 1;
+    }
+
+    return NSMakeRange(firstIndex, lastIndex - firstIndex + 1);
+}
+
+- (BOOL)changesPositionDuringElement:(NSInteger)elementIndex {
+    CGPathElement ele = [self elementAtIndex:elementIndex];
+
+    BOOL(^movesSincePrev)(CGPathElement, CGPathElement) = ^(CGPathElement prevEle, CGPathElement ele) {
+        NSInteger numPrevPoints = [UIBezierPath numberOfPointsForElement:prevEle];
+        for (int i=0; i<[UIBezierPath numberOfPointsForElement:ele]; i++) {
+            // we can compare to [0] since we're asking if /all/ points are equal.
+            if (!CGPointEqualToPoint(ele.points[i], prevEle.points[numPrevPoints - 1])) {
+                return NO;
+            }
+        }
+        return YES;
+    };
+
+    if(ele.type == kCGPathElementMoveToPoint) {
+        return NO;
+    } else if (elementIndex == 0) {
+        // sanity check, element 0 should always be a moveTo element
+        return NO;
+    } else if (ele.type == kCGPathElementCloseSubpath){
+        NSRange rng = [self subpathRangeForElement:elementIndex];
+        CGPathElement last = [self elementAtIndex:elementIndex - 1];
+        CGPathElement first = [self elementAtIndex:rng.location];
+
+        return !movesSincePrev(first, last);
+    } else {
+        CGPathElement previous = [self elementAtIndex:elementIndex - 1];
+        return !movesSincePrev(previous, ele);
+    }
+}
 
 @end
