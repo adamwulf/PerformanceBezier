@@ -743,7 +743,7 @@ static char BEZIER_PROPERTIES;
         CGPathElement last = [self elementAtIndex:elementIndex - 1];
         CGPathElement first = [self elementAtIndex:rng.location];
 
-        return !movesSincePrev(first, last);
+        return !movesSincePrev(last, first);
     } else {
         CGPathElement previous = [self elementAtIndex:elementIndex - 1];
         return !movesSincePrev(previous, ele);
