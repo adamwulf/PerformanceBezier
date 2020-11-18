@@ -179,10 +179,10 @@ static char BEZIER_PROPERTIES;
         //                                bezier[0].y + (thisElement.points[0].y - bezier[0].y)/3);
         //        bezier[2] = CGPointMake(bezier[0].x + (thisElement.points[0].x - bezier[0].x)*2/3,
         //                                bezier[0].y + (thisElement.points[0].y - bezier[0].y)*2/3);
-        CGPoint midPoint = CGPointMake((bezier[0].x + thisElement.points[0].x) / 2.0,
-                                       (bezier[0].y + thisElement.points[0].y) / 2.0);
-        bezier[1] = midPoint;
-        bezier[2] = midPoint;
+        bezier[1] = CGPointMake((2.0 * bezier[0].x + thisElement.points[0].x) / 3.0,
+                                (2.0 * bezier[0].y + thisElement.points[0].y) / 3.0);;
+        bezier[2] = CGPointMake((bezier[0].x + 2.0 * thisElement.points[0].x) / 3.0,
+                                (bezier[0].y + 2.0 * thisElement.points[0].y) / 3.0);;
         bezier[3] = thisElement.points[0];
     } else if (thisElement.type == kCGPathElementAddQuadCurveToPoint) {
         CGPoint lastPoint = bezier[0];
@@ -277,8 +277,14 @@ static char BEZIER_PROPERTIES;
     return len;
 }
 
-/// Returns the length of the path from the start of the path up to and including this element through t = 1.
 - (CGFloat)lengthOfPathThroughElement:(NSInteger)elementIndex withAcceptableError:(CGFloat)acceptableError
+{
+    return [self lengthOfPathThroughElement:elementIndex tValue:1 withAcceptableError:acceptableError];
+}
+
+/// Returns the length of the path from the start of the path up to and including this element through t = 1.
+// returns the total length of the path up to and including the element at the given index
+- (CGFloat)lengthOfPathThroughElement:(NSInteger)elementIndex tValue:(CGFloat)tValue withAcceptableError:(CGFloat)acceptableError;
 {
     if (elementIndex >= [self elementCount] || elementIndex < 0) {
         @throw [NSException exceptionWithName:@"BezierElementException" reason:@"Element index is out of range" userInfo:nil];
@@ -292,7 +298,7 @@ static char BEZIER_PROPERTIES;
     // find the first element that we need to cache for its length
     // we'll immediately decrement in the loop below, so we need to add one here so that we start
     // in the right place
-    NSInteger firstToCache = elementIndex + 1;
+    NSInteger firstToCache = elementIndex;
     CGFloat cached = -1;
     do {
         firstToCache -= 1;
@@ -312,14 +318,25 @@ static char BEZIER_PROPERTIES;
         if (ele.type != kCGPathElementMoveToPoint) {
             [self fillBezier:bezier forElement:indexToCache];
 
-            CGFloat len = [UIBezierPath lengthOfBezier:bezier withAccuracy:acceptableError];
+            if (indexToCache == elementIndex && tValue < 1) {
+                CGPoint left[4];
+                CGPoint right[4];
+                [UIBezierPath subdivideBezier:bezier intoLeft:left andRight:right atT:tValue];
+                CGFloat len = [UIBezierPath lengthOfBezier:left withAccuracy:acceptableError];
 
-            [props cacheLength:len forElementIndex:indexToCache acceptableError:acceptableError];
-            // build up the cache for the total length of the path up to a given element index as we go
-            lengthSoFar += len;
+                lengthSoFar += len;
+            } else {
+                CGFloat len = [UIBezierPath lengthOfBezier:bezier withAccuracy:acceptableError];
+
+                [props cacheLength:len forElementIndex:indexToCache acceptableError:acceptableError];
+                // build up the cache for the total length of the path up to a given element index as we go
+                lengthSoFar += len;
+            }
         }
 
-        [props cacheLengthOfPath:lengthSoFar throughElementIndex:indexToCache acceptableError:acceptableError];
+        if (indexToCache != elementIndex || tValue == 1) {
+            [props cacheLengthOfPath:lengthSoFar throughElementIndex:indexToCache acceptableError:acceptableError];
+        }
     }
 
     return lengthSoFar;

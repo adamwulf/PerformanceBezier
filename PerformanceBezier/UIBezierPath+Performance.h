@@ -41,6 +41,9 @@
 // returns the total length of the path up to and including the element at the given index
 - (CGFloat)lengthOfPathThroughElement:(NSInteger)elementIndex withAcceptableError:(CGFloat)acceptableError;
 
+// returns the total length of the path up to and including the element at the given index
+- (CGFloat)lengthOfPathThroughElement:(NSInteger)elementIndex tValue:(CGFloat)tValue withAcceptableError:(CGFloat)acceptableError;
+
 // for the input bezier curve [start, ctrl1, ctrl2, end]
 // return the point at the input T value
 + (CGPoint)pointAtT:(CGFloat)t forBezier:(CGPoint *)bez;

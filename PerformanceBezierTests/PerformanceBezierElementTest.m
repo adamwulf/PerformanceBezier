@@ -171,6 +171,41 @@
     XCTAssertEqual(len, 100);
 }
 
+- (void)testLengthThroughElement3 {
+    UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    [simplePath moveToPoint:CGPointMake(100, 100)];
+    [simplePath addLineToPoint:CGPointMake(200, 100)];
+    [simplePath addLineToPoint:CGPointMake(200, 99)];
+
+    CGFloat len = [simplePath lengthOfPathThroughElement:1 tValue:.75 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 75);
+
+    len = [simplePath lengthOfPathThroughElement:2 tValue:.75 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 100.75);
+}
+
+- (void)testLengthThroughElement4 {
+    UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    [simplePath moveToPoint:CGPointMake(100, 100)];
+    [simplePath addLineToPoint:CGPointMake(200, 100)];
+    [simplePath addLineToPoint:CGPointMake(199, 100)];
+    [simplePath closePath];
+
+    CGFloat len = [simplePath lengthOfPathThroughElement:1 tValue:.75 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 75);
+
+    len = [simplePath lengthOfPathThroughElement:2 tValue:.75 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 100.75);
+
+    len = [simplePath lengthOfPathThroughElement:3 tValue:0.5 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 150.5);
+}
+
 /// Tests same as above, ensuring recursion will calculate correctly
 - (void)testMultipleSubpaths {
     UIBezierPath *path;
