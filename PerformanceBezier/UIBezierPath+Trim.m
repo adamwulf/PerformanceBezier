@@ -138,19 +138,24 @@
  */
 - (UIBezierPath *)bezierPathByTrimmingFromElement:(NSInteger)elementIndex andTValue:(double)tValue
 {
+    __block CGPoint previousMoveTo = [self firstPoint];
     __block CGPoint previousEndpoint;
     __block UIBezierPath *outputPath = [UIBezierPath bezierPath];
     [self iteratePathWithBlock:^(CGPathElement element, NSUInteger currentIndex) {
+        if (element.type == kCGPathElementMoveToPoint) {
+            previousMoveTo = element.points[0];
+        }
       if (currentIndex < elementIndex) {
           if (element.type == kCGPathElementMoveToPoint) {
-              // moveto
               previousEndpoint = element.points[0];
           } else if (element.type == kCGPathElementAddCurveToPoint) {
-              // curve
               previousEndpoint = element.points[2];
+          } else if (element.type == kCGPathElementAddQuadCurveToPoint) {
+              previousEndpoint = element.points[1];
           } else if (element.type == kCGPathElementAddLineToPoint) {
-              // line
               previousEndpoint = element.points[0];
+          } else if (element.type == kCGPathElementCloseSubpath) {
+              previousEndpoint = previousMoveTo;
           }
       } else if (currentIndex == elementIndex) {
           if (element.type == kCGPathElementMoveToPoint) {
@@ -171,6 +176,20 @@
               [UIBezierPath subdivideBezierAtT:bez bez1:left bez2:right t:tValue];
               [outputPath moveToPoint:right[0]];
               [outputPath addCurveToPoint:right[3] controlPoint1:right[1] controlPoint2:right[2]];
+          } else if (element.type == kCGPathElementAddQuadCurveToPoint) {
+              // curve
+              CGPoint bez[4];
+              bez[0] = previousEndpoint;
+              bez[1] = element.points[0];
+              bez[2] = element.points[0];
+              bez[3] = element.points[1];
+
+              previousEndpoint = element.points[1];
+
+              CGPoint left[4], right[4];
+              [UIBezierPath subdivideBezierAtT:bez bez1:left bez2:right t:tValue];
+              [outputPath moveToPoint:right[0]];
+              [outputPath addCurveToPoint:right[3] controlPoint1:right[1] controlPoint2:right[2]];
           } else if (element.type == kCGPathElementAddLineToPoint) {
               // line
               CGPoint startPoint = CGPointMake(previousEndpoint.x + tValue * (element.points[0].x - previousEndpoint.x),
@@ -178,6 +197,13 @@
               previousEndpoint = element.points[0];
               [outputPath moveToPoint:startPoint];
               [outputPath addLineToPoint:element.points[0]];
+          } else if (element.type == kCGPathElementCloseSubpath) {
+              // line
+              CGPoint startPoint = CGPointMake(previousEndpoint.x + tValue * (previousMoveTo.x - previousEndpoint.x),
+                                               previousEndpoint.y + tValue * (previousMoveTo.y - previousEndpoint.y));
+              previousEndpoint = previousMoveTo;
+              [outputPath moveToPoint:startPoint];
+              [outputPath addLineToPoint:previousMoveTo];
           }
       } else if (currentIndex > elementIndex) {
           if (element.type == kCGPathElementMoveToPoint) {
@@ -188,10 +214,16 @@
               // curve
               previousEndpoint = element.points[2];
               [outputPath addCurveToPoint:element.points[2] controlPoint1:element.points[0] controlPoint2:element.points[1]];
+          } else if (element.type == kCGPathElementAddQuadCurveToPoint) {
+              // curve
+              previousEndpoint = element.points[1];
+              [outputPath addQuadCurveToPoint:element.points[1] controlPoint:element.points[0]];
           } else if (element.type == kCGPathElementAddLineToPoint) {
               // line
               previousEndpoint = element.points[0];
               [outputPath addLineToPoint:element.points[0]];
+          } else if (element.type == kCGPathElementCloseSubpath) {
+              [outputPath addLineToPoint:previousMoveTo];
           }
       }
     }];
@@ -206,6 +238,7 @@
  */
 - (UIBezierPath *)bezierPathByTrimmingToElement:(NSInteger)elementIndex andTValue:(double)tValue
 {
+    __block CGPoint previousMoveTo = [self firstPoint];
     __block CGPoint previousEndpoint;
     __block UIBezierPath *outputPath = [UIBezierPath bezierPath];
     [self iteratePathWithBlock:^(CGPathElement element, NSUInteger currentIndex) {
@@ -227,26 +260,54 @@
               CGPoint left[4], right[4];
               [UIBezierPath subdivideBezierAtT:bez bez1:left bez2:right t:tValue];
               [outputPath addCurveToPoint:left[3] controlPoint1:left[1] controlPoint2:left[2]];
+          } else if (element.type == kCGPathElementAddQuadCurveToPoint) {
+              // curve
+              CGPoint bez[4];
+              bez[0] = previousEndpoint;
+              bez[1] = element.points[0];
+              bez[2] = element.points[0];
+              bez[3] = element.points[1];
+
+              previousEndpoint = element.points[1];
+
+              CGPoint left[4], right[4];
+              [UIBezierPath subdivideBezierAtT:bez bez1:left bez2:right t:tValue];
+              [outputPath addCurveToPoint:left[3] controlPoint1:left[1] controlPoint2:left[2]];
           } else if (element.type == kCGPathElementAddLineToPoint) {
               // line
               CGPoint endPoint = CGPointMake(previousEndpoint.x + tValue * (element.points[0].x - previousEndpoint.x),
                                              previousEndpoint.y + tValue * (element.points[0].y - previousEndpoint.y));
               previousEndpoint = element.points[0];
               [outputPath addLineToPoint:endPoint];
+          } else if (element.type == kCGPathElementCloseSubpath) {
+              // line
+              CGPoint endPoint = CGPointMake(previousEndpoint.x + tValue * (previousMoveTo.x - previousEndpoint.x),
+                                             previousEndpoint.y + tValue * (previousMoveTo.y - previousEndpoint.y));
+              previousEndpoint = previousMoveTo;
+              [outputPath addLineToPoint:endPoint];
           }
       } else if (currentIndex < elementIndex) {
           if (element.type == kCGPathElementMoveToPoint) {
               // moveto
               previousEndpoint = element.points[0];
+              previousMoveTo = previousEndpoint;
               [outputPath moveToPoint:element.points[0]];
           } else if (element.type == kCGPathElementAddCurveToPoint) {
               // curve
               previousEndpoint = element.points[2];
               [outputPath addCurveToPoint:element.points[2] controlPoint1:element.points[0] controlPoint2:element.points[1]];
+          } else if (element.type == kCGPathElementAddQuadCurveToPoint) {
+              // curve
+              previousEndpoint = element.points[1];
+              [outputPath addQuadCurveToPoint:element.points[1] controlPoint:element.points[0]];
           } else if (element.type == kCGPathElementAddLineToPoint) {
               // line
               previousEndpoint = element.points[0];
               [outputPath addLineToPoint:element.points[0]];
+          } else if (element.type == kCGPathElementCloseSubpath) {
+              // line
+              previousEndpoint = previousMoveTo;
+              [outputPath closePath];
           }
       }
     }];
