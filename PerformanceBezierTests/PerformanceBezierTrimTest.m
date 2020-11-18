@@ -81,7 +81,7 @@
 
     UIBezierPath *key = [UIBezierPath bezierPath];
     [key moveToPoint:CGPointMake(0, 0)];
-    [key addCurveToPoint:CGPointMake(98.4375, 42.1875) controlPoint1:CGPointMake(75, 0) controlPoint2:CGPointMake(93.75, 0)];
+    [key addCurveToPoint:CGPointMake(93.75, 56.25) controlPoint1:CGPointMake(50, 0) controlPoint2:CGPointMake(81.25, 18.75)];
 
     XCTAssert([slice isEqualToBezierPath:key withAccuracy:0.00001]);
 }

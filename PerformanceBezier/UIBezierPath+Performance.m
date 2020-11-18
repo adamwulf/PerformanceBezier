@@ -185,8 +185,14 @@ static char BEZIER_PROPERTIES;
         bezier[2] = midPoint;
         bezier[3] = thisElement.points[0];
     } else if (thisElement.type == kCGPathElementAddQuadCurveToPoint) {
-        bezier[1] = thisElement.points[0];
-        bezier[2] = thisElement.points[0];
+        CGPoint lastPoint = bezier[0];
+        CGPoint ctrlOrig = thisElement.points[0];
+        CGPoint curveTo = thisElement.points[1];
+        CGPoint ctrl1 = CGPointMake((lastPoint.x + 2.0 * ctrlOrig.x) / 3.0, (lastPoint.y + 2.0 * ctrlOrig.y) / 3.0);
+        CGPoint ctrl2 = CGPointMake((curveTo.x + 2.0 * ctrlOrig.x) / 3.0, (curveTo.y + 2.0 * ctrlOrig.y) / 3.0);;
+
+        bezier[1] = ctrl1;
+        bezier[2] = ctrl2;
         bezier[3] = thisElement.points[1];
     } else if (thisElement.type == kCGPathElementAddCurveToPoint) {
         bezier[1] = thisElement.points[0];

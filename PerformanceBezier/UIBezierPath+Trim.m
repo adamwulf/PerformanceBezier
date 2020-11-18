@@ -178,11 +178,17 @@
               [outputPath addCurveToPoint:right[3] controlPoint1:right[1] controlPoint2:right[2]];
           } else if (element.type == kCGPathElementAddQuadCurveToPoint) {
               // curve
+              CGPoint lastPoint = previousEndpoint;
+              CGPoint ctrlOrig = element.points[0];
+              CGPoint curveTo = element.points[1];
+              CGPoint ctrl1 = CGPointMake((lastPoint.x + 2.0 * ctrlOrig.x) / 3.0, (lastPoint.y + 2.0 * ctrlOrig.y) / 3.0);
+              CGPoint ctrl2 = CGPointMake((curveTo.x + 2.0 * ctrlOrig.x) / 3.0, (curveTo.y + 2.0 * ctrlOrig.y) / 3.0);;
+
               CGPoint bez[4];
               bez[0] = previousEndpoint;
-              bez[1] = element.points[0];
-              bez[2] = element.points[0];
-              bez[3] = element.points[1];
+              bez[1] = ctrl1;
+              bez[2] = ctrl2;
+              bez[3] = curveTo;
 
               previousEndpoint = element.points[1];
 
@@ -262,11 +268,17 @@
               [outputPath addCurveToPoint:left[3] controlPoint1:left[1] controlPoint2:left[2]];
           } else if (element.type == kCGPathElementAddQuadCurveToPoint) {
               // curve
+              CGPoint lastPoint = previousEndpoint;
+              CGPoint ctrlOrig = element.points[0];
+              CGPoint curveTo = element.points[1];
+              CGPoint ctrl1 = CGPointMake((lastPoint.x + 2.0 * ctrlOrig.x) / 3.0, (lastPoint.y + 2.0 * ctrlOrig.y) / 3.0);
+              CGPoint ctrl2 = CGPointMake((curveTo.x + 2.0 * ctrlOrig.x) / 3.0, (curveTo.y + 2.0 * ctrlOrig.y) / 3.0);;
+
               CGPoint bez[4];
               bez[0] = previousEndpoint;
-              bez[1] = element.points[0];
-              bez[2] = element.points[0];
-              bez[3] = element.points[1];
+              bez[1] = ctrl1;
+              bez[2] = ctrl2;
+              bez[3] = curveTo;
 
               previousEndpoint = element.points[1];
 

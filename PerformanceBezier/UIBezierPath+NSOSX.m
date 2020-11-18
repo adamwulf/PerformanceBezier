@@ -330,9 +330,10 @@ static void blockWithElement(void *info, const CGPathElement *element)
                 CGPoint ctrl1;
                 CGPoint ctrl2;
                 if (element.type == kCGPathElementAddQuadCurveToPoint) {
+                    CGPoint ctrl = element.points[0];
                     curveTo = element.points[1];
-                    ctrl1 = element.points[0];
-                    ctrl2 = ctrl1;
+                    ctrl1 = CGPointMake((lastPoint.x + 2.0 * ctrl.x) / 3.0, (lastPoint.y + 2.0 * ctrl.y) / 3.0);
+                    ctrl2 = CGPointMake((curveTo.x + 2.0 * ctrl.x) / 3.0, (curveTo.y + 2.0 * ctrl.y) / 3.0);;
                 } else { // element.type == kCGPathElementAddCurveToPoint
                     curveTo = element.points[2];
                     ctrl1 = element.points[0];
