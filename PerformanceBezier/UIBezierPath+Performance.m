@@ -129,6 +129,51 @@ static char BEZIER_PROPERTIES;
 }
 
 
++ (void)fillBezier:(CGPoint[4])bezier forNonCloseElement:(CGPathElement)element forNonClosePreviousElement:(CGPathElement)previousElement {
+    if (previousElement.type == kCGPathElementMoveToPoint ||
+        previousElement.type == kCGPathElementAddLineToPoint) {
+        bezier[0] = previousElement.points[0];
+    } else if (previousElement.type == kCGPathElementAddQuadCurveToPoint) {
+        bezier[0] = previousElement.points[1];
+    } else if (previousElement.type == kCGPathElementAddCurveToPoint) {
+        bezier[0] = previousElement.points[2];
+    }
+
+    if (element.type == kCGPathElementMoveToPoint) {
+        bezier[0] = element.points[0];
+        bezier[1] = element.points[0];
+        bezier[2] = element.points[0];
+        bezier[3] = element.points[0];
+        return;
+    }
+
+    if (previousElement.type == kCGPathElementCloseSubpath) {
+        @throw [NSException exceptionWithName:@"BezierElementException" reason:@"Cannot fill bezier for close element" userInfo:nil];
+    }
+
+    if (element.type == kCGPathElementAddLineToPoint) {
+        bezier[1] = CGPointMake((2.0 * bezier[0].x + element.points[0].x) / 3.0,
+                                (2.0 * bezier[0].y + element.points[0].y) / 3.0);;
+        bezier[2] = CGPointMake((bezier[0].x + 2.0 * element.points[0].x) / 3.0,
+                                (bezier[0].y + 2.0 * element.points[0].y) / 3.0);;
+        bezier[3] = element.points[0];
+    } else if (element.type == kCGPathElementAddQuadCurveToPoint) {
+        CGPoint lastPoint = bezier[0];
+        CGPoint ctrlOrig = element.points[0];
+        CGPoint curveTo = element.points[1];
+        CGPoint ctrl1 = CGPointMake((lastPoint.x + 2.0 * ctrlOrig.x) / 3.0, (lastPoint.y + 2.0 * ctrlOrig.y) / 3.0);
+        CGPoint ctrl2 = CGPointMake((curveTo.x + 2.0 * ctrlOrig.x) / 3.0, (curveTo.y + 2.0 * ctrlOrig.y) / 3.0);;
+
+        bezier[1] = ctrl1;
+        bezier[2] = ctrl2;
+        bezier[3] = element.points[1];
+    } else if (element.type == kCGPathElementAddCurveToPoint) {
+        bezier[1] = element.points[0];
+        bezier[2] = element.points[1];
+        bezier[3] = element.points[2];
+    }
+}
+
 - (void)fillBezier:(CGPoint[4])bezier forElement:(NSInteger)elementIndex
 {
     if (elementIndex >= [self elementCount] || elementIndex < 0) {
@@ -143,7 +188,7 @@ static char BEZIER_PROPERTIES;
     }
 
     CGPathElement previousElement = [self elementAtIndex:elementIndex - 1];
-    CGPathElement thisElement = [self elementAtIndex:elementIndex];
+    CGPathElement element = [self elementAtIndex:elementIndex];
 
     if (previousElement.type == kCGPathElementMoveToPoint ||
         previousElement.type == kCGPathElementAddLineToPoint) {
@@ -154,7 +199,7 @@ static char BEZIER_PROPERTIES;
         bezier[0] = previousElement.points[2];
     }
 
-    if (thisElement.type == kCGPathElementCloseSubpath) {
+    if (element.type == kCGPathElementCloseSubpath) {
         // the distance of a closeSubpath element is from the last point on the subpath
         // and the intial moveTo element of that subpath. If we can't find a moveTo,
         // then this is a malformed path and we'll return a single point bezier for this element
@@ -166,38 +211,19 @@ static char BEZIER_PROPERTIES;
         }
         bezier[1] = bezier[0];
         if (previousMoveTo.type == kCGPathElementMoveToPoint) {
-            bezier[2] = previousMoveTo.points[0];
             bezier[3] = previousMoveTo.points[0];
         } else {
             // path definition error, we weren't able to find a moveTo element
-            bezier[2] = bezier[0];
             bezier[3] = bezier[0];
         }
-    } else if (thisElement.type == kCGPathElementMoveToPoint ||
-               thisElement.type == kCGPathElementAddLineToPoint) {
-        //        bezier[1] = CGPointMake(bezier[0].x + (thisElement.points[0].x - bezier[0].x)/3,
-        //                                bezier[0].y + (thisElement.points[0].y - bezier[0].y)/3);
-        //        bezier[2] = CGPointMake(bezier[0].x + (thisElement.points[0].x - bezier[0].x)*2/3,
-        //                                bezier[0].y + (thisElement.points[0].y - bezier[0].y)*2/3);
-        bezier[1] = CGPointMake((2.0 * bezier[0].x + thisElement.points[0].x) / 3.0,
-                                (2.0 * bezier[0].y + thisElement.points[0].y) / 3.0);;
-        bezier[2] = CGPointMake((bezier[0].x + 2.0 * thisElement.points[0].x) / 3.0,
-                                (bezier[0].y + 2.0 * thisElement.points[0].y) / 3.0);;
-        bezier[3] = thisElement.points[0];
-    } else if (thisElement.type == kCGPathElementAddQuadCurveToPoint) {
-        CGPoint lastPoint = bezier[0];
-        CGPoint ctrlOrig = thisElement.points[0];
-        CGPoint curveTo = thisElement.points[1];
-        CGPoint ctrl1 = CGPointMake((lastPoint.x + 2.0 * ctrlOrig.x) / 3.0, (lastPoint.y + 2.0 * ctrlOrig.y) / 3.0);
-        CGPoint ctrl2 = CGPointMake((curveTo.x + 2.0 * ctrlOrig.x) / 3.0, (curveTo.y + 2.0 * ctrlOrig.y) / 3.0);;
 
-        bezier[1] = ctrl1;
-        bezier[2] = ctrl2;
-        bezier[3] = thisElement.points[1];
-    } else if (thisElement.type == kCGPathElementAddCurveToPoint) {
-        bezier[1] = thisElement.points[0];
-        bezier[2] = thisElement.points[1];
-        bezier[3] = thisElement.points[2];
+        bezier[1] = CGPointMake((2.0 * bezier[0].x + bezier[3].x) / 3.0,
+                                (2.0 * bezier[0].y + bezier[3].y) / 3.0);;
+        bezier[2] = CGPointMake((bezier[0].x + 2.0 * bezier[3].x) / 3.0,
+                                (bezier[0].y + 2.0 * bezier[3].y) / 3.0);;
+
+    } else{
+        [UIBezierPath fillBezier:bezier forNonCloseElement:element forNonClosePreviousElement:previousElement];
     }
 }
 

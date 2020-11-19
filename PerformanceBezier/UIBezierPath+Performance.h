@@ -52,6 +52,8 @@
 // return the tangent at the input T value
 + (CGPoint)tangentAtT:(CGFloat)t forBezier:(CGPoint *)bez;
 
++ (void)fillBezier:(CGPoint[4])bezier forNonCloseElement:(CGPathElement)element forNonClosePreviousElement:(CGPathElement)previousElement;
+
 // fill the input point array with [start, ctrl1, ctrl2, end]
 // for the element at the given index
 - (void)fillBezier:(CGPoint[4])bezier forElement:(NSInteger)elementIndex;
