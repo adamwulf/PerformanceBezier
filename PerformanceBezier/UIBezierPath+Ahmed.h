@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) BOOL isFlat;
 
 - (UIBezierPath *)bezierPathByFlatteningPathAndImmutable:(BOOL)returnCopy;
+- (UIBezierPath *)bezierPathByFlatteningPathWithFlatnessThreshold:(CGFloat)flatnessThreshold;
+- (UIBezierPath *)bezierPathByFlatteningPathWithFlatnessThreshold:(CGFloat)flatnessThreshold immutable:(BOOL)returnCopy;
 
 @end
 

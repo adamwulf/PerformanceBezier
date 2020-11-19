@@ -13,7 +13,7 @@
 #import "UIBezierPath+Util.h"
 #import "UIBezierPath+NSOSX_Private.h"
 
-static CGFloat idealFlatness = .01;
+static CGFloat kIdealFlatness = 0.01;
 
 @implementation UIBezierPath (Ahmed)
 
@@ -36,8 +36,18 @@ static CGFloat idealFlatness = .01;
  */
 - (UIBezierPath *)bezierPathByFlatteningPath
 {
-    return [self bezierPathByFlatteningPathAndImmutable:NO];
+    return [self bezierPathByFlatteningPathWithFlatnessThreshold:kIdealFlatness];
 }
+
+- (UIBezierPath *)bezierPathByFlatteningPathAndImmutable:(BOOL)returnCopy
+{
+    return [self bezierPathByFlatteningPathWithFlatnessThreshold:kIdealFlatness immutable:returnCopy];
+}
+- (UIBezierPath *)bezierPathByFlatteningPathWithFlatnessThreshold:(CGFloat)flatnessThreshold
+{
+    return [self bezierPathByFlatteningPathWithFlatnessThreshold:flatnessThreshold immutable:NO];
+}
+
 /**
  * @param willBeImmutable YES if this function should return a distinct UIBezier, NO otherwise
  *
@@ -48,7 +58,7 @@ static CGFloat idealFlatness = .01;
  * then shouldBeImmutable should be YES - this is considerably faster to not
  * return a copy if the value will be treated as immutable
  */
-- (UIBezierPath *)bezierPathByFlatteningPathAndImmutable:(BOOL)willBeImmutable
+- (UIBezierPath *)bezierPathByFlatteningPathWithFlatnessThreshold:(CGFloat)flatnessThreshold immutable:(BOOL)willBeImmutable
 {
     UIBezierPathProperties *props = [self pathProperties];
     UIBezierPath *ret = props.bezierPathByFlatteningPath;
@@ -132,7 +142,7 @@ static CGFloat idealFlatness = .01;
                     // level of error, then just add a line,
                     //
                     // otherwise, split the curve in half and recur
-                    if (error <= idealFlatness) {
+                    if (error <= flatnessThreshold) {
                         [newPath addLineToPoint:bez[3]];
                         flattenedElementCount++;
                     } else {
