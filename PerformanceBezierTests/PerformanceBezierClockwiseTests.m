@@ -205,7 +205,7 @@
     // This is an example of a functional test case.
 
     UIBezierPath *path1 = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, 20, 20)];
-    XCTAssertEqual([self round:[path1 area] to:5], 312.1234, "area is correct");
+    XCTAssertEqual([self round:[path1 area] to:5], 314.23576, "area is correct");
 }
 
 - (void)testInvalidClose

@@ -356,7 +356,7 @@ static void blockWithElement(void *info, const CGPathElement *element)
 
                   CGPoint onCurve = [[self class] pointAtT:.5 forBezier:bez];
 
-                  CGFloat error = [[self class] distanceOfPointToLine:onCurve start:startPoint end:bez[2]];
+                  CGFloat error = [[self class] distanceOfPointToLine:onCurve start:startPoint end:bez[3]];
 
 
                   //
