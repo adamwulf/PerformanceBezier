@@ -9,11 +9,11 @@
 #import "PerformanceBezierAbstractTest.h"
 #import <XCTest/XCTest.h>
 
-@interface PerformanceBezierClockwiseTests : PerformanceBezierAbstractTest
+@interface PerformanceBezierClockwiseTest : PerformanceBezierAbstractTest
 
 @end
 
-@implementation PerformanceBezierClockwiseTests
+@implementation PerformanceBezierClockwiseTest
 
 - (void)setUp
 {
