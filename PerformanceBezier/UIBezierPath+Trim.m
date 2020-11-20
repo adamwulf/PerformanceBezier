@@ -229,7 +229,10 @@
               previousEndpoint = element.points[0];
               [outputPath addLineToPoint:element.points[0]];
           } else if (element.type == kCGPathElementCloseSubpath) {
-              [outputPath addLineToPoint:previousMoveTo];
+              // don't add a zero-length line element
+              if (!CGPointEqualToPoint(previousMoveTo, previousEndpoint)) {
+                  [outputPath addLineToPoint:previousMoveTo];
+              }
           }
       }
     }];
