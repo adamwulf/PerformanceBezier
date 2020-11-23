@@ -10,7 +10,7 @@
 
 @interface UIBezierPath (Util)
 
-- (UIBezierPath*)newEmptyPath;
+- (UIBezierPath*)buildEmptyPath;
 
 + (CGFloat)lengthOfBezier:(const CGPoint[4])bez withAccuracy:(CGFloat)accuracy;
 

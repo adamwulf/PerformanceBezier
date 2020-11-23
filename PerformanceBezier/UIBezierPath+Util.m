@@ -14,7 +14,7 @@
 @implementation UIBezierPath (Util)
 
 /// Returns a new empty path with the same properties `lineWidth`, `lineJoinStyle`, etc as this path
-- (UIBezierPath*)newEmptyPath
+- (UIBezierPath*)buildEmptyPath
 {
     UIBezierPath *path = [UIBezierPath bezierPath];
     path.lineWidth = self.lineWidth;
