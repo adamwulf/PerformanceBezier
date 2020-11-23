@@ -18,11 +18,13 @@
 - (void)testTrimFromElement
 {
     UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    [simplePath setLineWidth:10];
     [simplePath moveToPoint:CGPointMake(100, 100)];
     [simplePath addLineToPoint:CGPointMake(200, 100)];
     [simplePath addLineToPoint:CGPointMake(200, 99)];
 
     UIBezierPath* trimmedPath = [UIBezierPath bezierPath];
+    [trimmedPath setLineWidth:10];
     [trimmedPath moveToPoint:CGPointMake(200, 100)];
     [trimmedPath addLineToPoint:CGPointMake(200, 99)];
 

@@ -13,6 +13,19 @@
 
 @implementation UIBezierPath (Util)
 
+/// Returns a new empty path with the same properties `lineWidth`, `lineJoinStyle`, etc as this path
+- (UIBezierPath*)newEmptyPath
+{
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    path.lineWidth = self.lineWidth;
+    path.lineCapStyle = self.lineCapStyle;
+    path.lineJoinStyle = self.lineJoinStyle;
+    path.miterLimit = self.miterLimit;
+    path.flatness = self.flatness;
+    path.usesEvenOddFillRule = self.usesEvenOddFillRule;
+    return path;
+}
+
 + (CGFloat)lengthOfBezier:(const CGPoint[4])bez withAccuracy:(CGFloat)acceptableError
 {
     CGFloat polyLen = 0.0;

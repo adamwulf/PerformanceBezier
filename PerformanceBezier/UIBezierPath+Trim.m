@@ -18,7 +18,7 @@
 - (UIBezierPath *)bezierPathByTrimmingElement:(NSInteger)elementIndex fromTValue:(double)fromTValue toTValue:(double)toTValue
 {
     __block CGPoint previousEndpoint;
-    __block UIBezierPath *outputPath = [UIBezierPath bezierPath];
+    __block UIBezierPath *outputPath = [self newEmptyPath];
     [self iteratePathWithBlock:^(CGPathElement element, NSUInteger currentIndex) {
       if (currentIndex < elementIndex) {
           if (element.type == kCGPathElementMoveToPoint) {
@@ -83,7 +83,7 @@
 
     __block CGPoint lastMoveTo = [self firstPoint];
     __block CGPoint lastPoint = [self firstPoint];
-    UIBezierPath *retPath = [UIBezierPath bezierPath];
+    UIBezierPath *retPath = [self newEmptyPath];
     [self iteratePathWithBlock:^(CGPathElement element, NSUInteger idx) {
         if (idx == elementIndex && element.type != kCGPathElementMoveToPoint){
             [retPath moveToPoint:lastPoint];
@@ -140,7 +140,7 @@
 {
     __block CGPoint previousMoveTo = [self firstPoint];
     __block CGPoint previousEndpoint;
-    __block UIBezierPath *outputPath = [UIBezierPath bezierPath];
+    __block UIBezierPath *outputPath = [self newEmptyPath];
     [self iteratePathWithBlock:^(CGPathElement element, NSUInteger currentIndex) {
         if (element.type == kCGPathElementMoveToPoint) {
             previousMoveTo = element.points[0];
@@ -249,7 +249,7 @@
 {
     __block CGPoint previousMoveTo = [self firstPoint];
     __block CGPoint previousEndpoint;
-    __block UIBezierPath *outputPath = [UIBezierPath bezierPath];
+    __block UIBezierPath *outputPath = [self newEmptyPath];
     [self iteratePathWithBlock:^(CGPathElement element, NSUInteger currentIndex) {
       if (currentIndex == elementIndex) {
           if (element.type == kCGPathElementMoveToPoint) {

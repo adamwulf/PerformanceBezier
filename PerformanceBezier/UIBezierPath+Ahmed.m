@@ -74,7 +74,7 @@ static CGFloat kIdealFlatness = 0.01;
     }
 
     __block NSInteger flattenedElementCount = 0;
-    UIBezierPath *newPath = [UIBezierPath bezierPath];
+    UIBezierPath *newPath = [self newEmptyPath];
     NSInteger elements = [self elementCount];
     NSInteger n;
     CGPoint pointForClose = CGPointMake(0.0, 0.0);

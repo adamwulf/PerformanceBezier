@@ -10,6 +10,8 @@
 
 @interface UIBezierPath (Util)
 
+- (UIBezierPath*)newEmptyPath;
+
 + (CGFloat)lengthOfBezier:(const CGPoint[4])bez withAccuracy:(CGFloat)accuracy;
 
 + (void)subdivideBezierAtT:(const CGPoint[4])bez bez1:(CGPoint[4])bez1 bez2:(CGPoint[4])bez2 t:(CGFloat)t;
