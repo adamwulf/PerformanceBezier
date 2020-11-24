@@ -37,4 +37,8 @@ typedef enum {
 -(void)cacheElementIndex:(NSInteger)index changesPosition:(BOOL)changesPosition;
 -(ElementPositionChange)cachedElementIndexDoesChangePosition:(NSInteger)index;
 
+-(void)resetSubpathRangeCount;
+-(void)cacheSubpathRange:(NSRange)range;
+-(NSRange)subpathRangeForElementIndex:(NSInteger)elementIndex;
+
 @end

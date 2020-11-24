@@ -31,6 +31,10 @@ typedef struct LengthCacheItem {
     NSInteger totalLengthCacheCount;
     NSInteger elementPositionChangeCacheCount;
     NSObject *lock;
+
+    NSRange *subpathRanges;
+    NSInteger subpathRangesCount;
+    NSInteger subpathRangesNextIndex;
 }
 
 @synthesize isFlat;
@@ -57,6 +61,8 @@ typedef struct LengthCacheItem {
         lengthCacheCount = 0;
         totalLengthCacheCount = 0;
         elementPositionChangeCacheCount = 0;
+        subpathRanges = nil;
+        subpathRangesCount = 0;
         lock = [[NSObject alloc] init];
     }
     
@@ -127,6 +133,11 @@ typedef struct LengthCacheItem {
             free(elementPositionChangeCache);
             elementPositionChangeCache = nil;
             elementPositionChangeCacheCount = 0;
+        }
+        if (subpathRangesCount > 0 && subpathRanges) {
+            free(subpathRanges);
+            subpathRanges = nil;
+            subpathRangesCount = 0;
         }
     }
 
@@ -236,6 +247,49 @@ typedef struct LengthCacheItem {
 
         return elementPositionChangeCache[index];
     }
+}
+
+// Track subpath ranges of this path. whenever an element is added to this path
+// this method should be called to clear the subpath cache count
+-(void)resetSubpathRangeCount {
+    if (subpathRangesNextIndex > 0) {
+        subpathRangesNextIndex = 0;
+        memset(subpathRanges, 0, subpathRangesCount * sizeof(NSRange));
+    }
+}
+
+-(void)cacheSubpathRange:(NSRange)range {
+    @synchronized (lock) {
+        if (subpathRangesCount == 0){
+            const NSInteger DefaultCount = 256;
+            subpathRanges = calloc(DefaultCount, sizeof(ElementPositionChange));
+            subpathRangesCount = DefaultCount;
+        } else if (subpathRangesNextIndex >= subpathRangesCount) {
+            // increase our cache size
+            NSRange* oldCache = subpathRanges;
+            NSInteger oldLength = subpathRangesCount;
+            subpathRangesCount *= 2;
+            subpathRanges = calloc(subpathRangesCount, sizeof(NSRange));
+            memcpy(subpathRanges, oldCache, oldLength * sizeof(NSRange));
+            free(oldCache);
+        }
+
+        subpathRanges[subpathRangesNextIndex] = range;
+        subpathRangesNextIndex ++;
+    }
+}
+
+-(NSRange)subpathRangeForElementIndex:(NSInteger)elementIndex {
+    for (NSInteger i=0; i < subpathRangesNextIndex && i < subpathRangesCount; i++) {
+        NSRange rng = subpathRanges[i];
+        if (rng.length == 0) {
+            break;
+        }
+        if (NSLocationInRange(elementIndex, rng)) {
+            return rng;
+        }
+    }
+    return NSMakeRange(NSNotFound, 0);
 }
 
 @end
