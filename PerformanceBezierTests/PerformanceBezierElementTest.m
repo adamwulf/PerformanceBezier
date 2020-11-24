@@ -345,17 +345,8 @@
 
     NSRange rng = [path subpathRangeForElement:0];
 
+    XCTAssertEqual([path elementCount], 1);
     XCTAssertEqual(rng.location, 0);
-    XCTAssertEqual(rng.length, 1);
-
-    rng = [path subpathRangeForElement:1];
-
-    XCTAssertEqual(rng.location, 1);
-    XCTAssertEqual(rng.length, 1);
-
-    rng = [path subpathRangeForElement:2];
-
-    XCTAssertEqual(rng.location, 2);
     XCTAssertEqual(rng.length, 1);
 }
 

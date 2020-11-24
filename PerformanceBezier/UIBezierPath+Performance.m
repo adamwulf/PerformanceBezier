@@ -8,11 +8,11 @@
 
 #import "UIBezierPath+Performance.h"
 #import "JRSwizzle.h"
+#import "PerformanceBezier.h"
 #import "UIBezierPath+FirstLast.h"
 #import "UIBezierPath+NSOSX.h"
 #import "UIBezierPath+Uncached.h"
 #import "UIBezierPath+Util.h"
-#import "PerformanceBezier.h"
 #import <objc/runtime.h>
 
 static char BEZIER_PROPERTIES;
@@ -129,7 +129,8 @@ static char BEZIER_PROPERTIES;
 }
 
 
-+ (void)fillBezier:(CGPoint[4])bezier forNonCloseElement:(CGPathElement)element forNonClosePreviousElement:(CGPathElement)previousElement {
++ (void)fillBezier:(CGPoint[4])bezier forNonCloseElement:(CGPathElement)element forNonClosePreviousElement:(CGPathElement)previousElement
+{
     if (previousElement.type == kCGPathElementMoveToPoint ||
         previousElement.type == kCGPathElementAddLineToPoint) {
         bezier[0] = previousElement.points[0];
@@ -153,16 +154,19 @@ static char BEZIER_PROPERTIES;
 
     if (element.type == kCGPathElementAddLineToPoint) {
         bezier[1] = CGPointMake((2.0 * bezier[0].x + element.points[0].x) / 3.0,
-                                (2.0 * bezier[0].y + element.points[0].y) / 3.0);;
+                                (2.0 * bezier[0].y + element.points[0].y) / 3.0);
+        ;
         bezier[2] = CGPointMake((bezier[0].x + 2.0 * element.points[0].x) / 3.0,
-                                (bezier[0].y + 2.0 * element.points[0].y) / 3.0);;
+                                (bezier[0].y + 2.0 * element.points[0].y) / 3.0);
+        ;
         bezier[3] = element.points[0];
     } else if (element.type == kCGPathElementAddQuadCurveToPoint) {
         CGPoint lastPoint = bezier[0];
         CGPoint ctrlOrig = element.points[0];
         CGPoint curveTo = element.points[1];
         CGPoint ctrl1 = CGPointMake((lastPoint.x + 2.0 * ctrlOrig.x) / 3.0, (lastPoint.y + 2.0 * ctrlOrig.y) / 3.0);
-        CGPoint ctrl2 = CGPointMake((curveTo.x + 2.0 * ctrlOrig.x) / 3.0, (curveTo.y + 2.0 * ctrlOrig.y) / 3.0);;
+        CGPoint ctrl2 = CGPointMake((curveTo.x + 2.0 * ctrlOrig.x) / 3.0, (curveTo.y + 2.0 * ctrlOrig.y) / 3.0);
+        ;
 
         bezier[1] = ctrl1;
         bezier[2] = ctrl2;
@@ -218,11 +222,13 @@ static char BEZIER_PROPERTIES;
         }
 
         bezier[1] = CGPointMake((2.0 * bezier[0].x + bezier[3].x) / 3.0,
-                                (2.0 * bezier[0].y + bezier[3].y) / 3.0);;
+                                (2.0 * bezier[0].y + bezier[3].y) / 3.0);
+        ;
         bezier[2] = CGPointMake((bezier[0].x + 2.0 * bezier[3].x) / 3.0,
-                                (bezier[0].y + 2.0 * bezier[3].y) / 3.0);;
+                                (bezier[0].y + 2.0 * bezier[3].y) / 3.0);
+        ;
 
-    } else{
+    } else {
         [UIBezierPath fillBezier:bezier forNonCloseElement:element forNonClosePreviousElement:previousElement];
     }
 }
@@ -232,7 +238,7 @@ static char BEZIER_PROPERTIES;
     if (elementIndex >= [self elementCount] || elementIndex < 0) {
         @throw [NSException exceptionWithName:@"BezierElementException" reason:@"Element index is out of range" userInfo:nil];
     }
-    if (elementIndex == 0){
+    if (elementIndex == 0) {
         // instead of calculating the tangent of the moveTo,
         // we'll calculate the tangent at the very start
         // of the element after the moveTo
@@ -243,7 +249,7 @@ static char BEZIER_PROPERTIES;
         CGPathElement ele = [self elementAtIndex:elementIndex - 1 associatedPoints:points];
         CGPoint elePoint = points[[UIBezierPath numberOfPointsForElement:ele] - 1];
         CGPoint firstPoint = [self firstPoint];
-        if(elementIndex > 1 && CGPointEqualToPoint(firstPoint, elePoint)) {
+        if (elementIndex > 1 && CGPointEqualToPoint(firstPoint, elePoint)) {
             // it's a close path that won't create a line to the start of the path, we're already here.
             // so instead get the tangent at the end of the previous element
             return [self tangentOnPathAtElement:elementIndex - 1 andTValue:1.0];
@@ -258,8 +264,8 @@ static char BEZIER_PROPERTIES;
 
     [self fillBezier:bezier forElement:elementIndex];
     CGPoint tan = [UIBezierPath tangentAtT:tVal forBezier:bezier];
-    CGFloat mag = sqrt(tan.x*tan.x + tan.y*tan.y);
-    
+    CGFloat mag = sqrt(tan.x * tan.x + tan.y * tan.y);
+
     // noramlize
     tan.x = tan.x / mag;
     tan.y = tan.y / mag;
@@ -275,21 +281,21 @@ static char BEZIER_PROPERTIES;
     if (elementIndex == 0) {
         return 0;
     }
-    
+
     UIBezierPathProperties *props = [self pathProperties];
 
     CGFloat cached = [props cachedLengthForElementIndex:elementIndex acceptableError:acceptableError];
-    
-    if(cached != -1){
+
+    if (cached != -1) {
         return cached;
     }
 
     CGPoint bezier[4];
 
     [self fillBezier:bezier forElement:elementIndex];
-    
+
     CGFloat len = [UIBezierPath lengthOfBezier:bezier withAccuracy:acceptableError];
-    
+
     [props cacheLength:len forElementIndex:elementIndex acceptableError:acceptableError];
 
     if (elementIndex > 0) {
@@ -299,7 +305,7 @@ static char BEZIER_PROPERTIES;
             [props cacheLengthOfPath:totalLengthOfPathBefore + len throughElementIndex:elementIndex acceptableError:acceptableError];
         }
     }
-    
+
     return len;
 }
 
@@ -342,9 +348,25 @@ static char BEZIER_PROPERTIES;
 
         // skip calculating distance between the previous element and the start of a new subpath
         if (ele.type != kCGPathElementMoveToPoint) {
-            [self fillBezier:bezier forElement:indexToCache];
+            if (tValue == 1) {
+                cached = [props cachedLengthOfPathThroughElementIndex:indexToCache acceptableError:acceptableError];
+
+                if (cached >= 0) {
+                    lengthSoFar = cached;
+                    continue;
+                }
+
+                CGFloat len = [self lengthOfElement:indexToCache withAcceptableError:acceptableError];
+
+                lengthSoFar += len;
+
+                [props cacheLengthOfPath:lengthSoFar throughElementIndex:indexToCache acceptableError:acceptableError];
+
+                continue;
+            }
 
             if (indexToCache == elementIndex && tValue < 1) {
+                [self fillBezier:bezier forElement:indexToCache];
                 CGPoint left[4];
                 CGPoint right[4];
                 [UIBezierPath subdivideBezier:bezier intoLeft:left andRight:right atT:tValue];
@@ -352,9 +374,8 @@ static char BEZIER_PROPERTIES;
 
                 lengthSoFar += len;
             } else {
-                CGFloat len = [UIBezierPath lengthOfBezier:bezier withAccuracy:acceptableError];
+                CGFloat len = [self lengthOfElement:indexToCache withAcceptableError:acceptableError];
 
-                [props cacheLength:len forElementIndex:indexToCache acceptableError:acceptableError];
                 // build up the cache for the total length of the path up to a given element index as we go
                 lengthSoFar += len;
             }
@@ -437,8 +458,8 @@ static char BEZIER_PROPERTIES;
     __block BOOL endsWithMoveTo = false;
     __block BOOL isFlat = true;
     [path iteratePathWithBlock:^(CGPathElement element, NSUInteger idx) {
-        endsWithMoveTo = element.type == kCGPathElementMoveToPoint;
-        isFlat = isFlat && element.type != kCGPathElementAddCurveToPoint && element.type != kCGPathElementAddQuadCurveToPoint;
+      endsWithMoveTo = element.type == kCGPathElementMoveToPoint;
+      isFlat = isFlat && element.type != kCGPathElementAddCurveToPoint && element.type != kCGPathElementAddQuadCurveToPoint;
     }];
     path.pathProperties.lastAddedElementWasMoveTo = endsWithMoveTo;
     path.pathProperties.isFlat = isFlat;
@@ -542,6 +563,10 @@ static char BEZIER_PROPERTIES;
 }
 - (void)swizzle_closePath
 {
+    if ([self elementCount] == 0) {
+        // nothing to close
+        return;
+    }
     if ([self elementAtIndex:[self elementCount] - 1].type == kCGPathElementCloseSubpath) {
         // don't close the path multiple times, otherwise our cache
         // will record incorrect cachedElementCount.
@@ -749,7 +774,16 @@ static char BEZIER_PROPERTIES;
 - (NSRange)subpathRangeForElement:(NSInteger)elementIndex
 {
     NSInteger firstIndex = elementIndex;
-    NSInteger lastIndex = [self elementAtIndex:elementIndex].type == kCGPathElementMoveToPoint ? elementIndex + 1 : elementIndex;
+    NSInteger lastIndex = elementIndex;
+
+    if ([self elementAtIndex:elementIndex].type == kCGPathElementMoveToPoint) {
+        if (elementIndex == [self elementCount] - 1) {
+            // the move to is the last element in the path
+            return NSMakeRange(elementIndex, 1);
+        } else {
+            lastIndex = elementIndex + 1;
+        }
+    }
 
     while ([self elementAtIndex:firstIndex].type != kCGPathElementMoveToPoint && firstIndex > 0) {
         firstIndex -= 1;
@@ -768,26 +802,27 @@ static char BEZIER_PROPERTIES;
     return NSMakeRange(firstIndex, lastIndex - firstIndex + 1);
 }
 
-- (BOOL)changesPositionDuringElement:(NSInteger)elementIndex {
+- (BOOL)changesPositionDuringElement:(NSInteger)elementIndex
+{
     CGPathElement ele = [self elementAtIndex:elementIndex];
 
-    BOOL(^movesSincePrev)(CGPathElement, CGPathElement) = ^(CGPathElement prevEle, CGPathElement ele) {
-        NSInteger numPrevPoints = [UIBezierPath numberOfPointsForElement:prevEle];
-        for (int i=0; i<[UIBezierPath numberOfPointsForElement:ele]; i++) {
-            // we can compare to [0] since we're asking if /all/ points are equal.
-            if (!CGPointEqualToPoint(ele.points[i], prevEle.points[numPrevPoints - 1])) {
-                return NO;
-            }
-        }
-        return YES;
+    BOOL (^movesSincePrev)(CGPathElement, CGPathElement) = ^(CGPathElement prevEle, CGPathElement ele) {
+      NSInteger numPrevPoints = [UIBezierPath numberOfPointsForElement:prevEle];
+      for (int i = 0; i < [UIBezierPath numberOfPointsForElement:ele]; i++) {
+          // we can compare to [0] since we're asking if /all/ points are equal.
+          if (!CGPointEqualToPoint(ele.points[i], prevEle.points[numPrevPoints - 1])) {
+              return NO;
+          }
+      }
+      return YES;
     };
 
-    if(ele.type == kCGPathElementMoveToPoint) {
+    if (ele.type == kCGPathElementMoveToPoint) {
         return NO;
     } else if (elementIndex == 0) {
         // sanity check, element 0 should always be a moveTo element
         return NO;
-    } else if (ele.type == kCGPathElementCloseSubpath){
+    } else if (ele.type == kCGPathElementCloseSubpath) {
         NSRange rng = [self subpathRangeForElement:elementIndex];
         CGPathElement last = [self elementAtIndex:elementIndex - 1];
         CGPathElement first = [self elementAtIndex:rng.location];
