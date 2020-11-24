@@ -489,6 +489,7 @@ static char BEZIER_PROPERTIES;
 - (void)swizzle_moveToPoint:(CGPoint)point
 {
     UIBezierPathProperties *props = [self pathProperties];
+    [props resetSubpathRangeCount];
     props.bezierPathByFlatteningPath = nil;
     BOOL isEmpty = [self isEmpty];
     if (isEmpty || props.isFlat) {
@@ -519,6 +520,7 @@ static char BEZIER_PROPERTIES;
 - (void)swizzle_addLineToPoint:(CGPoint)point
 {
     UIBezierPathProperties *props = [self pathProperties];
+    [props resetSubpathRangeCount];
     props.lastAddedElementWasMoveTo = NO;
     props.bezierPathByFlatteningPath = nil;
     if ([self isEmpty] || props.isFlat) {
@@ -535,6 +537,7 @@ static char BEZIER_PROPERTIES;
 - (void)swizzle_addCurveToPoint:(CGPoint)point controlPoint1:(CGPoint)ctrl1 controlPoint2:(CGPoint)ctrl2
 {
     UIBezierPathProperties *props = [self pathProperties];
+    [props resetSubpathRangeCount];
     props.lastAddedElementWasMoveTo = NO;
     props.bezierPathByFlatteningPath = nil;
     if ([self isEmpty] || props.isFlat) {
@@ -551,6 +554,7 @@ static char BEZIER_PROPERTIES;
 - (void)swizzle_quadCurveToPoint:(CGPoint)point controlPoint:(CGPoint)ctrl1
 {
     UIBezierPathProperties *props = [self pathProperties];
+    [props resetSubpathRangeCount];
     props.lastAddedElementWasMoveTo = NO;
     props.bezierPathByFlatteningPath = nil;
     if ([self isEmpty] || props.isFlat) {
@@ -579,6 +583,7 @@ static char BEZIER_PROPERTIES;
     }
 
     UIBezierPathProperties *props = [self pathProperties];
+    [props resetSubpathRangeCount];
     props.isClosed = YES;
     props.knowsIfClosed = YES;
     props.lastAddedElementWasMoveTo = NO;
@@ -599,6 +604,7 @@ static char BEZIER_PROPERTIES;
 - (void)swizzle_arcWithCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise
 {
     UIBezierPathProperties *props = [self pathProperties];
+    [props resetSubpathRangeCount];
     props.lastAddedElementWasMoveTo = NO;
     props.bezierPathByFlatteningPath = nil;
     if ([self isEmpty] || props.isFlat) {
@@ -612,6 +618,7 @@ static char BEZIER_PROPERTIES;
 - (void)swizzle_removeAllPoints
 {
     UIBezierPathProperties *props = [self pathProperties];
+    [props resetSubpathRangeCount];
     props.lastAddedElementWasMoveTo = NO;
     props.bezierPathByFlatteningPath = nil;
     [self swizzle_removeAllPoints];
@@ -628,6 +635,7 @@ static char BEZIER_PROPERTIES;
 - (void)swizzle_appendPath:(UIBezierPath *)bezierPath
 {
     UIBezierPathProperties *props = [self pathProperties];
+    [props resetSubpathRangeCount];
     props.lastAddedElementWasMoveTo = NO;
     UIBezierPathProperties *bezierPathProps = [bezierPath pathProperties];
     props.bezierPathByFlatteningPath = nil;
@@ -776,6 +784,12 @@ static char BEZIER_PROPERTIES;
 
 - (NSRange)subpathRangeForElement:(NSInteger)elementIndex
 {
+    NSRange cachedRange = [[self pathProperties] subpathRangeForElementIndex:elementIndex];
+
+    if (cachedRange.location != NSNotFound) {
+        return cachedRange;
+    }
+
     NSInteger firstIndex = elementIndex;
     NSInteger lastIndex = elementIndex;
 
@@ -802,11 +816,22 @@ static char BEZIER_PROPERTIES;
         lastIndex -= 1;
     }
 
-    return NSMakeRange(firstIndex, lastIndex - firstIndex + 1);
+    NSRange subpathRange = NSMakeRange(firstIndex, lastIndex - firstIndex + 1);
+
+    [[self pathProperties] cacheSubpathRange:subpathRange];
+
+    return subpathRange;
 }
 
 - (BOOL)changesPositionDuringElement:(NSInteger)elementIndex
 {
+    ElementPositionChange cache = [[self pathProperties] cachedElementIndexDoesChangePosition:elementIndex];
+
+    if (cache != kPositionChangeUnknown) {
+        return cache == kPositionChangeYes ? YES : NO;
+    }
+
+    BOOL ret = NO;
     CGPathElement ele = [self elementAtIndex:elementIndex];
 
     BOOL (^movesSincePrev)(CGPathElement, CGPathElement) = ^(CGPathElement prevEle, CGPathElement ele) {
@@ -821,20 +846,24 @@ static char BEZIER_PROPERTIES;
     };
 
     if (ele.type == kCGPathElementMoveToPoint) {
-        return NO;
+        ret = NO;
     } else if (elementIndex == 0) {
         // sanity check, element 0 should always be a moveTo element
-        return NO;
+        ret = NO;
     } else if (ele.type == kCGPathElementCloseSubpath) {
         NSRange rng = [self subpathRangeForElement:elementIndex];
         CGPathElement last = [self elementAtIndex:elementIndex - 1];
         CGPathElement first = [self elementAtIndex:rng.location];
 
-        return !movesSincePrev(last, first);
+        ret = !movesSincePrev(last, first);
     } else {
         CGPathElement previous = [self elementAtIndex:elementIndex - 1];
-        return !movesSincePrev(previous, ele);
+        ret = !movesSincePrev(previous, ele);
     }
+
+    [[self pathProperties] cacheElementIndex:elementIndex changesPosition:ret];
+
+    return ret;
 }
 
 @end

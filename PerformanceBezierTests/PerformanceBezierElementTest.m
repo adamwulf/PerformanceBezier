@@ -299,6 +299,25 @@
 
     XCTAssertEqual(rng.location, key.location);
     XCTAssertEqual(rng.length, key.length);
+
+    // Test that the cache works
+    key = NSMakeRange(0, 4);
+    [path addLineToPoint:CGPointMake(200, 0)];
+
+    rng = [path subpathRangeForElement:0];
+
+    XCTAssertEqual(rng.location, key.location);
+    XCTAssertEqual(rng.length, key.length);
+
+    rng = [path subpathRangeForElement:1];
+
+    XCTAssertEqual(rng.location, key.location);
+    XCTAssertEqual(rng.length, key.length);
+
+    rng = [path subpathRangeForElement:2];
+
+    XCTAssertEqual(rng.location, key.location);
+    XCTAssertEqual(rng.length, key.length);
 }
 
 - (void)testSubpathRangeForIndexMultiplePaths
@@ -428,6 +447,14 @@
     [path moveToPoint:CGPointMake(0, 0)];
     [path closePath];
 
+    XCTAssertFalse([path changesPositionDuringElement:0]);
+    XCTAssertTrue([path changesPositionDuringElement:1]);
+    XCTAssertTrue([path changesPositionDuringElement:2]);
+    XCTAssertFalse([path changesPositionDuringElement:3]);
+    XCTAssertFalse([path changesPositionDuringElement:4]);
+    XCTAssertFalse([path changesPositionDuringElement:5]);
+
+    // verify cache works
     XCTAssertFalse([path changesPositionDuringElement:0]);
     XCTAssertTrue([path changesPositionDuringElement:1]);
     XCTAssertTrue([path changesPositionDuringElement:2]);

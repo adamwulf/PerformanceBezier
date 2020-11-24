@@ -26,9 +26,15 @@ typedef struct LengthCacheItem {
     UIBezierPath *bezierPathByFlatteningPath;
     LengthCacheItem* elementLengthCache;
     LengthCacheItem* totalLengthCache;
+    ElementPositionChange* elementPositionChangeCache;
     NSInteger lengthCacheCount;
     NSInteger totalLengthCacheCount;
+    NSInteger elementPositionChangeCacheCount;
     NSObject *lock;
+
+    NSRange *subpathRanges;
+    NSInteger subpathRangesCount;
+    NSInteger subpathRangesNextIndex;
 }
 
 @synthesize isFlat;
@@ -51,8 +57,13 @@ typedef struct LengthCacheItem {
     if(self = [super init]){
         elementLengthCache = nil;
         totalLengthCache = nil;
+        elementPositionChangeCache = nil;
         lengthCacheCount = 0;
         totalLengthCacheCount = 0;
+        elementPositionChangeCacheCount = 0;
+        subpathRanges = nil;
+        subpathRangesCount = 0;
+        subpathRangesNextIndex = 0;
         lock = [[NSObject alloc] init];
     }
     
@@ -118,6 +129,17 @@ typedef struct LengthCacheItem {
             free(totalLengthCache);
             totalLengthCache = nil;
             totalLengthCacheCount = 0;
+        }
+        if (elementPositionChangeCacheCount > 0 && elementPositionChangeCache){
+            free(elementPositionChangeCache);
+            elementPositionChangeCache = nil;
+            elementPositionChangeCacheCount = 0;
+        }
+        if (subpathRangesCount > 0 && subpathRanges) {
+            free(subpathRanges);
+            subpathRanges = nil;
+            subpathRangesCount = 0;
+            subpathRangesNextIndex = 0;
         }
     }
 
@@ -197,6 +219,78 @@ typedef struct LengthCacheItem {
         totalLengthCache[index].length = length;
         totalLengthCache[index].acceptableError = error;
     }
+}
+
+-(void)cacheElementIndex:(NSInteger)index changesPosition:(BOOL)changesPosition{
+    @synchronized (lock) {
+        if (elementPositionChangeCacheCount == 0){
+            const NSInteger DefaultCount = 256;
+            elementPositionChangeCache = calloc(DefaultCount, sizeof(ElementPositionChange));
+            elementPositionChangeCacheCount = DefaultCount;
+        } else if (index >= elementPositionChangeCacheCount) {
+            // increase our cache size
+            ElementPositionChange* oldCache = elementPositionChangeCache;
+            NSInteger oldLength = elementPositionChangeCacheCount;
+            elementPositionChangeCacheCount *= 2;
+            elementPositionChangeCache = calloc(elementPositionChangeCacheCount, sizeof(ElementPositionChange));
+            memcpy(elementPositionChangeCache, oldCache, oldLength * sizeof(ElementPositionChange));
+            free(oldCache);
+        }
+
+        elementPositionChangeCache[index] = changesPosition ? kPositionChangeYes : kPositionChangeNo;
+    }
+}
+
+-(ElementPositionChange)cachedElementIndexDoesChangePosition:(NSInteger)index {
+    @synchronized (lock) {
+        if (index < 0 || index >= elementPositionChangeCacheCount){
+            return kPositionChangeUnknown;
+        }
+
+        return elementPositionChangeCache[index];
+    }
+}
+
+// Track subpath ranges of this path. whenever an element is added to this path
+// this method should be called to clear the subpath cache count
+-(void)resetSubpathRangeCount {
+    if (subpathRangesNextIndex > 0 && subpathRangesCount > 0) {
+        subpathRangesNextIndex = 0;
+    }
+}
+
+-(void)cacheSubpathRange:(NSRange)range {
+    @synchronized (lock) {
+        if (subpathRangesCount == 0){
+            const NSInteger DefaultCount = 256;
+            subpathRanges = calloc(DefaultCount, sizeof(NSRange));
+            subpathRangesCount = DefaultCount;
+        } else if (subpathRangesNextIndex >= subpathRangesCount) {
+            // increase our cache size
+            NSRange* oldCache = subpathRanges;
+            NSInteger oldLength = subpathRangesCount;
+            subpathRangesCount *= 2;
+            subpathRanges = calloc(subpathRangesCount, sizeof(NSRange));
+            memcpy(subpathRanges, oldCache, oldLength * sizeof(NSRange));
+            free(oldCache);
+        }
+
+        subpathRanges[subpathRangesNextIndex] = range;
+        subpathRangesNextIndex ++;
+    }
+}
+
+-(NSRange)subpathRangeForElementIndex:(NSInteger)elementIndex {
+    for (NSInteger i=0; i < subpathRangesNextIndex && i < subpathRangesCount; i++) {
+        NSRange rng = subpathRanges[i];
+        if (rng.length == 0) {
+            break;
+        }
+        if (NSLocationInRange(elementIndex, rng)) {
+            return rng;
+        }
+    }
+    return NSMakeRange(NSNotFound, 0);
 }
 
 @end

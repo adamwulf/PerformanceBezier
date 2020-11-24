@@ -9,6 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    kPositionChangeUnknown = 0,
+    kPositionChangeNo = -1,
+    kPositionChangeYes = 1
+} ElementPositionChange;
+
 @interface UIBezierPathProperties : NSObject <NSSecureCoding>
 @property(nonatomic) BOOL isClosed;
 @property(nonatomic) BOOL knowsIfClosed;
@@ -27,5 +33,12 @@
 
 -(CGFloat)cachedLengthOfPathThroughElementIndex:(NSInteger)index acceptableError:(CGFloat)error;
 -(void)cacheLengthOfPath:(CGFloat)length throughElementIndex:(NSInteger)index acceptableError:(CGFloat)error;
+
+-(void)cacheElementIndex:(NSInteger)index changesPosition:(BOOL)changesPosition;
+-(ElementPositionChange)cachedElementIndexDoesChangePosition:(NSInteger)index;
+
+-(void)resetSubpathRangeCount;
+-(void)cacheSubpathRange:(NSRange)range;
+-(NSRange)subpathRangeForElementIndex:(NSInteger)elementIndex;
 
 @end
