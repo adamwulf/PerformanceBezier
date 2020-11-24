@@ -81,6 +81,7 @@ static char ELEMENT_ARRAY;
     __block BOOL didReturn = NO;
     __block CGPathElement returnVal;
     if (askingForIndex < [self.elementCacheArray count]) {
+        didReturn = YES;
         returnVal = *(CGPathElement *)[[self.elementCacheArray objectAtIndex:askingForIndex] pointerValue];
 #ifdef MMPreventBezierPerformance
         [self simulateNoBezierCaching];
@@ -100,6 +101,8 @@ static char ELEMENT_ARRAY;
           }
         }];
     }
+
+    NSAssert(didReturn, @"could not find index %@ in path", @(askingForIndex));
 
     if (points) {
         for (int i = 0; i < [UIBezierPath numberOfPointsForElement:returnVal]; i++) {
