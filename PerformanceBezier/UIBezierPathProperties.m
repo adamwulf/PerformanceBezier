@@ -167,14 +167,16 @@ typedef struct LengthCacheItem {
 -(void)cacheLength:(CGFloat)length forElementIndex:(NSInteger)index acceptableError:(CGFloat)error{    
     @synchronized (lock) {
         if (lengthCacheCount == 0){
-            const NSInteger DefaultCount = 256;
+            const NSInteger DefaultCount = MAX(256, pow(2, log2(index + 1) + 1));
             elementLengthCache = calloc(DefaultCount, sizeof(LengthCacheItem));
             lengthCacheCount = DefaultCount;
         } else if (index >= lengthCacheCount) {
             // increase our cache size
             LengthCacheItem* oldCache = elementLengthCache;
             NSInteger oldLength = lengthCacheCount;
-            lengthCacheCount *= 2;
+            while(index >= lengthCacheCount) {
+                lengthCacheCount *= 2;
+            }
             elementLengthCache = calloc(lengthCacheCount, sizeof(LengthCacheItem));
             memcpy(elementLengthCache, oldCache, oldLength * sizeof(LengthCacheItem));
             free(oldCache);
@@ -203,14 +205,16 @@ typedef struct LengthCacheItem {
 -(void)cacheLengthOfPath:(CGFloat)length throughElementIndex:(NSInteger)index acceptableError:(CGFloat)error {
     @synchronized (lock) {
         if (totalLengthCacheCount == 0){
-            const NSInteger DefaultCount = 256;
+            const NSInteger DefaultCount = MAX(256, pow(2, log2(index + 1) + 1));
             totalLengthCache = calloc(DefaultCount, sizeof(LengthCacheItem));
             totalLengthCacheCount = DefaultCount;
         } else if (index >= totalLengthCacheCount) {
             // increase our cache size
             LengthCacheItem* oldCache = totalLengthCache;
             NSInteger oldLength = totalLengthCacheCount;
-            totalLengthCacheCount *= 2;
+            while(index >= totalLengthCacheCount) {
+                totalLengthCacheCount *= 2;
+            }
             totalLengthCache = calloc(totalLengthCacheCount, sizeof(LengthCacheItem));
             memcpy(totalLengthCache, oldCache, oldLength * sizeof(LengthCacheItem));
             free(oldCache);
@@ -224,18 +228,21 @@ typedef struct LengthCacheItem {
 -(void)cacheElementIndex:(NSInteger)index changesPosition:(BOOL)changesPosition{
     @synchronized (lock) {
         if (elementPositionChangeCacheCount == 0){
-            const NSInteger DefaultCount = 256;
+            const NSInteger DefaultCount = MAX(256, pow(2, log2(index + 1) + 1));
             elementPositionChangeCache = calloc(DefaultCount, sizeof(ElementPositionChange));
             elementPositionChangeCacheCount = DefaultCount;
         } else if (index >= elementPositionChangeCacheCount) {
             // increase our cache size
             ElementPositionChange* oldCache = elementPositionChangeCache;
             NSInteger oldLength = elementPositionChangeCacheCount;
-            elementPositionChangeCacheCount *= 2;
+            while(index >= elementPositionChangeCacheCount) {
+                elementPositionChangeCacheCount *= 2;
+            }
             elementPositionChangeCache = calloc(elementPositionChangeCacheCount, sizeof(ElementPositionChange));
             memcpy(elementPositionChangeCache, oldCache, oldLength * sizeof(ElementPositionChange));
             free(oldCache);
         }
+
 
         elementPositionChangeCache[index] = changesPosition ? kPositionChangeYes : kPositionChangeNo;
     }
@@ -254,8 +261,10 @@ typedef struct LengthCacheItem {
 // Track subpath ranges of this path. whenever an element is added to this path
 // this method should be called to clear the subpath cache count
 -(void)resetSubpathRangeCount {
-    if (subpathRangesNextIndex > 0 && subpathRangesCount > 0) {
-        subpathRangesNextIndex = 0;
+    @synchronized (lock) {
+        if (subpathRangesNextIndex > 0 && subpathRangesCount > 0) {
+            subpathRangesNextIndex = 0;
+        }
     }
 }
 
@@ -269,7 +278,9 @@ typedef struct LengthCacheItem {
             // increase our cache size
             NSRange* oldCache = subpathRanges;
             NSInteger oldLength = subpathRangesCount;
-            subpathRangesCount *= 2;
+            while(subpathRangesNextIndex >= totalLengthCacheCount) {
+                subpathRangesCount *= 2;
+            }
             subpathRanges = calloc(subpathRangesCount, sizeof(NSRange));
             memcpy(subpathRanges, oldCache, oldLength * sizeof(NSRange));
             free(oldCache);
@@ -281,13 +292,15 @@ typedef struct LengthCacheItem {
 }
 
 -(NSRange)subpathRangeForElementIndex:(NSInteger)elementIndex {
-    for (NSInteger i=0; i < subpathRangesNextIndex && i < subpathRangesCount; i++) {
-        NSRange rng = subpathRanges[i];
-        if (rng.length == 0) {
-            break;
-        }
-        if (NSLocationInRange(elementIndex, rng)) {
-            return rng;
+    @synchronized (lock) {
+        for (NSInteger i=0; i < subpathRangesNextIndex && i < subpathRangesCount; i++) {
+            NSRange rng = subpathRanges[i];
+            if (rng.length == 0) {
+                break;
+            }
+            if (NSLocationInRange(elementIndex, rng)) {
+                return rng;
+            }
         }
     }
     return NSMakeRange(NSNotFound, 0);
