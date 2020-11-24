@@ -63,6 +63,7 @@ typedef struct LengthCacheItem {
         elementPositionChangeCacheCount = 0;
         subpathRanges = nil;
         subpathRangesCount = 0;
+        subpathRangesNextIndex = 0;
         lock = [[NSObject alloc] init];
     }
     
@@ -138,6 +139,7 @@ typedef struct LengthCacheItem {
             free(subpathRanges);
             subpathRanges = nil;
             subpathRangesCount = 0;
+            subpathRangesNextIndex = 0;
         }
     }
 
@@ -252,9 +254,8 @@ typedef struct LengthCacheItem {
 // Track subpath ranges of this path. whenever an element is added to this path
 // this method should be called to clear the subpath cache count
 -(void)resetSubpathRangeCount {
-    if (subpathRangesNextIndex > 0) {
+    if (subpathRangesNextIndex > 0 && subpathRangesCount > 0) {
         subpathRangesNextIndex = 0;
-        memset(subpathRanges, 0, subpathRangesCount * sizeof(NSRange));
     }
 }
 
@@ -262,7 +263,7 @@ typedef struct LengthCacheItem {
     @synchronized (lock) {
         if (subpathRangesCount == 0){
             const NSInteger DefaultCount = 256;
-            subpathRanges = calloc(DefaultCount, sizeof(ElementPositionChange));
+            subpathRanges = calloc(DefaultCount, sizeof(NSRange));
             subpathRangesCount = DefaultCount;
         } else if (subpathRangesNextIndex >= subpathRangesCount) {
             // increase our cache size
