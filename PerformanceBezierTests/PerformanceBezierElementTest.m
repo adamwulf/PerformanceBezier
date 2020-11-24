@@ -434,6 +434,14 @@
     XCTAssertFalse([path changesPositionDuringElement:3]);
     XCTAssertFalse([path changesPositionDuringElement:4]);
     XCTAssertFalse([path changesPositionDuringElement:5]);
+
+    // verify cache works
+    XCTAssertFalse([path changesPositionDuringElement:0]);
+    XCTAssertTrue([path changesPositionDuringElement:1]);
+    XCTAssertTrue([path changesPositionDuringElement:2]);
+    XCTAssertFalse([path changesPositionDuringElement:3]);
+    XCTAssertFalse([path changesPositionDuringElement:4]);
+    XCTAssertFalse([path changesPositionDuringElement:5]);
 }
 
 - (void)testSubpathChangesDuring3

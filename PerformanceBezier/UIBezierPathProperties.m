@@ -26,8 +26,10 @@ typedef struct LengthCacheItem {
     UIBezierPath *bezierPathByFlatteningPath;
     LengthCacheItem* elementLengthCache;
     LengthCacheItem* totalLengthCache;
+    ElementPositionChange* elementPositionChangeCache;
     NSInteger lengthCacheCount;
     NSInteger totalLengthCacheCount;
+    NSInteger elementPositionChangeCacheCount;
     NSObject *lock;
 }
 
@@ -51,8 +53,10 @@ typedef struct LengthCacheItem {
     if(self = [super init]){
         elementLengthCache = nil;
         totalLengthCache = nil;
+        elementPositionChangeCache = nil;
         lengthCacheCount = 0;
         totalLengthCacheCount = 0;
+        elementPositionChangeCacheCount = 0;
         lock = [[NSObject alloc] init];
     }
     
@@ -118,6 +122,11 @@ typedef struct LengthCacheItem {
             free(totalLengthCache);
             totalLengthCache = nil;
             totalLengthCacheCount = 0;
+        }
+        if (elementPositionChangeCacheCount > 0 && elementPositionChangeCache){
+            free(elementPositionChangeCache);
+            elementPositionChangeCache = nil;
+            elementPositionChangeCacheCount = 0;
         }
     }
 
@@ -196,6 +205,36 @@ typedef struct LengthCacheItem {
 
         totalLengthCache[index].length = length;
         totalLengthCache[index].acceptableError = error;
+    }
+}
+
+-(void)cacheElementIndex:(NSInteger)index changesPosition:(BOOL)changesPosition{
+    @synchronized (lock) {
+        if (elementPositionChangeCacheCount == 0){
+            const NSInteger DefaultCount = 256;
+            elementPositionChangeCache = calloc(DefaultCount, sizeof(ElementPositionChange));
+            elementPositionChangeCacheCount = DefaultCount;
+        } else if (index >= elementPositionChangeCacheCount) {
+            // increase our cache size
+            ElementPositionChange* oldCache = elementPositionChangeCache;
+            NSInteger oldLength = elementPositionChangeCacheCount;
+            elementPositionChangeCacheCount *= 2;
+            elementPositionChangeCache = calloc(elementPositionChangeCacheCount, sizeof(ElementPositionChange));
+            memcpy(elementPositionChangeCache, oldCache, oldLength * sizeof(ElementPositionChange));
+            free(oldCache);
+        }
+
+        elementPositionChangeCache[index] = changesPosition ? kPositionChangeYes : kPositionChangeNo;
+    }
+}
+
+-(ElementPositionChange)cachedElementIndexDoesChangePosition:(NSInteger)index {
+    @synchronized (lock) {
+        if (index < 0 || index >= elementPositionChangeCacheCount){
+            return kPositionChangeUnknown;
+        }
+
+        return elementPositionChangeCache[index];
     }
 }
 

@@ -807,6 +807,13 @@ static char BEZIER_PROPERTIES;
 
 - (BOOL)changesPositionDuringElement:(NSInteger)elementIndex
 {
+    ElementPositionChange cache = [[self pathProperties] cachedElementIndexDoesChangePosition:elementIndex];
+
+    if (cache != kPositionChangeUnknown) {
+        return cache == kPositionChangeYes ? YES : NO;
+    }
+
+    BOOL ret = NO;
     CGPathElement ele = [self elementAtIndex:elementIndex];
 
     BOOL (^movesSincePrev)(CGPathElement, CGPathElement) = ^(CGPathElement prevEle, CGPathElement ele) {
@@ -821,20 +828,24 @@ static char BEZIER_PROPERTIES;
     };
 
     if (ele.type == kCGPathElementMoveToPoint) {
-        return NO;
+        ret = NO;
     } else if (elementIndex == 0) {
         // sanity check, element 0 should always be a moveTo element
-        return NO;
+        ret = NO;
     } else if (ele.type == kCGPathElementCloseSubpath) {
         NSRange rng = [self subpathRangeForElement:elementIndex];
         CGPathElement last = [self elementAtIndex:elementIndex - 1];
         CGPathElement first = [self elementAtIndex:rng.location];
 
-        return !movesSincePrev(last, first);
+        ret = !movesSincePrev(last, first);
     } else {
         CGPathElement previous = [self elementAtIndex:elementIndex - 1];
-        return !movesSincePrev(previous, ele);
+        ret = !movesSincePrev(previous, ele);
     }
+
+    [[self pathProperties] cacheElementIndex:elementIndex changesPosition:ret];
+
+    return ret;
 }
 
 @end
