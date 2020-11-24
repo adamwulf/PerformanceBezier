@@ -174,9 +174,8 @@ typedef struct LengthCacheItem {
             // increase our cache size
             LengthCacheItem* oldCache = elementLengthCache;
             NSInteger oldLength = lengthCacheCount;
-            while(index >= lengthCacheCount) {
-                lengthCacheCount *= 2;
-            }
+            const NSInteger IdealCount = pow(2, log2(index + 1) + 1);
+            lengthCacheCount = MAX(lengthCacheCount * 2, IdealCount);
             elementLengthCache = calloc(lengthCacheCount, sizeof(LengthCacheItem));
             memcpy(elementLengthCache, oldCache, oldLength * sizeof(LengthCacheItem));
             free(oldCache);
@@ -212,9 +211,8 @@ typedef struct LengthCacheItem {
             // increase our cache size
             LengthCacheItem* oldCache = totalLengthCache;
             NSInteger oldLength = totalLengthCacheCount;
-            while(index >= totalLengthCacheCount) {
-                totalLengthCacheCount *= 2;
-            }
+            const NSInteger IdealCount = pow(2, log2(index + 1) + 1);
+            totalLengthCacheCount = MAX(totalLengthCacheCount * 2, IdealCount);
             totalLengthCache = calloc(totalLengthCacheCount, sizeof(LengthCacheItem));
             memcpy(totalLengthCache, oldCache, oldLength * sizeof(LengthCacheItem));
             free(oldCache);
@@ -235,9 +233,8 @@ typedef struct LengthCacheItem {
             // increase our cache size
             ElementPositionChange* oldCache = elementPositionChangeCache;
             NSInteger oldLength = elementPositionChangeCacheCount;
-            while(index >= elementPositionChangeCacheCount) {
-                elementPositionChangeCacheCount *= 2;
-            }
+            const NSInteger IdealCount = pow(2, log2(index + 1) + 1);
+            elementPositionChangeCacheCount = MAX(elementPositionChangeCacheCount * 2, IdealCount);
             elementPositionChangeCache = calloc(elementPositionChangeCacheCount, sizeof(ElementPositionChange));
             memcpy(elementPositionChangeCache, oldCache, oldLength * sizeof(ElementPositionChange));
             free(oldCache);
@@ -278,9 +275,8 @@ typedef struct LengthCacheItem {
             // increase our cache size
             NSRange* oldCache = subpathRanges;
             NSInteger oldLength = subpathRangesCount;
-            while(subpathRangesNextIndex >= totalLengthCacheCount) {
-                subpathRangesCount *= 2;
-            }
+            const NSInteger IdealCount = pow(2, log2(subpathRangesNextIndex + 1) + 1);
+            subpathRangesCount = MAX(subpathRangesCount * 2, IdealCount);
             subpathRanges = calloc(subpathRangesCount, sizeof(NSRange));
             memcpy(subpathRanges, oldCache, oldLength * sizeof(NSRange));
             free(oldCache);
