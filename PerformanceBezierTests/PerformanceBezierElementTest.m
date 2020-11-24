@@ -204,6 +204,14 @@
     len = [simplePath lengthOfPathThroughElement:3 tValue:0.5 withAcceptableError:kIntersectionPointPrecision];
 
     XCTAssertEqual(len, 150.5);
+
+    len = [simplePath lengthOfPathThroughElement:2 tValue:0 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 100);
+
+    len = [simplePath lengthOfPathThroughElement:2 tValue:1 withAcceptableError:kIntersectionPointPrecision];
+
+    XCTAssertEqual(len, 101);
 }
 
 /// Tests same as above, ensuring recursion will calculate correctly

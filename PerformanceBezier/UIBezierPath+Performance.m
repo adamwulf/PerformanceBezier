@@ -365,7 +365,10 @@ static char BEZIER_PROPERTIES;
                 continue;
             }
 
-            if (indexToCache == elementIndex && tValue < 1) {
+            if (indexToCache == elementIndex && tValue == 0) {
+                // the length to t == 0 is just zero. Adding the line below for explicitness
+                lengthSoFar += 0;
+            } else if (indexToCache == elementIndex && tValue < 1) {
                 [self fillBezier:bezier forElement:indexToCache];
                 CGPoint left[4];
                 CGPoint right[4];
