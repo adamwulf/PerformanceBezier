@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (CGFloat)subdivideBezier:(const CGPoint[_Nonnull 4])bez bez1:(CGPoint[_Nonnull 4])bez1 bez2:(CGPoint[_Nonnull 4])bez2 atLength:(CGFloat)length acceptableError:(CGFloat)acceptableError;
 
-+ (CGFloat)subdivideBezier:(const CGPoint[_Nonnull 4])bez bez1:(CGPoint[_Nonnull 4])bez1 bez2:(CGPoint[_Nonnull 4])bez2 atLength:(CGFloat)length acceptableError:(CGFloat)acceptableError withCache:(CGFloat *)subBezierLengthCache;
++ (CGFloat)subdivideBezier:(const CGPoint[_Nonnull 4])bez bez1:(CGPoint[_Nonnull 4])bez1 bez2:(CGPoint[_Nonnull 4])bez2 atLength:(CGFloat)length acceptableError:(CGFloat)acceptableError withCache:(nullable CGFloat *)subBezierLengthCache;
 
 + (CGPoint)lineSegmentIntersectionPointA:(CGPoint)A pointB:(CGPoint)B pointC:(CGPoint)C pointD:(CGPoint)D;
 
