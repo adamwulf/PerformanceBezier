@@ -667,6 +667,9 @@ static char BEZIER_PROPERTIES;
     retProps.tangentAtEnd = props.tangentAtEnd;
     retProps.cachedElementCount = props.cachedElementCount;
     retProps.isClosed = props.isClosed;
+    if (props.userInfo) {
+        [ret.userInfo addEntriesFromDictionary:[props userInfo]];
+    }
     return ret;
 }
 

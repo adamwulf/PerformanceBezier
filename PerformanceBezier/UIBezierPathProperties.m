@@ -47,6 +47,7 @@ typedef struct LengthCacheItem {
 @synthesize bezierPathByFlatteningPath;
 @synthesize hasFirstPoint;
 @synthesize firstPoint;
+@synthesize userInfo=_userInfo;
 
 + (BOOL)supportsSecureCoding
 {
