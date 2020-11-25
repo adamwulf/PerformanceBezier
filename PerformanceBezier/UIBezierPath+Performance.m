@@ -452,6 +452,13 @@ static char BEZIER_PROPERTIES;
     self = [self swizzle_initWithCoder:decoder];
     UIBezierPathProperties *props = [decoder decodeObjectForKey:@"pathProperties"];
     objc_setAssociatedObject(self, &BEZIER_PROPERTIES, props, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+    NSDictionary<NSString *, NSObject<NSCoding> *> *userInfo = [decoder decodeObjectForKey:@"userInfo"];
+
+    if (userInfo) {
+        [[self userInfo] addEntriesFromDictionary:userInfo];
+    }
+
     return self;
 }
 
@@ -473,6 +480,7 @@ static char BEZIER_PROPERTIES;
 {
     [self swizzle_encodeWithCoder:aCoder];
     [aCoder encodeObject:self.pathProperties forKey:@"pathProperties"];
+    [aCoder encodeObject:self.userInfo forKey:@"userInfo"];
 }
 - (void)ahmed_swizzle_applyTransform:(CGAffineTransform)transform
 {

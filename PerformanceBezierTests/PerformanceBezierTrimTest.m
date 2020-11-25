@@ -31,27 +31,6 @@
     XCTAssertEqualObjects([simplePath bezierPathByTrimmingFromElement:2], trimmedPath);
 }
 
-- (void)testUserInfo
-{
-    UIBezierPath* simplePath = [UIBezierPath bezierPath];
-    [[simplePath userInfo] setObject:@(10) forKey:@"anykey"];
-    [simplePath moveToPoint:CGPointMake(100, 100)];
-    [simplePath addLineToPoint:CGPointMake(200, 100)];
-    [simplePath addLineToPoint:CGPointMake(200, 99)];
-
-    UIBezierPath *copiedPath = [simplePath copy];
-    UIBezierPath *trimmedPath = [simplePath bezierPathByTrimmingToElement:1 andTValue:.75];
-
-    XCTAssertNotNil([[simplePath userInfo] objectForKey:@"anykey"]);
-    XCTAssertEqualObjects(@(10), [[simplePath userInfo] objectForKey:@"anykey"]);
-    XCTAssertEqualObjects([[copiedPath userInfo] objectForKey:@"anykey"], [[simplePath userInfo] objectForKey:@"anykey"]);
-    XCTAssertEqualObjects([[trimmedPath userInfo] objectForKey:@"anykey"], [[simplePath userInfo] objectForKey:@"anykey"]);
-
-    [[simplePath userInfo] setObject:@(20) forKey:@"otherKey"];
-    XCTAssertEqualObjects(@(20), [[simplePath userInfo] objectForKey:@"otherKey"]);
-    XCTAssertNil([[copiedPath userInfo] objectForKey:@"otherKey"]);
-}
-
 - (void)testTrimClosedElement
 {
     UIBezierPath *path = [UIBezierPath bezierPath];

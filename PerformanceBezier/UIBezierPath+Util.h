@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// A mutable dictionary that will be maintained with this path. Store any key/value pairs
 /// and these will stay with the path. The userInfo will be shallow copied to any path
 /// that has been clipped or copied from this path
-- (NSMutableDictionary *)userInfo;
+- (NSMutableDictionary<NSString *, NSObject<NSCoding> *> *)userInfo;
 
 + (CGFloat)lengthOfBezier:(const CGPoint[_Nonnull 4])bez withAccuracy:(CGFloat)accuracy;
 
