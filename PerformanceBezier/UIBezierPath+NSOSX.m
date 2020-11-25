@@ -9,11 +9,11 @@
 #import "UIBezierPath+NSOSX.h"
 #import "JRSwizzle.h"
 #import "UIBezierPath+NSOSX_Private.h"
+#import "UIBezierPath+Performance_Private.h"
 #import "UIBezierPath+Performance.h"
 #import "UIBezierPath+Uncached.h"
 #import "UIBezierPath+Util.h"
 #import <objc/runtime.h>
-
 
 static char ELEMENT_ARRAY;
 

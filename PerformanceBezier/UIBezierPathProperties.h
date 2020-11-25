@@ -27,6 +27,7 @@ typedef enum {
 @property(nonatomic) NSInteger cachedElementCount;
 @property(nonatomic, retain) UIBezierPath *bezierPathByFlatteningPath;
 @property(nonatomic) BOOL lastAddedElementWasMoveTo;
+@property(strong, nonatomic) NSMutableDictionary *userInfo;
 
 -(CGFloat)cachedLengthForElementIndex:(NSInteger)index acceptableError:(CGFloat)error;
 -(void)cacheLength:(CGFloat)length forElementIndex:(NSInteger)index acceptableError:(CGFloat)error;

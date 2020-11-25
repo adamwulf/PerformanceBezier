@@ -10,10 +10,22 @@
 #import "UIBezierPath+Performance.h"
 #import "UIBezierPath+Trim.h"
 #import "UIBezierPath+Util.h"
+#import "UIBezierPath+Performance_Private.h"
 
 @implementation UIBezierPath (Util)
 
+- (NSMutableDictionary *)userInfo {
+    UIBezierPathProperties *props = [self pathProperties];
+
+    if (!props.userInfo) {
+        props.userInfo = [[NSMutableDictionary alloc] init];
+    }
+
+    return props.userInfo;
+}
+
 /// Returns a new empty path with the same properties `lineWidth`, `lineJoinStyle`, etc as this path
+/// This will also shallow copy the userInfo to the returned empty path.
 - (UIBezierPath*)buildEmptyPath
 {
     UIBezierPath *path = [UIBezierPath bezierPath];
@@ -23,6 +35,11 @@
     path.miterLimit = self.miterLimit;
     path.flatness = self.flatness;
     path.usesEvenOddFillRule = self.usesEvenOddFillRule;
+
+    if ([[self pathProperties] userInfo]) {
+        [path.userInfo addEntriesFromDictionary:[self userInfo]];
+    }
+
     return path;
 }
 

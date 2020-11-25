@@ -11,8 +11,6 @@
 
 @interface UIBezierPath (Performance)
 
-- (UIBezierPathProperties *)pathProperties;
-
 // returns the last point of the bezier path.
 // if the path ends with a kCGPathElementClosed,
 // then the first point of that subpath is returned

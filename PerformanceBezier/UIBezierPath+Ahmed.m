@@ -12,6 +12,7 @@
 #import "UIBezierPath+Uncached.h"
 #import "UIBezierPath+Util.h"
 #import "UIBezierPath+NSOSX_Private.h"
+#import "UIBezierPath+Performance_Private.h"
 
 static CGFloat kIdealFlatness = 0.01;
 
