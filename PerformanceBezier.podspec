@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name            = "PerformanceBezier"
-  s.version         = "1.1.0"
+  s.version         = "1.1.1"
   s.summary         = "A small library to dramatically speed up common operations on UIBezierPath, and also bring its functionality closer to NSBezierPath."
   s.author          = {
       'Adam Wulf' => 'adam.wulf@gmail.com',
