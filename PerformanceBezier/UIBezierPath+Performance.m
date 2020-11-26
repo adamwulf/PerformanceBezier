@@ -453,7 +453,7 @@ static char BEZIER_PROPERTIES;
     UIBezierPathProperties *props = [decoder decodeObjectForKey:@"pathProperties"];
     objc_setAssociatedObject(self, &BEZIER_PROPERTIES, props, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
-    NSDictionary<NSString *, NSObject<NSCoding> *> *userInfo = [decoder decodeObjectForKey:@"userInfo"];
+    NSDictionary<NSString *, NSObject<NSCoding> *> *userInfo = [decoder decodeObjectOfClass:[NSMutableDictionary class] forKey:@"userInfo"];
 
     if (userInfo) {
         [[self userInfo] addEntriesFromDictionary:userInfo];
