@@ -36,6 +36,26 @@
     XCTAssertNil([[copiedPath userInfo] objectForKey:@"otherKey"]);
 }
 
+- (void)testUserInfoCopy
+{
+    UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    [[simplePath userInfo] setObject:@(10) forKey:@"anykey"];
+    [simplePath moveToPoint:CGPointMake(100, 100)];
+    [simplePath addLineToPoint:CGPointMake(200, 100)];
+    [simplePath addLineToPoint:CGPointMake(200, 99)];
+
+    UIBezierPath *copiedPath = [simplePath copy];
+
+    [copiedPath applyTransform:CGAffineTransformMakeScale(2, 2)];
+
+    [[simplePath userInfo] setObject:@(100) forKey:@"anykey"];
+
+    // copied path has old value
+    XCTAssertNotNil([[simplePath userInfo] objectForKey:@"anykey"]);
+    XCTAssertEqualObjects(@(100), [[simplePath userInfo] objectForKey:@"anykey"]);
+    XCTAssertEqualObjects(@(10), [[copiedPath userInfo] objectForKey:@"anykey"]);
+}
+
 - (void)testUserInfoArchiving
 {
     UIBezierPath* simplePath = [UIBezierPath bezierPath];
