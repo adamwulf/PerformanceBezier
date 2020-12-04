@@ -87,4 +87,28 @@
     XCTAssertEqualObjects([[path userInfo] objectForKey:@"color"], color);
 }
 
+- (void)testUserInfoSecureArchiving
+{
+    if (@available(iOS 11.0, *)) {
+        UIBezierPath* simplePath = [UIBezierPath bezierPath];
+        [simplePath moveToPoint:CGPointMake(100, 100)];
+        [simplePath addLineToPoint:CGPointMake(200, 100)];
+        [simplePath addLineToPoint:CGPointMake(200, 99)];
+        [[simplePath userInfo] setObject:[UIColor blackColor] forKey:@"color"];
+
+        NSError *error = nil;
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:simplePath requiringSecureCoding:YES error:&error];
+
+        XCTAssertNil(error);
+
+        UIBezierPath *path = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:[UIBezierPath class], [UIColor class], nil]
+                                                                 fromData:data
+                                                                    error:&error];
+
+        XCTAssertNil(error);
+        XCTAssertNotNil(path);
+        XCTAssertEqualObjects([[path userInfo] objectForKey:@"color"], [UIColor blackColor]);
+    }
+}
+
 @end

@@ -450,10 +450,14 @@ static char BEZIER_PROPERTIES;
 - (id)swizzle_initWithCoder:(NSCoder *)decoder
 {
     self = [self swizzle_initWithCoder:decoder];
-    UIBezierPathProperties *props = [decoder decodeObjectForKey:@"pathProperties"];
+    NSSet *allowedClasses = [decoder.allowedClasses setByAddingObjectsFromArray:@[[NSMutableDictionary class],
+                                                                                  [UIBezierPathProperties class]]];
+
+
+    UIBezierPathProperties *props = [decoder  decodeObjectOfClasses:allowedClasses forKey:@"pathProperties"];
     objc_setAssociatedObject(self, &BEZIER_PROPERTIES, props, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
-    NSDictionary<NSString *, NSObject<NSCoding> *> *userInfo = [decoder decodeObjectOfClass:[NSMutableDictionary class] forKey:@"userInfo"];
+    NSDictionary<NSString *, NSObject<NSCoding> *> *userInfo = [decoder decodeObjectOfClasses:allowedClasses forKey:@"userInfo"];
 
     if (userInfo) {
         [[self userInfo] addEntriesFromDictionary:userInfo];
