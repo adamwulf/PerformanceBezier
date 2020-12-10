@@ -14,6 +14,8 @@
 
 @interface UIBezierPath (Performance_Private)
 
+- (void) resetPathProperties;
+
 - (UIBezierPathProperties *)pathProperties;
 
 @end

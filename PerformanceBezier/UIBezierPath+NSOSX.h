@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define BezierElementCacheException @"BezierElementCacheException"
+
 @interface UIBezierPath (NSOSX)
 
 // returns the number of elements in this path

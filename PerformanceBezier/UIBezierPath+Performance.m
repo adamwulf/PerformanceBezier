@@ -19,6 +19,12 @@ static char BEZIER_PROPERTIES;
 
 @implementation UIBezierPath (Performance)
 
+- (void)resetPathProperties
+{
+    UIBezierPathProperties *props = [[[UIBezierPathProperties alloc] init] autorelease];
+    objc_setAssociatedObject(self, &BEZIER_PROPERTIES, props, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 - (UIBezierPathProperties *)pathProperties
 {
     UIBezierPathProperties *props = objc_getAssociatedObject(self, &BEZIER_PROPERTIES);
@@ -344,7 +350,13 @@ static char BEZIER_PROPERTIES;
     // we should calculate, cache, and add to our total length
     for (NSInteger indexToCache = firstToCache + 1; indexToCache <= elementIndex; indexToCache++) {
         CGPoint bezier[4];
-        CGPathElement ele = [self elementAtIndex:indexToCache];
+        CGPathElement ele;
+
+        @try {
+            ele = [self elementAtIndex:indexToCache];
+        } @catch( NSException *ex) {
+            continue;
+        }
 
         // skip calculating distance between the previous element and the start of a new subpath
         if (ele.type != kCGPathElementMoveToPoint) {

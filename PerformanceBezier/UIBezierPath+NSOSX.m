@@ -102,6 +102,13 @@ static char ELEMENT_ARRAY;
         }];
     }
 
+    if (!didReturn) {
+        // something went wrong, reset our properties and throw an exception
+        [self resetPathProperties];
+
+        @throw [NSException exceptionWithName:BezierElementCacheException reason:nil userInfo:nil];
+    }
+
     NSAssert(didReturn, @"could not find index %@ in path", @(askingForIndex));
 
     if (points) {
