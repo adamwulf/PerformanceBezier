@@ -104,6 +104,14 @@ typedef struct LengthCacheItem {
     [aCoder encodeInteger:cachedElementCount forKey:@"pathProperties_cachedElementCount"];
 }
 
+- (NSMutableDictionary *)userInfo {
+    if (!_userInfo) {
+        _userInfo = [[NSMutableDictionary alloc] init];
+    }
+
+    return _userInfo;
+}
+
 // for some reason the iPad 1 on iOS 5 needs to have this
 // method coded and not synthesized.
 - (void)setBezierPathByFlatteningPath:(UIBezierPath *)_bezierPathByFlatteningPath
@@ -119,6 +127,9 @@ typedef struct LengthCacheItem {
 {
     [bezierPathByFlatteningPath release];
     bezierPathByFlatteningPath = nil;
+
+    [_userInfo release];
+    _userInfo = nil;
     
     @synchronized (lock) {
         if (lengthCacheCount > 0 && elementLengthCache){
