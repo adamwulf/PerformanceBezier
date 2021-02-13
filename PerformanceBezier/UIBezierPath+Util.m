@@ -15,13 +15,7 @@
 @implementation UIBezierPath (Util)
 
 - (NSMutableDictionary *)userInfo {
-    UIBezierPathProperties *props = [self pathProperties];
-
-    if (!props.userInfo) {
-        props.userInfo = [[NSMutableDictionary alloc] init];
-    }
-
-    return props.userInfo;
+    return [self pathProperties].userInfo;
 }
 
 /// Returns a new empty path with the same properties `lineWidth`, `lineJoinStyle`, etc as this path
