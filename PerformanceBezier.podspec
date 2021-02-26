@@ -19,7 +19,6 @@ Pod::Spec.new do |s|
 
   s.framework = 'Foundation', 'UIKit'
 
-  s.requires_arc = false
   s.xcconfig = { 'OTHER_LDFLAGS' => '-ObjC++ -lstdc++', "CLANG_CXX_LANGUAGE_STANDARD" => "gnu++0x", "CLANG_CXX_LIBRARY" => "libc++"  }
 
 end
