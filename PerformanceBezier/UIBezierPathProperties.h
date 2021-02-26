@@ -16,6 +16,12 @@ typedef enum {
 } ElementPositionChange;
 
 @interface UIBezierPathProperties : NSObject <NSSecureCoding>
+
+/// Sets the duration that some caches for all bezier paths should last before invalidated
++ (void)setElementCacheDuration:(CGFloat)seconds;
+/// The duration that some caches for all bezier paths will live
++ (CGFloat)elementCacheDuration;
+
 @property(nonatomic) BOOL isClosed;
 @property(nonatomic) BOOL knowsIfClosed;
 @property(nonatomic) BOOL isFlat;

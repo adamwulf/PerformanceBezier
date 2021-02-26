@@ -28,6 +28,10 @@ typedef struct LengthCacheItem {
     LengthCacheItem* totalLengthCache;
     ElementPositionChange* elementPositionChangeCache;
     NSInteger lengthCacheCount;
+    NSTimer *elementLengthCacheTimer;
+    NSTimer *totalLengthCacheTimer;
+    NSTimer *positionCacheTimer;
+    NSTimer *subpathRangeCacheTimer;
     NSInteger totalLengthCacheCount;
     NSInteger elementPositionChangeCacheCount;
     NSObject *lock;
@@ -35,6 +39,15 @@ typedef struct LengthCacheItem {
     NSRange *subpathRanges;
     NSInteger subpathRangesCount;
     NSInteger subpathRangesNextIndex;
+}
+
+static CGFloat kElementCacheDuration = 5.0;
+
++ (void)setElementCacheDuration:(CGFloat)seconds {
+    kElementCacheDuration = MAX(0, seconds);
+}
++ (CGFloat)elementCacheDuration{
+    return kElementCacheDuration;
 }
 
 @synthesize isFlat;
@@ -59,6 +72,9 @@ typedef struct LengthCacheItem {
         elementLengthCache = nil;
         totalLengthCache = nil;
         elementPositionChangeCache = nil;
+        elementLengthCacheTimer = nil;
+        totalLengthCacheTimer = nil;
+        subpathRangeCacheTimer = nil;
         lengthCacheCount = 0;
         totalLengthCacheCount = 0;
         elementPositionChangeCacheCount = 0;
@@ -67,7 +83,7 @@ typedef struct LengthCacheItem {
         subpathRangesNextIndex = 0;
         lock = [[NSObject alloc] init];
     }
-    
+
     return self;
 }
 
@@ -125,12 +141,29 @@ typedef struct LengthCacheItem {
 
 - (void)dealloc
 {
+    if (totalLengthCacheTimer) {
+        [totalLengthCacheTimer invalidate];
+        [totalLengthCacheTimer release];
+    }
+    if (elementLengthCacheTimer) {
+        [elementLengthCacheTimer invalidate];
+        [elementLengthCacheTimer release];
+    }
+    if (subpathRangeCacheTimer) {
+        [subpathRangeCacheTimer invalidate];
+        [subpathRangeCacheTimer release];
+    }
+    if (positionCacheTimer) {
+        [positionCacheTimer invalidate];
+        [positionCacheTimer release];
+    }
+
     [bezierPathByFlatteningPath release];
     bezierPathByFlatteningPath = nil;
 
     [_userInfo release];
     _userInfo = nil;
-    
+
     @synchronized (lock) {
         if (lengthCacheCount > 0 && elementLengthCache){
             free(elementLengthCache);
@@ -161,22 +194,47 @@ typedef struct LengthCacheItem {
     [super dealloc];
 }
 
+#pragma mark - Element Length Cache
+
+-(void) resetElementLengthCacheTimer {
+    if (elementLengthCacheTimer) {
+        [elementLengthCacheTimer release];
+        [elementLengthCacheTimer invalidate];
+    }
+    if (kElementCacheDuration == 0) {
+        return;
+    }
+    elementLengthCacheTimer = [[NSTimer scheduledTimerWithTimeInterval:kElementCacheDuration repeats:NO block:^(NSTimer * _Nonnull timer) {
+        @synchronized (lock) {
+            if (lengthCacheCount > 0 && elementLengthCache){
+                free(elementLengthCache);
+                elementLengthCache = nil;
+                lengthCacheCount = 0;
+            }
+            [elementLengthCacheTimer release];
+            elementLengthCacheTimer = nil;
+        }
+    }] retain];
+}
+
 /// Returns -1 if we do not have cached information for this element that matches the input acceptableError
 -(CGFloat)cachedLengthForElementIndex:(NSInteger)index acceptableError:(CGFloat)error{
+    [self resetElementLengthCacheTimer];
+
     @synchronized (lock) {
         if (index < 0 || index >= lengthCacheCount){
             return -1;
         }
-    
+
         if (elementLengthCache[index].acceptableError == error){
             return elementLengthCache[index].length;
         }
     }
-    
+
     return -1;
 }
 
--(void)cacheLength:(CGFloat)length forElementIndex:(NSInteger)index acceptableError:(CGFloat)error{    
+-(void)cacheLength:(CGFloat)length forElementIndex:(NSInteger)index acceptableError:(CGFloat)error{
     @synchronized (lock) {
         if (lengthCacheCount == 0){
             const NSInteger DefaultCount = MAX(256, pow(2, log2(index + 1) + 1));
@@ -196,10 +254,37 @@ typedef struct LengthCacheItem {
         elementLengthCache[index].length = length;
         elementLengthCache[index].acceptableError = error;
     }
+
+    [self resetElementLengthCacheTimer];
+}
+
+#pragma mark - Total Length Cache
+
+-(void) resetTotalLengthCacheTimer {
+    if (totalLengthCacheTimer) {
+        [totalLengthCacheTimer release];
+        [totalLengthCacheTimer invalidate];
+    }
+    if (kElementCacheDuration == 0) {
+        return;
+    }
+    totalLengthCacheTimer = [[NSTimer scheduledTimerWithTimeInterval:kElementCacheDuration repeats:NO block:^(NSTimer * _Nonnull timer) {
+        @synchronized (lock) {
+            if (totalLengthCacheCount > 0 && totalLengthCache){
+                free(totalLengthCache);
+                totalLengthCache = nil;
+                totalLengthCacheCount = 0;
+            }
+        }
+        [totalLengthCacheTimer release];
+        totalLengthCacheTimer = nil;
+    }] retain];
 }
 
 /// Returns -1 if we do not have cached information for this element that matches the input acceptableError
 -(CGFloat)cachedLengthOfPathThroughElementIndex:(NSInteger)index acceptableError:(CGFloat)error {
+    [self resetTotalLengthCacheTimer];
+
     @synchronized (lock) {
         if (index < 0 || index >= totalLengthCacheCount){
             return -1;
@@ -233,6 +318,31 @@ typedef struct LengthCacheItem {
         totalLengthCache[index].length = length;
         totalLengthCache[index].acceptableError = error;
     }
+
+    [self resetTotalLengthCacheTimer];
+}
+
+#pragma mark - Cached Element Position Changes
+
+-(void) resetPositionCacheTimer {
+    if (positionCacheTimer) {
+        [positionCacheTimer release];
+        [positionCacheTimer invalidate];
+    }
+    if (kElementCacheDuration == 0) {
+        return;
+    }
+    positionCacheTimer = [[NSTimer scheduledTimerWithTimeInterval:kElementCacheDuration repeats:NO block:^(NSTimer * _Nonnull timer) {
+        @synchronized (lock) {
+            if (elementPositionChangeCacheCount > 0 && elementPositionChangeCache){
+                free(elementPositionChangeCache);
+                elementPositionChangeCache = nil;
+                elementPositionChangeCacheCount = 0;
+            }
+        }
+        [positionCacheTimer release];
+        positionCacheTimer = nil;
+    }] retain];
 }
 
 -(void)cacheElementIndex:(NSInteger)index changesPosition:(BOOL)changesPosition{
@@ -252,12 +362,13 @@ typedef struct LengthCacheItem {
             free(oldCache);
         }
 
-
         elementPositionChangeCache[index] = changesPosition ? kPositionChangeYes : kPositionChangeNo;
     }
+    [self resetPositionCacheTimer];
 }
 
 -(ElementPositionChange)cachedElementIndexDoesChangePosition:(NSInteger)index {
+    [self resetPositionCacheTimer];
     @synchronized (lock) {
         if (index < 0 || index >= elementPositionChangeCacheCount){
             return kPositionChangeUnknown;
@@ -265,6 +376,29 @@ typedef struct LengthCacheItem {
 
         return elementPositionChangeCache[index];
     }
+}
+
+#pragma mark - Subpath Ranges
+
+-(void) resetSubpathRangeCacheTimer {
+    if (subpathRangeCacheTimer) {
+        [subpathRangeCacheTimer release];
+        [subpathRangeCacheTimer invalidate];
+    }
+    if (kElementCacheDuration == 0) {
+        return;
+    }
+    subpathRangeCacheTimer = [[NSTimer scheduledTimerWithTimeInterval:kElementCacheDuration repeats:NO block:^(NSTimer * _Nonnull timer) {
+        @synchronized (lock) {
+            if (subpathRangesCount > 0 && subpathRanges){
+                free(subpathRanges);
+                subpathRanges = nil;
+                subpathRangesCount = 0;
+            }
+        }
+        [subpathRangeCacheTimer release];
+        subpathRangeCacheTimer = nil;
+    }] retain];
 }
 
 // Track subpath ranges of this path. whenever an element is added to this path
@@ -297,9 +431,11 @@ typedef struct LengthCacheItem {
         subpathRanges[subpathRangesNextIndex] = range;
         subpathRangesNextIndex ++;
     }
+    [self resetSubpathRangeCacheTimer];
 }
 
 -(NSRange)subpathRangeForElementIndex:(NSInteger)elementIndex {
+    [self resetSubpathRangeCacheTimer];
     @synchronized (lock) {
         for (NSInteger i=0; i < subpathRangesNextIndex && i < subpathRangesCount; i++) {
             NSRange rng = subpathRanges[i];
