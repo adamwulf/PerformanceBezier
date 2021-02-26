@@ -132,10 +132,6 @@ static CGFloat kElementCacheDuration = 5.0;
 // method coded and not synthesized.
 - (void)setBezierPathByFlatteningPath:(UIBezierPath *)_bezierPathByFlatteningPath
 {
-    if (bezierPathByFlatteningPath != _bezierPathByFlatteningPath) {
-        [bezierPathByFlatteningPath release];
-        [_bezierPathByFlatteningPath retain];
-    }
     bezierPathByFlatteningPath = _bezierPathByFlatteningPath;
 }
 
@@ -143,25 +139,19 @@ static CGFloat kElementCacheDuration = 5.0;
 {
     if (totalLengthCacheTimer) {
         [totalLengthCacheTimer invalidate];
-        [totalLengthCacheTimer release];
     }
     if (elementLengthCacheTimer) {
         [elementLengthCacheTimer invalidate];
-        [elementLengthCacheTimer release];
     }
     if (subpathRangeCacheTimer) {
         [subpathRangeCacheTimer invalidate];
-        [subpathRangeCacheTimer release];
     }
     if (positionCacheTimer) {
         [positionCacheTimer invalidate];
-        [positionCacheTimer release];
     }
 
-    [bezierPathByFlatteningPath release];
     bezierPathByFlatteningPath = nil;
 
-    [_userInfo release];
     _userInfo = nil;
 
     @synchronized (lock) {
@@ -188,33 +178,28 @@ static CGFloat kElementCacheDuration = 5.0;
         }
     }
 
-    [lock release];
     lock = nil;
-
-    [super dealloc];
 }
 
 #pragma mark - Element Length Cache
 
 -(void) resetElementLengthCacheTimer {
     if (elementLengthCacheTimer) {
-        [elementLengthCacheTimer release];
         [elementLengthCacheTimer invalidate];
     }
     if (kElementCacheDuration == 0) {
         return;
     }
-    elementLengthCacheTimer = [[NSTimer scheduledTimerWithTimeInterval:kElementCacheDuration repeats:NO block:^(NSTimer * _Nonnull timer) {
-        @synchronized (lock) {
-            if (lengthCacheCount > 0 && elementLengthCache){
-                free(elementLengthCache);
-                elementLengthCache = nil;
-                lengthCacheCount = 0;
+    elementLengthCacheTimer = [NSTimer scheduledTimerWithTimeInterval:kElementCacheDuration repeats:NO block:^(NSTimer * _Nonnull timer) {
+        @synchronized (self->lock) {
+            if (self->lengthCacheCount > 0 && self->elementLengthCache){
+                free(self->elementLengthCache);
+                self->elementLengthCache = nil;
+                self->lengthCacheCount = 0;
             }
-            [elementLengthCacheTimer release];
-            elementLengthCacheTimer = nil;
+            self->elementLengthCacheTimer = nil;
         }
-    }] retain];
+    }];
 }
 
 /// Returns -1 if we do not have cached information for this element that matches the input acceptableError
@@ -262,23 +247,21 @@ static CGFloat kElementCacheDuration = 5.0;
 
 -(void) resetTotalLengthCacheTimer {
     if (totalLengthCacheTimer) {
-        [totalLengthCacheTimer release];
         [totalLengthCacheTimer invalidate];
     }
     if (kElementCacheDuration == 0) {
         return;
     }
-    totalLengthCacheTimer = [[NSTimer scheduledTimerWithTimeInterval:kElementCacheDuration repeats:NO block:^(NSTimer * _Nonnull timer) {
-        @synchronized (lock) {
-            if (totalLengthCacheCount > 0 && totalLengthCache){
-                free(totalLengthCache);
-                totalLengthCache = nil;
-                totalLengthCacheCount = 0;
+    totalLengthCacheTimer = [NSTimer scheduledTimerWithTimeInterval:kElementCacheDuration repeats:NO block:^(NSTimer * _Nonnull timer) {
+        @synchronized (self->lock) {
+            if (self->totalLengthCacheCount > 0 && self->totalLengthCache){
+                free(self->totalLengthCache);
+                self->totalLengthCache = nil;
+                self->totalLengthCacheCount = 0;
             }
         }
-        [totalLengthCacheTimer release];
-        totalLengthCacheTimer = nil;
-    }] retain];
+        self->totalLengthCacheTimer = nil;
+    }];
 }
 
 /// Returns -1 if we do not have cached information for this element that matches the input acceptableError
@@ -326,23 +309,21 @@ static CGFloat kElementCacheDuration = 5.0;
 
 -(void) resetPositionCacheTimer {
     if (positionCacheTimer) {
-        [positionCacheTimer release];
         [positionCacheTimer invalidate];
     }
     if (kElementCacheDuration == 0) {
         return;
     }
-    positionCacheTimer = [[NSTimer scheduledTimerWithTimeInterval:kElementCacheDuration repeats:NO block:^(NSTimer * _Nonnull timer) {
-        @synchronized (lock) {
-            if (elementPositionChangeCacheCount > 0 && elementPositionChangeCache){
-                free(elementPositionChangeCache);
-                elementPositionChangeCache = nil;
-                elementPositionChangeCacheCount = 0;
+    positionCacheTimer = [NSTimer scheduledTimerWithTimeInterval:kElementCacheDuration repeats:NO block:^(NSTimer * _Nonnull timer) {
+        @synchronized (self->lock) {
+            if (self->elementPositionChangeCacheCount > 0 && self->elementPositionChangeCache){
+                free(self->elementPositionChangeCache);
+                self->elementPositionChangeCache = nil;
+                self->elementPositionChangeCacheCount = 0;
             }
         }
-        [positionCacheTimer release];
-        positionCacheTimer = nil;
-    }] retain];
+        self->positionCacheTimer = nil;
+    }];
 }
 
 -(void)cacheElementIndex:(NSInteger)index changesPosition:(BOOL)changesPosition{
@@ -382,23 +363,21 @@ static CGFloat kElementCacheDuration = 5.0;
 
 -(void) resetSubpathRangeCacheTimer {
     if (subpathRangeCacheTimer) {
-        [subpathRangeCacheTimer release];
         [subpathRangeCacheTimer invalidate];
     }
     if (kElementCacheDuration == 0) {
         return;
     }
-    subpathRangeCacheTimer = [[NSTimer scheduledTimerWithTimeInterval:kElementCacheDuration repeats:NO block:^(NSTimer * _Nonnull timer) {
-        @synchronized (lock) {
-            if (subpathRangesCount > 0 && subpathRanges){
-                free(subpathRanges);
-                subpathRanges = nil;
-                subpathRangesCount = 0;
+    subpathRangeCacheTimer = [NSTimer scheduledTimerWithTimeInterval:kElementCacheDuration repeats:NO block:^(NSTimer * _Nonnull timer) {
+        @synchronized (self->lock) {
+            if (self->subpathRangesCount > 0 && self->subpathRanges){
+                free(self->subpathRanges);
+                self->subpathRanges = nil;
+                self->subpathRangesCount = 0;
             }
         }
-        [subpathRangeCacheTimer release];
-        subpathRangeCacheTimer = nil;
-    }] retain];
+        self->subpathRangeCacheTimer = nil;
+    }];
 }
 
 // Track subpath ranges of this path. whenever an element is added to this path
