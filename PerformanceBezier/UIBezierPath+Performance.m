@@ -21,7 +21,7 @@ static char BEZIER_PROPERTIES;
 
 - (void)resetPathProperties
 {
-    UIBezierPathProperties *props = [[[UIBezierPathProperties alloc] init] autorelease];
+    UIBezierPathProperties *props = [[UIBezierPathProperties alloc] init];
     objc_setAssociatedObject(self, &BEZIER_PROPERTIES, props, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
@@ -29,7 +29,7 @@ static char BEZIER_PROPERTIES;
 {
     UIBezierPathProperties *props = objc_getAssociatedObject(self, &BEZIER_PROPERTIES);
     if (!props) {
-        props = [[[UIBezierPathProperties alloc] init] autorelease];
+        props = [[UIBezierPathProperties alloc] init];
         objc_setAssociatedObject(self, &BEZIER_PROPERTIES, props, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return props;
@@ -461,7 +461,7 @@ static char BEZIER_PROPERTIES;
 
 - (id)swizzle_initWithCoder:(NSCoder *)decoder
 {
-    self = [self swizzle_initWithCoder:decoder];
+    [self swizzle_initWithCoder:decoder];
     NSSet *allowedClasses = [decoder.allowedClasses setByAddingObjectsFromArray:@[[NSMutableDictionary class],
                                                                                   [UIBezierPathProperties class]]];
 
@@ -503,8 +503,8 @@ static char BEZIER_PROPERTIES;
     // reset our path properties
     BOOL isClosed = [self pathProperties].isClosed;
     BOOL knowsIfClosed = [self pathProperties].knowsIfClosed;
-    UIBezierPathProperties *props = [[[UIBezierPathProperties alloc] init] autorelease];
-    [props setUserInfo:[[[[self pathProperties] userInfo] mutableCopy] autorelease]];
+    UIBezierPathProperties *props = [[UIBezierPathProperties alloc] init];
+    [props setUserInfo:[[[self pathProperties] userInfo] mutableCopy]];
     props.isClosed = isClosed;
     props.knowsIfClosed = knowsIfClosed;
     objc_setAssociatedObject(self, &BEZIER_PROPERTIES, props, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -791,7 +791,7 @@ static char BEZIER_PROPERTIES;
         [UIBezierPath mmpb_swizzleMethod:@selector(applyTransform:)
                               withMethod:@selector(ahmed_swizzle_applyTransform:)
                                    error:&error];
-        [UIBezierPath mmpb_swizzleMethod:@selector(dealloc)
+        [UIBezierPath mmpb_swizzleMethod:NSSelectorFromString(@"dealloc")
                               withMethod:@selector(ahmed_swizzle_dealloc)
                                    error:&error];
         [UIBezierPath mmpb_swizzleClassMethod:@selector(bezierPathWithCGPath:)

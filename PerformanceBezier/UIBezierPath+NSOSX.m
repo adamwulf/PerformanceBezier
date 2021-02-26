@@ -141,13 +141,15 @@ static char ELEMENT_ARRAY;
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:[NSNumber numberWithInteger:index] forKey:@"index"];
     [params setObject:[NSValue valueWithPointer:points] forKey:@"points"];
-    CGPathApply(self.CGPath, params, updatePathElementAtIndex);
+    const void *_Nullable paramPtr = CFBridgingRetain(params);
+    CGPathApply(self.CGPath, (void *_Nullable) paramPtr, updatePathElementAtIndex);
+    CFRelease(paramPtr);
 }
 //
 // helper function for the setAssociatedPoints: method
 void updatePathElementAtIndex(void *info, const CGPathElement *element)
 {
-    NSMutableDictionary *params = (NSMutableDictionary *)info;
+    NSMutableDictionary *params = (__bridge NSMutableDictionary *)info;
     int currentIndex = 0;
     if ([params objectForKey:@"curr"]) {
         currentIndex = [[params objectForKey:@"curr"] intValue] + 1;
@@ -189,9 +191,9 @@ void updatePathElementAtIndex(void *info, const CGPathElement *element)
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:[NSNumber numberWithInteger:0] forKey:@"count"];
     [params setObject:self forKey:@"self"];
-    [self retain];
-    CGPathApply(self.CGPath, params, countPathElement);
-    [self release];
+    const void *_Nullable paramPtr = CFBridgingRetain(params);
+    CGPathApply(self.CGPath, (void *_Nullable) paramPtr, countPathElement);
+    CFRelease(paramPtr);
     NSInteger ret = [[params objectForKey:@"count"] integerValue];
     props.cachedElementCount = ret;
     return ret;
@@ -199,7 +201,7 @@ void updatePathElementAtIndex(void *info, const CGPathElement *element)
 // helper function
 void countPathElement(void *info, const CGPathElement *element)
 {
-    NSMutableDictionary *params = (NSMutableDictionary *)info;
+    NSMutableDictionary *params = (__bridge NSMutableDictionary *)info;
     UIBezierPath *this = [params objectForKey:@"self"];
     NSInteger count = [[params objectForKey:@"count"] integerValue];
     [params setObject:[NSNumber numberWithInteger:(count + 1)] forKey:@"count"];
@@ -213,14 +215,15 @@ void countPathElement(void *info, const CGPathElement *element)
     void (^copiedBlock)(CGPathElement element) = [block copy];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:copiedBlock forKey:@"block"];
-    CGPathApply(self.CGPath, params, blockWithElement);
-    [copiedBlock release];
+    const void *_Nullable paramPtr = CFBridgingRetain(params);
+    CGPathApply(self.CGPath, (void *_Nullable) paramPtr, blockWithElement);
+    CFRelease(paramPtr);
 }
 
 // helper function
 static void blockWithElement(void *info, const CGPathElement *element)
 {
-    NSMutableDictionary *params = (NSMutableDictionary *)info;
+    NSMutableDictionary *params = (__bridge NSMutableDictionary *)info;
     void (^block)(CGPathElement element, NSUInteger idx) = [params objectForKey:@"block"];
     NSUInteger index = [[params objectForKey:@"index"] unsignedIntegerValue];
     block(*element, index);
@@ -374,7 +377,7 @@ static void blockWithElement(void *info, const CGPathElement *element)
         [UIBezierPath mmpb_swizzleMethod:@selector(copy)
                               withMethod:@selector(nsosx_swizzle_copy)
                                    error:&error];
-        [UIBezierPath mmpb_swizzleMethod:@selector(dealloc)
+        [UIBezierPath mmpb_swizzleMethod:NSSelectorFromString(@"dealloc")
                               withMethod:@selector(nsosx_swizzle_dealloc)
                                    error:&error];
     }
