@@ -49,7 +49,10 @@ static const void* const kCacheQueueIdentifier = &kCacheQueueIdentifier;
 
 + (dispatch_queue_t)cacheQueue {
     if (!cacheQueue) {
-        cacheQueue = dispatch_queue_create("com.milestonemade.cacheQueue", DISPATCH_QUEUE_SERIAL);
+        dispatch_queue_attr_t priorityAttribute = dispatch_queue_attr_make_with_qos_class(
+            DISPATCH_QUEUE_SERIAL, QOS_CLASS_UTILITY, -1
+        );
+        cacheQueue = dispatch_queue_create("com.milestonemade.cacheQueue", priorityAttribute);
         dispatch_queue_set_specific(cacheQueue, kCacheQueueIdentifier, (void*)kCacheQueueIdentifier, NULL);
     }
     return cacheQueue;
