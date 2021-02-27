@@ -13,6 +13,102 @@ typedef struct LengthCacheItem {
     CGFloat length;
 } LengthCacheItem;
 
+@interface CacheItem: NSObject
+@property (nonatomic, assign) NSTimeInterval expiration;
+@property (nonatomic, weak) void(^block)(void);
+@property (nonatomic, strong) dispatch_semaphore_t lock;
+@end
+@implementation CacheItem
+- (instancetype) init {
+    if (self = [super init]) {
+        _lock = dispatch_semaphore_create(1);
+    }
+    return self;
+}
+- (BOOL)extend {
+    dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
+    if (_block) {
+        _expiration = [NSDate timeIntervalSinceReferenceDate];
+        dispatch_semaphore_signal(_lock);
+        return YES;
+    } else {
+        dispatch_semaphore_signal(_lock);
+        return NO;
+    }
+}
+@end
+
+@interface UIBezierPathPropertiesCacheHandler: NSObject
+@end
+@implementation UIBezierPathPropertiesCacheHandler
+
+static NSMutableArray<CacheItem*> *cachedBlocks;
+
+static dispatch_queue_t cacheQueue;
+static const void* const kCacheQueueIdentifier = &kCacheQueueIdentifier;
+
++ (dispatch_queue_t)cacheQueue {
+    if (!cacheQueue) {
+        cacheQueue = dispatch_queue_create("com.milestonemade.cacheQueue", DISPATCH_QUEUE_SERIAL);
+        dispatch_queue_set_specific(cacheQueue, kCacheQueueIdentifier, (void*)kCacheQueueIdentifier, NULL);
+    }
+    return cacheQueue;
+}
+
+static CGFloat kElementCacheDuration = 5.0;
+static dispatch_semaphore_t cacheSema;
+
++ (void)setElementCacheDuration:(CGFloat)seconds {
+    kElementCacheDuration = MAX(0, seconds);
+}
++ (CGFloat)elementCacheDuration{
+    return kElementCacheDuration;
+}
+
++ (void)load {
+    dispatch_async([self cacheQueue], ^{
+        cacheSema = dispatch_semaphore_create(1);
+        cachedBlocks = [NSMutableArray array];
+        [self cleanCaches];
+    });
+}
+
++ (CacheItem*)cache:(void(^)(void))block {
+    CacheItem *item = [[CacheItem alloc] init];
+    item.expiration = [NSDate timeIntervalSinceReferenceDate];
+    item.block = block;
+    dispatch_semaphore_wait(cacheSema, DISPATCH_TIME_FOREVER);
+    [cachedBlocks addObject:item];
+    dispatch_semaphore_signal(cacheSema);
+    return item;
+}
+
++ (void)cleanCaches {
+    NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
+    for (NSInteger i=0;i<[cachedBlocks count];i++) {
+        CacheItem *item = cachedBlocks[i];
+        dispatch_semaphore_wait(item.lock, DISPATCH_TIME_FOREVER);
+        if (item.expiration < now) {
+            __strong void(^strongBlock)(void) = item.block;
+            dispatch_semaphore_wait(cacheSema, DISPATCH_TIME_FOREVER);
+            [cachedBlocks removeObjectAtIndex:i];
+            dispatch_semaphore_signal(cacheSema);
+            i -= 1;
+            if (strongBlock) {
+                strongBlock();
+                item.block = nil;
+            }
+        }
+        dispatch_semaphore_signal(item.lock);
+    }
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kElementCacheDuration * NSEC_PER_SEC), [self cacheQueue], ^{
+        [self cleanCaches];
+    });
+}
+
+@end
+
 @implementation UIBezierPathProperties {
     BOOL isFlat;
     BOOL knowsIfClosed;
@@ -35,6 +131,16 @@ typedef struct LengthCacheItem {
     NSRange *subpathRanges;
     NSInteger subpathRangesCount;
     NSInteger subpathRangesNextIndex;
+
+    void(^totalLengthReset)(void);
+    void(^elementLengthReset)(void);
+    void(^positionReset)(void);
+    void(^subpathReset)(void);
+
+    CacheItem *totalCacheItem;
+    CacheItem *elementCacheItem;
+    CacheItem *positionCacheItem;
+    CacheItem *subpathCacheItem;
 }
 
 @synthesize isFlat;
@@ -66,6 +172,7 @@ typedef struct LengthCacheItem {
         subpathRangesCount = 0;
         subpathRangesNextIndex = 0;
         lock = [[NSObject alloc] init];
+        [self setupCleanup];
     }
     
     return self;
@@ -88,7 +195,67 @@ typedef struct LengthCacheItem {
     cachedElementCount = [decoder decodeIntegerForKey:@"pathProperties_cachedElementCount"];
     lengthCacheCount = 0;
     lock = [[NSObject alloc] init];
+    [self setupCleanup];
     return self;
+}
+
+- (void)setupCleanup {
+    __weak typeof(self) weakSelf = self;
+    totalLengthReset = ^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        @synchronized (strongSelf->lock) {
+            if (strongSelf->totalLengthCacheCount > 0 && strongSelf->totalLengthCache){
+                free(strongSelf->totalLengthCache);
+                strongSelf->totalLengthCache = nil;
+                strongSelf->totalLengthCacheCount = 0;
+            }
+        }
+    };
+
+    elementLengthReset = ^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        @synchronized (strongSelf->lock) {
+            if (strongSelf->lengthCacheCount > 0 && strongSelf->elementLengthCache){
+                free(strongSelf->elementLengthCache);
+                strongSelf->elementLengthCache = nil;
+                strongSelf->lengthCacheCount = 0;
+            }
+        }
+    };
+
+    positionReset = ^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        @synchronized (strongSelf->lock) {
+            if (strongSelf->elementPositionChangeCacheCount > 0 && strongSelf->elementPositionChangeCache){
+                free(strongSelf->elementPositionChangeCache);
+                strongSelf->elementPositionChangeCache = nil;
+                strongSelf->elementPositionChangeCacheCount = 0;
+            }
+        }
+    };
+
+    subpathReset = ^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        @synchronized (strongSelf->lock) {
+            if (strongSelf->subpathRangesCount > 0 && strongSelf->subpathRanges){
+                free(strongSelf->subpathRanges);
+                strongSelf->subpathRanges = nil;
+                strongSelf->subpathRangesCount = 0;
+            }
+        }
+    };
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
@@ -121,33 +288,14 @@ typedef struct LengthCacheItem {
 
 - (void)dealloc
 {
+    totalLengthReset();
+    elementLengthReset();
+    positionReset();
+    subpathReset();
+
     bezierPathByFlatteningPath = nil;
 
     _userInfo = nil;
-    
-    @synchronized (lock) {
-        if (lengthCacheCount > 0 && elementLengthCache){
-            free(elementLengthCache);
-            elementLengthCache = nil;
-            lengthCacheCount = 0;
-        }
-        if (totalLengthCacheCount > 0 && totalLengthCache){
-            free(totalLengthCache);
-            totalLengthCache = nil;
-            totalLengthCacheCount = 0;
-        }
-        if (elementPositionChangeCacheCount > 0 && elementPositionChangeCache){
-            free(elementPositionChangeCache);
-            elementPositionChangeCache = nil;
-            elementPositionChangeCacheCount = 0;
-        }
-        if (subpathRangesCount > 0 && subpathRanges) {
-            free(subpathRanges);
-            subpathRanges = nil;
-            subpathRangesCount = 0;
-            subpathRangesNextIndex = 0;
-        }
-    }
 
     lock = nil;
 }
