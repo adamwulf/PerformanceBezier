@@ -37,16 +37,61 @@
     return path;
 }
 
-- (void)testPerformanceExample {
+- (UIBezierPath *)generateRandomPathWithSubpaths {
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointZero];
+
+    while ([path elementCount] < 10000) {
+        CGPoint dest = [self randomPointNear:[path lastPoint] close:NO];
+        if (rand() % 50 == 0) {
+            [path moveToPoint:dest];
+        } else {
+            [path addCurveToPoint:dest controlPoint1:[self randomPointNear:[path lastPoint]] controlPoint2:[self randomPointNear:dest]];
+        }
+    }
+
+    return path;
+}
+
+- (void)testTotalLengthCache {
 
     // This is an example of a performance test case.
     [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-        UIBezierPath *path = [self generateRandomPath];
-        [path closePath];
+        for (NSInteger i=0; i<10; i++) {
+            // Put the code you want to measure the time of here.
+            UIBezierPath *path = [self generateRandomPath];
 
-        for (NSInteger i=0; i<[path elementCount]; i++) {
-            [path lengthOfPathThroughElement:i withAcceptableError:0.5];
+            for (NSInteger i=0; i<[path elementCount]; i++) {
+                [path lengthOfPathThroughElement:i withAcceptableError:0.5];
+            }
+        }
+    }];
+}
+
+- (void)testElementLengthCache {
+    // This is an example of a performance test case.
+    [self measureBlock:^{
+        for (NSInteger i=0; i<10; i++) {
+            // Put the code you want to measure the time of here.
+            UIBezierPath *path = [self generateRandomPath];
+
+            for (NSInteger i=0; i<[path elementCount]; i++) {
+                [path lengthOfElement:i withAcceptableError:0.5];
+            }
+        }
+    }];
+}
+
+- (void)testSubrangeLengthCache {
+    // This is an example of a performance test case.
+    [self measureBlock:^{
+        for (NSInteger i=0; i<10; i++) {
+            // Put the code you want to measure the time of here.
+            UIBezierPath *path = [self generateRandomPath];
+
+            for (NSInteger i=0; i<[path elementCount] - 1; i++) {
+                [path subpathRangeForElement:i];
+            }
         }
     }];
 }
