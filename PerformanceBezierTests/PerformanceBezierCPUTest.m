@@ -54,7 +54,6 @@
 }
 
 - (void)testTotalLengthCache {
-
     // This is an example of a performance test case.
     [self measureBlock:^{
         for (NSInteger i=0; i<10; i++) {
@@ -64,6 +63,24 @@
             for (NSInteger i=0; i<[path elementCount]; i++) {
                 [path lengthOfPathThroughElement:i withAcceptableError:0.5];
             }
+        }
+    }];
+}
+
+- (void)testTotalLengthCache2 {
+    // This is an example of a performance test case.
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        UIBezierPath *path = [self generateRandomPath];
+
+        for (NSInteger i=0; i<[path elementCount]; i++) {
+            [path lengthOfPathThroughElement:i withAcceptableError:0.5];
+        }
+
+        sleep(6);
+
+        for (NSInteger i=0; i<[path elementCount]; i++) {
+            [path lengthOfPathThroughElement:i withAcceptableError:0.5];
         }
     }];
 }
