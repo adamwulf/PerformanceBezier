@@ -288,10 +288,28 @@ static dispatch_semaphore_t cacheSema;
 
 - (void)dealloc
 {
-    totalLengthReset();
-    elementLengthReset();
-    positionReset();
-    subpathReset();
+    @synchronized (lock) {
+        if (totalLengthCacheCount > 0 && totalLengthCache){
+            free(totalLengthCache);
+            totalLengthCache = nil;
+            totalLengthCacheCount = 0;
+        }
+        if (lengthCacheCount > 0 && elementLengthCache){
+            free(elementLengthCache);
+            elementLengthCache = nil;
+            lengthCacheCount = 0;
+        }
+        if (elementPositionChangeCacheCount > 0 && elementPositionChangeCache){
+            free(elementPositionChangeCache);
+            elementPositionChangeCache = nil;
+            elementPositionChangeCacheCount = 0;
+        }
+        if (subpathRangesCount > 0 && subpathRanges){
+            free(subpathRanges);
+            subpathRanges = nil;
+            subpathRangesCount = 0;
+        }
+    }
 
     bezierPathByFlatteningPath = nil;
 
@@ -302,8 +320,15 @@ static dispatch_semaphore_t cacheSema;
 
 #pragma mark - Element Length Cache
 
+- (void) resetElementLengthCache {
+    if (![elementCacheItem extend]) {
+        elementCacheItem = [UIBezierPathPropertiesCacheHandler cache:elementLengthReset];
+    }
+}
+
 /// Returns -1 if we do not have cached information for this element that matches the input acceptableError
 -(CGFloat)cachedLengthForElementIndex:(NSInteger)index acceptableError:(CGFloat)error{
+    [self resetElementLengthCache];
     @synchronized (lock) {
         if (index < 0 || index >= lengthCacheCount){
             return -1;
@@ -337,12 +362,20 @@ static dispatch_semaphore_t cacheSema;
         elementLengthCache[index].length = length;
         elementLengthCache[index].acceptableError = error;
     }
+    [self resetElementLengthCache];
 }
 
 #pragma mark - Total Length Cache
 
+- (void) resetTotalLengthCache {
+    if (![totalCacheItem extend]) {
+        totalCacheItem = [UIBezierPathPropertiesCacheHandler cache:totalLengthReset];
+    }
+}
+
 /// Returns -1 if we do not have cached information for this element that matches the input acceptableError
 -(CGFloat)cachedLengthOfPathThroughElementIndex:(NSInteger)index acceptableError:(CGFloat)error {
+    [self resetTotalLengthCache];
     @synchronized (lock) {
         if (index < 0 || index >= totalLengthCacheCount){
             return -1;
@@ -376,9 +409,16 @@ static dispatch_semaphore_t cacheSema;
         totalLengthCache[index].length = length;
         totalLengthCache[index].acceptableError = error;
     }
+    [self resetTotalLengthCache];
 }
 
 #pragma mark - Cached Element Position Changes
+
+- (void) resetPositionCache {
+    if (![positionCacheItem extend]) {
+        positionCacheItem = [UIBezierPathPropertiesCacheHandler cache:positionReset];
+    }
+}
 
 -(void)cacheElementIndex:(NSInteger)index changesPosition:(BOOL)changesPosition{
     @synchronized (lock) {
@@ -397,12 +437,13 @@ static dispatch_semaphore_t cacheSema;
             free(oldCache);
         }
 
-
         elementPositionChangeCache[index] = changesPosition ? kPositionChangeYes : kPositionChangeNo;
     }
+    [self resetPositionCache];
 }
 
 -(ElementPositionChange)cachedElementIndexDoesChangePosition:(NSInteger)index {
+    [self resetPositionCache];
     @synchronized (lock) {
         if (index < 0 || index >= elementPositionChangeCacheCount){
             return kPositionChangeUnknown;
@@ -413,6 +454,12 @@ static dispatch_semaphore_t cacheSema;
 }
 
 #pragma mark - Subpath Ranges
+
+- (void) resetSubpathCache {
+    if (![subpathCacheItem extend]) {
+        subpathCacheItem = [UIBezierPathPropertiesCacheHandler cache:subpathReset];
+    }
+}
 
 // Track subpath ranges of this path. whenever an element is added to this path
 // this method should be called to clear the subpath cache count
@@ -444,9 +491,11 @@ static dispatch_semaphore_t cacheSema;
         subpathRanges[subpathRangesNextIndex] = range;
         subpathRangesNextIndex ++;
     }
+    [self resetSubpathCache];
 }
 
 -(NSRange)subpathRangeForElementIndex:(NSInteger)elementIndex {
+    [self resetSubpathCache];
     @synchronized (lock) {
         for (NSInteger i=0; i < subpathRangesNextIndex && i < subpathRangesCount; i++) {
             NSRange rng = subpathRanges[i];
