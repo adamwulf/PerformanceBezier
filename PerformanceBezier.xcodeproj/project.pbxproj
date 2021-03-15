@@ -107,6 +107,8 @@
 		C57909A6256E13B10064F08E /* UIBezierPath+Performance_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Performance_Private.h"; sourceTree = "<group>"; };
 		C5790A30256EDA1C0064F08E /* PerformanceBezierUtilTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierUtilTest.m; sourceTree = "<group>"; };
 		C57B2FB2247871A200C4D44B /* PerformanceBezierEqualsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierEqualsTest.m; sourceTree = "<group>"; };
+		C59582C925FF3FE300C4B202 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		C59582E625FF478D00C4B202 /* PerformanceBezier.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = PerformanceBezier.podspec; sourceTree = "<group>"; };
 		C5976A47246DE9D10018C3C5 /* PerformanceBezierTrimTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierTrimTest.m; sourceTree = "<group>"; };
 		C59C619E255C6FDA00B1898C /* PerformanceBezierDescriptionTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierDescriptionTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -137,6 +139,8 @@
 				660E0FDB1A80226100F19D8A /* README.md */,
 				66767CC71AFEE4BB00443B03 /* SubdivideLicense */,
 				660E0FDC1A80284C00F19D8A /* LICENSE */,
+				C59582C925FF3FE300C4B202 /* Package.swift */,
+				C59582E625FF478D00C4B202 /* PerformanceBezier.podspec */,
 				66B9D2831A8D5FDE00CAC341 /* PerformanceBezier */,
 				66B9D2901A8D5FDF00CAC341 /* PerformanceBezierTests */,
 				66F2EBE51A8DC05100D536E9 /* Supporting Files */,
