@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name            = "PerformanceBezier"
-  s.version         = "1.2.0"
+  s.version         = "1.2.2"
   s.summary         = "A small library to dramatically speed up common operations on UIBezierPath, and also bring its functionality closer to NSBezierPath."
   s.author          = {
       'Adam Wulf' => 'adam.wulf@gmail.com',
@@ -19,6 +19,6 @@ Pod::Spec.new do |s|
 
   s.framework = 'Foundation', 'UIKit'
 
-  s.xcconfig = { 'OTHER_LDFLAGS' => '-ObjC++ -lstdc++', "CLANG_CXX_LANGUAGE_STANDARD" => "gnu++0x", "CLANG_CXX_LIBRARY" => "libc++"  }
+  s.xcconfig = { "DEFINES_MODULE" => "YES", 'OTHER_LDFLAGS' => '-ObjC++ -lstdc++', "CLANG_CXX_LANGUAGE_STANDARD" => "gnu++0x", "CLANG_CXX_LIBRARY" => "libc++"  }
 
 end
