@@ -8,6 +8,11 @@
 
 #define CGPointNotFound CGPointMake(CGFLOAT_MAX, CGFLOAT_MAX)
 
+// SwiftPackageManager needs imports to be "", while frameworks generally want <>
+// It's unfortunately not enough to `#if SWIFT_PACKAGE`, as if PerformanceBezier
+// is a dependency of another SPM package, then the SWIFT_PACKAGE seems to not be
+// set when building that dependency. So instead, we'll choose based off of Cocoapods
+
 #if COCOAPODS
 #import <PerformanceBezier/UIBezierPath+Center.h>
 #import <PerformanceBezier/UIBezierPath+Clockwise.h>
