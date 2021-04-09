@@ -8,6 +8,12 @@ repo, checkout [the blogpost explaining what this framework does](http://blog.ge
 This code was originally part of [Loose Leaf](https://getlooseleaf.com/). Additional components and
 libraries from the app [have also been open sourced](https://getlooseleaf.com/opensource/).
 
+
+## Available as a Swift Package!
+
+Install PerformanceBezier in your project through Swift Package Manager as of v1.3.0!
+
+
 ## What is this?
 
 This framework adds caching into every UIBezierPath so that common operations can
