@@ -70,4 +70,4 @@ For attribution, please include:
 
 This framework is created by Adam Wulf ([@adamwulf](https://twitter.com/adamwulf)) as a part of the [Loose Leaf app](https://getlooseleaf.com).
 
-[Buy the app](https://itunes.apple.com/us/app/loose-leaf/id625659452?mt=8&uo=4&at=10lNUI&ct=github) to show your support! :)
+Become a [Github Sponsor](https://github.com/sponsors/adamwulf) to buy me some coffee ☕️ to continue the work 😄
