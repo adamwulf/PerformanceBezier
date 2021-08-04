@@ -37,6 +37,7 @@ typedef struct LengthCacheItem {
     NSInteger subpathRangesNextIndex;
 }
 
+@synthesize bounds;
 @synthesize isFlat;
 @synthesize knowsIfClosed;
 @synthesize isClosed;
@@ -66,6 +67,7 @@ typedef struct LengthCacheItem {
         subpathRangesCount = 0;
         subpathRangesNextIndex = 0;
         lock = [[NSObject alloc] init];
+        bounds = CGRectNull;
     }
     
     return self;
@@ -86,6 +88,12 @@ typedef struct LengthCacheItem {
     firstPoint = [decoder decodeCGPointForKey:@"pathProperties_firstPoint"];
     tangentAtEnd = [decoder decodeFloatForKey:@"pathProperties_tangentAtEnd"];
     cachedElementCount = [decoder decodeIntegerForKey:@"pathProperties_cachedElementCount"];
+    CGRect val = [decoder decodeCGRectForKey:@"pathProperties_bounds"];
+    if (CGRectEqualToRect(val, CGRectNull) || CGRectEqualToRect(val, CGRectZero)) {
+        bounds = CGRectNull;
+    } else {
+        bounds = val;
+    }
     lengthCacheCount = 0;
     lock = [[NSObject alloc] init];
     return self;
@@ -102,6 +110,7 @@ typedef struct LengthCacheItem {
     [aCoder encodeCGPoint:firstPoint forKey:@"pathProperties_firstPoint"];
     [aCoder encodeFloat:tangentAtEnd forKey:@"pathProperties_tangentAtEnd"];
     [aCoder encodeInteger:cachedElementCount forKey:@"pathProperties_cachedElementCount"];
+    [aCoder encodeCGRect:bounds forKey:@"pathProperties_bounds"];
 }
 
 - (NSMutableDictionary *)userInfo {

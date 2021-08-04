@@ -71,6 +71,30 @@
     XCTAssertEqualObjects([[path userInfo] objectForKey:@"color"], [UIColor blackColor]);
 }
 
+- (void)testUserInfoArchivingBounds
+{
+    UIBezierPath* simplePath = [UIBezierPath bezierPath];
+    [simplePath moveToPoint:CGPointMake(100, 100)];
+    [simplePath addLineToPoint:CGPointMake(200, 100)];
+    [simplePath addLineToPoint:CGPointMake(200, 99)];
+    [[simplePath userInfo] setObject:[UIColor blackColor] forKey:@"color"];
+
+    CGRect bounds = [simplePath bounds];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:simplePath];
+    UIBezierPath *path = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+
+    XCTAssertNotNil(path);
+    XCTAssertEqualObjects([[path userInfo] objectForKey:@"color"], [UIColor blackColor]);
+    XCTAssert(CGRectEqualToRect(bounds, [path bounds]));
+    XCTAssert(CGRectEqualToRect(bounds, CGRectMake(100, 99, 100, 1)));
+
+    [path addLineToPoint:CGPointMake(200, 98)];
+
+    bounds = [path bounds];
+    XCTAssert(CGRectEqualToRect(bounds, [path bounds]));
+    XCTAssert(CGRectEqualToRect(bounds, CGRectMake(100, 98, 100, 2)));
+}
+
 - (void)testUserInfoArchiving2
 {
     UIColor *color = [UIColor colorWithRed:255 green:128 blue:234 alpha:0.43];

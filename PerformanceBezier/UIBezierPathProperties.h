@@ -17,6 +17,7 @@ typedef enum {
 
 @interface UIBezierPathProperties : NSObject <NSSecureCoding>
 
+@property(nonatomic) CGRect bounds;
 @property(nonatomic) BOOL isClosed;
 @property(nonatomic) BOOL knowsIfClosed;
 @property(nonatomic) BOOL isFlat;

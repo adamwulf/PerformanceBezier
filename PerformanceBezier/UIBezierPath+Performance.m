@@ -505,6 +505,7 @@ static char BEZIER_PROPERTIES;
     BOOL knowsIfClosed = [self pathProperties].knowsIfClosed;
     UIBezierPathProperties *props = [[UIBezierPathProperties alloc] init];
     [props setUserInfo:[[[self pathProperties] userInfo] mutableCopy]];
+    props.bounds = CGRectNull;
     props.isClosed = isClosed;
     props.knowsIfClosed = knowsIfClosed;
     objc_setAssociatedObject(self, &BEZIER_PROPERTIES, props, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -536,6 +537,7 @@ static char BEZIER_PROPERTIES;
             props.firstPoint = point;
         }
     }
+    props.bounds = CGRectNull;
     props.hasLastPoint = YES;
     props.lastPoint = point;
     props.tangentAtEnd = 0;
@@ -546,6 +548,7 @@ static char BEZIER_PROPERTIES;
 {
     UIBezierPathProperties *props = [self pathProperties];
     [props resetSubpathRangeCount];
+    props.bounds = CGRectNull;
     props.lastAddedElementWasMoveTo = NO;
     props.bezierPathByFlatteningPath = nil;
     if ([self isEmpty] || props.isFlat) {
@@ -563,6 +566,7 @@ static char BEZIER_PROPERTIES;
 {
     UIBezierPathProperties *props = [self pathProperties];
     [props resetSubpathRangeCount];
+    props.bounds = CGRectNull;
     props.lastAddedElementWasMoveTo = NO;
     props.bezierPathByFlatteningPath = nil;
     if ([self isEmpty] || props.isFlat) {
@@ -580,6 +584,7 @@ static char BEZIER_PROPERTIES;
 {
     UIBezierPathProperties *props = [self pathProperties];
     [props resetSubpathRangeCount];
+    props.bounds = CGRectNull;
     props.lastAddedElementWasMoveTo = NO;
     props.bezierPathByFlatteningPath = nil;
     if ([self isEmpty] || props.isFlat) {
@@ -626,6 +631,15 @@ static char BEZIER_PROPERTIES;
     }
     [self swizzle_closePath];
 }
+- (CGRect)swizzle_bounds
+{
+    CGRect cached = [[self pathProperties] bounds];
+    if (CGRectEqualToRect(cached, CGRectNull)) {
+        cached = [self swizzle_bounds];
+        [self pathProperties].bounds = cached;
+    }
+    return cached;
+}
 - (void)swizzle_arcWithCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise
 {
     UIBezierPathProperties *props = [self pathProperties];
@@ -644,6 +658,7 @@ static char BEZIER_PROPERTIES;
 {
     UIBezierPathProperties *props = [self pathProperties];
     [props resetSubpathRangeCount];
+    props.bounds = CGRectNull;
     props.lastAddedElementWasMoveTo = NO;
     props.bezierPathByFlatteningPath = nil;
     [self swizzle_removeAllPoints];
@@ -661,6 +676,7 @@ static char BEZIER_PROPERTIES;
 {
     UIBezierPathProperties *props = [self pathProperties];
     [props resetSubpathRangeCount];
+    props.bounds = CGRectNull;
     props.lastAddedElementWasMoveTo = NO;
     UIBezierPathProperties *bezierPathProps = [bezierPath pathProperties];
     props.bezierPathByFlatteningPath = nil;
@@ -683,6 +699,7 @@ static char BEZIER_PROPERTIES;
     ret.CGPath = pathRef;
     CGPathRelease(pathRef);
     UIBezierPathProperties *retProps = [ret pathProperties];
+    retProps.bounds = props.bounds;
     retProps.lastAddedElementWasMoveTo = props.lastAddedElementWasMoveTo;
     retProps.isFlat = props.isFlat;
     retProps.hasLastPoint = props.hasLastPoint;
@@ -778,6 +795,9 @@ static char BEZIER_PROPERTIES;
                                    error:&error];
         [UIBezierPath mmpb_swizzleMethod:@selector(appendPath:)
                               withMethod:@selector(swizzle_appendPath:)
+                                   error:&error];
+        [UIBezierPath mmpb_swizzleMethod:@selector(bounds)
+                              withMethod:@selector(swizzle_bounds)
                                    error:&error];
         [UIBezierPath mmpb_swizzleMethod:@selector(copy)
                               withMethod:@selector(swizzle_copy)
