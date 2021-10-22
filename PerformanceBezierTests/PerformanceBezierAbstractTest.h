@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Milestone Made, LLC. All rights reserved.
 //
 
-#import <PerformanceBezier/PerformanceBezier.h>
+@import PerformanceBezier;
 #import <XCTest/XCTest.h>
 
 #define kIntersectionPointPrecision .1

@@ -26,6 +26,8 @@ let package = Package(
             publicHeadersPath: "."),
         .testTarget(
             name: "PerformanceBezierTests",
-            dependencies: ["PerformanceBezier"]),
+            dependencies: ["PerformanceBezier"],
+            path: "PerformanceBezierTests",
+            exclude: ["Info.plist"]),
     ]
 )
