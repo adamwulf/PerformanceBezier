@@ -17,6 +17,8 @@
 
 static char BEZIER_PROPERTIES;
 
+#define isInvalid(x) isnan(x) || isinf(x)
+
 @implementation UIBezierPath (Performance)
 
 - (void)resetPathProperties
@@ -514,6 +516,10 @@ static char BEZIER_PROPERTIES;
 
 - (void)swizzle_moveToPoint:(CGPoint)point
 {
+    if (isInvalid(point.x) || isInvalid((point.y))) {
+        return;
+    }
+
     UIBezierPathProperties *props = [self pathProperties];
     [props resetSubpathRangeCount];
     props.bezierPathByFlatteningPath = nil;
@@ -546,6 +552,9 @@ static char BEZIER_PROPERTIES;
 }
 - (void)swizzle_addLineToPoint:(CGPoint)point
 {
+    if (isInvalid(point.x) || isInvalid((point.y))) {
+        return;
+    }
     UIBezierPathProperties *props = [self pathProperties];
     [props resetSubpathRangeCount];
     props.bounds = CGRectNull;
@@ -564,6 +573,11 @@ static char BEZIER_PROPERTIES;
 }
 - (void)swizzle_addCurveToPoint:(CGPoint)point controlPoint1:(CGPoint)ctrl1 controlPoint2:(CGPoint)ctrl2
 {
+    if (isInvalid(point.x) || isInvalid((point.y)) ||
+        isInvalid(ctrl1.x) || isInvalid((ctrl1.y)) ||
+        isInvalid(ctrl2.x) || isInvalid((ctrl2.y)) ) {
+        return;
+    }
     UIBezierPathProperties *props = [self pathProperties];
     [props resetSubpathRangeCount];
     props.bounds = CGRectNull;
@@ -582,6 +596,10 @@ static char BEZIER_PROPERTIES;
 }
 - (void)swizzle_quadCurveToPoint:(CGPoint)point controlPoint:(CGPoint)ctrl1
 {
+    if (isInvalid(point.x) || isInvalid((point.y)) ||
+        isInvalid(ctrl1.x) || isInvalid((ctrl1.y)) ) {
+        return;
+    }
     UIBezierPathProperties *props = [self pathProperties];
     [props resetSubpathRangeCount];
     props.bounds = CGRectNull;
@@ -642,6 +660,9 @@ static char BEZIER_PROPERTIES;
 }
 - (void)swizzle_arcWithCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise
 {
+    if (isInvalid(center.x) || isInvalid(center.y)) {
+        return;
+    }
     UIBezierPathProperties *props = [self pathProperties];
     [props resetSubpathRangeCount];
     props.lastAddedElementWasMoveTo = NO;
