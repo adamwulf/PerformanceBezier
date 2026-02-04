@@ -115,8 +115,9 @@
     
     XCTAssertEqual(len, 100);
     
-    simplePath = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:simplePath]];
-    
+    NSData *archivedData1 = [NSKeyedArchiver archivedDataWithRootObject:simplePath requiringSecureCoding:NO error:nil];
+    simplePath = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIBezierPath class] fromData:archivedData1 error:nil];
+
     len = [simplePath lengthOfElement:1 withAcceptableError:kIntersectionPointPrecision];
     
     XCTAssertEqual(len, 100);
@@ -140,7 +141,8 @@
 
     XCTAssertEqual(len, 101);
 
-    simplePath = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:simplePath]];
+    NSData *archivedData2 = [NSKeyedArchiver archivedDataWithRootObject:simplePath requiringSecureCoding:NO error:nil];
+    simplePath = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIBezierPath class] fromData:archivedData2 error:nil];
 
     len = [simplePath lengthOfPathThroughElement:0 withAcceptableError:kIntersectionPointPrecision];
 

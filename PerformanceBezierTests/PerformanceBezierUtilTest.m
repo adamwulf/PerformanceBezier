@@ -64,8 +64,10 @@
     [simplePath addLineToPoint:CGPointMake(200, 99)];
     [[simplePath userInfo] setObject:[UIColor blackColor] forKey:@"color"];
 
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:simplePath];
-    UIBezierPath *path = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:simplePath requiringSecureCoding:NO error:nil];
+    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:nil];
+    unarchiver.requiresSecureCoding = NO;
+    UIBezierPath *path = [unarchiver decodeObjectForKey:NSKeyedArchiveRootObjectKey];
 
     XCTAssertNotNil(path);
     XCTAssertEqualObjects([[path userInfo] objectForKey:@"color"], [UIColor blackColor]);
@@ -80,8 +82,10 @@
     [[simplePath userInfo] setObject:[UIColor blackColor] forKey:@"color"];
 
     CGRect bounds = [simplePath bounds];
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:simplePath];
-    UIBezierPath *path = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:simplePath requiringSecureCoding:NO error:nil];
+    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:nil];
+    unarchiver.requiresSecureCoding = NO;
+    UIBezierPath *path = [unarchiver decodeObjectForKey:NSKeyedArchiveRootObjectKey];
 
     XCTAssertNotNil(path);
     XCTAssertEqualObjects([[path userInfo] objectForKey:@"color"], [UIColor blackColor]);
@@ -104,8 +108,10 @@
     [simplePath addLineToPoint:CGPointMake(200, 99)];
     [[simplePath userInfo] setObject:color forKey:@"color"];
 
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:simplePath];
-    UIBezierPath *path = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:simplePath requiringSecureCoding:NO error:nil];
+    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:nil];
+    unarchiver.requiresSecureCoding = NO;
+    UIBezierPath *path = [unarchiver decodeObjectForKey:NSKeyedArchiveRootObjectKey];
 
     XCTAssertNotNil(path);
     XCTAssertEqualObjects([[path userInfo] objectForKey:@"color"], color);
