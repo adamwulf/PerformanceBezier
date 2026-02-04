@@ -167,6 +167,9 @@
         }
 
         if (fabs(length - len1) < acceptableError) {
+            if (needsDealloc) {
+                free(subBezierLengthCache);
+            }
             return len1;
         }
 
