@@ -1,0 +1,13 @@
+framework module PerformanceBezier {
+    umbrella header "PerformanceBezier.h"
+
+    export *
+    module * { export * }
+
+    // Private headers - not exposed in module
+    private header "JRSwizzle.h"
+    private header "UIBezierPath+NSOSX_Private.h"
+    private header "UIBezierPath+Uncached.h"
+    private header "UIBezierPath+Performance_Private.h"
+    private header "UIBezierPath+FirstLast.h"
+}
