@@ -23,6 +23,14 @@ typedef struct LengthCacheItem {
 // element count (so a 100-element path gets a 100-slot cache, not 256),
 // and falls back to the doubling pow-of-two when element count isn't
 // yet computed. Always guarantees room for `index`.
+//
+// `knownElementCount`: pass 0 to mean "not yet computed" — the function
+// will fall through to the doubling heuristic. Callers typically pass
+// the cachedElementCount ivar, which may be stale relative to other
+// threads (it is set without lock coordination from the swizzle layer).
+// Staleness is harmless here: the lowerBound floor ensures correctness
+// even if the count is read torn or out-of-date, and any underestimate
+// is corrected by the grow path on the next overflow.
 static inline NSInteger initialCacheSizeForElementIndex(NSInteger index, NSInteger knownElementCount)
 {
     NSInteger lowerBound = MAX(kDefaultCacheFloor, index + 1);
