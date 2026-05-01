@@ -48,6 +48,7 @@
 		C57B2FB3247871A200C4D44B /* PerformanceBezierEqualsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C57B2FB2247871A200C4D44B /* PerformanceBezierEqualsTest.m */; };
 		C5976A48246DE9D10018C3C5 /* PerformanceBezierTrimTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C5976A47246DE9D10018C3C5 /* PerformanceBezierTrimTest.m */; };
 		C59C619F255C6FDA00B1898C /* PerformanceBezierDescriptionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C59C619E255C6FDA00B1898C /* PerformanceBezierDescriptionTest.m */; };
+		C5CACE0002A0A0A0A0A0A0A0 /* PerformanceBezierCacheGrowthTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CACE0001A0A0A0A0A0A0A0 /* PerformanceBezierCacheGrowthTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +112,7 @@
 		C59582E625FF478D00C4B202 /* PerformanceBezier.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = PerformanceBezier.podspec; sourceTree = "<group>"; };
 		C5976A47246DE9D10018C3C5 /* PerformanceBezierTrimTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierTrimTest.m; sourceTree = "<group>"; };
 		C59C619E255C6FDA00B1898C /* PerformanceBezierDescriptionTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierDescriptionTest.m; sourceTree = "<group>"; };
+		C5CACE0001A0A0A0A0A0A0A0 /* PerformanceBezierCacheGrowthTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceBezierCacheGrowthTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,6 +233,7 @@
 				C59C619E255C6FDA00B1898C /* PerformanceBezierDescriptionTest.m */,
 				C5790A30256EDA1C0064F08E /* PerformanceBezierUtilTest.m */,
 				C51F0D6E25E9C02500EB164E /* PerformanceBezierCPUTest.m */,
+				C5CACE0001A0A0A0A0A0A0A0 /* PerformanceBezierCacheGrowthTest.m */,
 				66B9D2911A8D5FDF00CAC341 /* Supporting Files */,
 			);
 			path = PerformanceBezierTests;
@@ -436,6 +439,7 @@
 				66B9D2A71A8D609300CAC341 /* PerformanceBezierClockwiseTest.m in Sources */,
 				C57B2FB3247871A200C4D44B /* PerformanceBezierEqualsTest.m in Sources */,
 				C5790A31256EDA1C0064F08E /* PerformanceBezierUtilTest.m in Sources */,
+				C5CACE0002A0A0A0A0A0A0A0 /* PerformanceBezierCacheGrowthTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
