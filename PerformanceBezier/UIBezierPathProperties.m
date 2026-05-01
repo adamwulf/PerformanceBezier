@@ -8,6 +8,11 @@
 
 #import "UIBezierPathProperties.h"
 
+// Initial allocation size for the lazy-grown C-array caches below.
+// The growth path doubles on overflow, so this only controls the floor
+// for paths small enough to never trigger growth.
+static const NSInteger kDefaultCacheFloor = 16;
+
 typedef struct LengthCacheItem {
     CGFloat acceptableError;
     CGFloat length;
@@ -181,7 +186,7 @@ typedef struct LengthCacheItem {
 -(void)cacheLength:(CGFloat)length forElementIndex:(NSInteger)index acceptableError:(CGFloat)error{
     @synchronized (lock) {
         if (lengthCacheCount == 0){
-            const NSInteger DefaultCount = MAX(16, pow(2, log2(index + 1) + 1));
+            const NSInteger DefaultCount = MAX(kDefaultCacheFloor, pow(2, log2(index + 1) + 1));
             elementLengthCache = calloc(DefaultCount, sizeof(LengthCacheItem));
             lengthCacheCount = DefaultCount;
         } else if (index >= lengthCacheCount) {
@@ -220,7 +225,7 @@ typedef struct LengthCacheItem {
 -(void)cacheLengthOfPath:(CGFloat)length throughElementIndex:(NSInteger)index acceptableError:(CGFloat)error {
     @synchronized (lock) {
         if (totalLengthCacheCount == 0){
-            const NSInteger DefaultCount = MAX(16, pow(2, log2(index + 1) + 1));
+            const NSInteger DefaultCount = MAX(kDefaultCacheFloor, pow(2, log2(index + 1) + 1));
             totalLengthCache = calloc(DefaultCount, sizeof(LengthCacheItem));
             totalLengthCacheCount = DefaultCount;
         } else if (index >= totalLengthCacheCount) {
@@ -244,7 +249,7 @@ typedef struct LengthCacheItem {
 -(void)cacheElementIndex:(NSInteger)index changesPosition:(BOOL)changesPosition{
     @synchronized (lock) {
         if (elementPositionChangeCacheCount == 0){
-            const NSInteger DefaultCount = MAX(16, pow(2, log2(index + 1) + 1));
+            const NSInteger DefaultCount = MAX(kDefaultCacheFloor, pow(2, log2(index + 1) + 1));
             elementPositionChangeCache = calloc(DefaultCount, sizeof(ElementPositionChange));
             elementPositionChangeCacheCount = DefaultCount;
         } else if (index >= elementPositionChangeCacheCount) {
@@ -287,7 +292,7 @@ typedef struct LengthCacheItem {
 -(void)cacheSubpathRange:(NSRange)range {
     @synchronized (lock) {
         if (subpathRangesCount == 0){
-            const NSInteger DefaultCount = 16;
+            const NSInteger DefaultCount = kDefaultCacheFloor;
             subpathRanges = calloc(DefaultCount, sizeof(NSRange));
             subpathRangesCount = DefaultCount;
         } else if (subpathRangesNextIndex >= subpathRangesCount) {

@@ -51,6 +51,8 @@ Note: each cache only allocates if its API is called. A path you only ever read 
 
 **Savings: ~9.6 KB per fully-populated path, ~72%.** For length-only callers, ~5 KB / ~61%.
 
+> Note: this table shows what a perfectly-sized cache would cost. Proposal A as shipped keeps a 16-slot floor on every cache, so a path with 1–3 subpaths still allocates 16 `NSRange` slots (256 B) for `subpathRanges`. Proposal B (size to element count) closes most of the remaining gap.
+
 ### Allocator rounding caveat
 
 `libmalloc`'s small zone rounds in 512-byte buckets, tiny in 16-byte. After rounding:
