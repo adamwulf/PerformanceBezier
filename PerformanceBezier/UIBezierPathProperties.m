@@ -338,4 +338,26 @@ static inline NSInteger initialCacheSizeForElementIndex(NSInteger index, NSInteg
     return NSMakeRange(NSNotFound, 0);
 }
 
+#pragma mark - Reset
+
+-(void)resetElementCaches {
+    @synchronized (lock) {
+        if (lengthCacheCount > 0 && elementLengthCache) {
+            free(elementLengthCache);
+            elementLengthCache = nil;
+            lengthCacheCount = 0;
+        }
+        if (totalLengthCacheCount > 0 && totalLengthCache) {
+            free(totalLengthCache);
+            totalLengthCache = nil;
+            totalLengthCacheCount = 0;
+        }
+        if (elementPositionChangeCacheCount > 0 && elementPositionChangeCache) {
+            free(elementPositionChangeCache);
+            elementPositionChangeCache = nil;
+            elementPositionChangeCacheCount = 0;
+        }
+    }
+}
+
 @end

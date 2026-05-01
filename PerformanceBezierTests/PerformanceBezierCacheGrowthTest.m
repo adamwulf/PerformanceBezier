@@ -128,15 +128,21 @@
     XCTAssertEqualWithAccuracy([restored lengthOfElement:50 withAcceptableError:0.5], 1.0, 0.0001);
 }
 
-- (void)testSubpathCacheResetAfterRemoveAllPoints
+- (void)testCachesResetAfterRemoveAllPoints
 {
     UIBezierPath *path = [self pathWithLineSegmentCount:4 startingAt:CGPointMake(0, 0)];
+    [path lengthOfElement:1 withAcceptableError:0.5];
+    [path lengthOfPathThroughElement:2 withAcceptableError:0.5];
+    [path changesPositionDuringElement:1];
     [path subpathRangeForElement:0];
 
     [path removeAllPoints];
     [path moveToPoint:CGPointMake(0, 0)];
     [path addLineToPoint:CGPointMake(10, 0)];
 
+    XCTAssertEqualWithAccuracy([path lengthOfElement:1 withAcceptableError:0.5], 10.0, 0.0001);
+    XCTAssertEqualWithAccuracy([path lengthOfPathThroughElement:1 withAcceptableError:0.5], 10.0, 0.0001);
+    XCTAssertTrue([path changesPositionDuringElement:1]);
     NSRange rng = [path subpathRangeForElement:0];
     XCTAssertEqual(rng.location, (NSUInteger)0);
     XCTAssertEqual(rng.length, (NSUInteger)2);

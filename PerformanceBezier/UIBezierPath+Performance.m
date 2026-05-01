@@ -679,6 +679,7 @@ static char BEZIER_PROPERTIES;
 {
     UIBezierPathProperties *props = [self pathProperties];
     [props resetSubpathRangeCount];
+    [props resetElementCaches];
     props.bounds = CGRectNull;
     props.lastAddedElementWasMoveTo = NO;
     props.bezierPathByFlatteningPath = nil;

@@ -44,4 +44,8 @@ typedef enum {
 -(void)cacheSubpathRange:(NSRange)range;
 -(NSRange)subpathRangeForElementIndex:(NSInteger)elementIndex;
 
+/// Frees the element-indexed caches. Call after a mutation that invalidates
+/// every cached element value (e.g. removeAllPoints).
+-(void)resetElementCaches;
+
 @end
