@@ -18,6 +18,20 @@ typedef struct LengthCacheItem {
     CGFloat length;
 } LengthCacheItem;
 
+// Pick the initial size for an element-indexed cache when we know the
+// element index that's about to be written. Prefers the path's known
+// element count (so a 100-element path gets a 100-slot cache, not 256),
+// and falls back to the doubling pow-of-two when element count isn't
+// yet computed. Always guarantees room for `index`.
+static inline NSInteger initialCacheSizeForElementIndex(NSInteger index, NSInteger knownElementCount)
+{
+    NSInteger lowerBound = MAX(kDefaultCacheFloor, index + 1);
+    if (knownElementCount > 0) {
+        return MAX(lowerBound, knownElementCount);
+    }
+    return MAX(lowerBound, (NSInteger)pow(2, log2(index + 1) + 1));
+}
+
 @implementation UIBezierPathProperties {
     BOOL isFlat;
     BOOL knowsIfClosed;
@@ -186,7 +200,7 @@ typedef struct LengthCacheItem {
 -(void)cacheLength:(CGFloat)length forElementIndex:(NSInteger)index acceptableError:(CGFloat)error{
     @synchronized (lock) {
         if (lengthCacheCount == 0){
-            const NSInteger DefaultCount = MAX(kDefaultCacheFloor, pow(2, log2(index + 1) + 1));
+            const NSInteger DefaultCount = initialCacheSizeForElementIndex(index, cachedElementCount);
             elementLengthCache = calloc(DefaultCount, sizeof(LengthCacheItem));
             lengthCacheCount = DefaultCount;
         } else if (index >= lengthCacheCount) {
@@ -225,7 +239,7 @@ typedef struct LengthCacheItem {
 -(void)cacheLengthOfPath:(CGFloat)length throughElementIndex:(NSInteger)index acceptableError:(CGFloat)error {
     @synchronized (lock) {
         if (totalLengthCacheCount == 0){
-            const NSInteger DefaultCount = MAX(kDefaultCacheFloor, pow(2, log2(index + 1) + 1));
+            const NSInteger DefaultCount = initialCacheSizeForElementIndex(index, cachedElementCount);
             totalLengthCache = calloc(DefaultCount, sizeof(LengthCacheItem));
             totalLengthCacheCount = DefaultCount;
         } else if (index >= totalLengthCacheCount) {
@@ -249,7 +263,7 @@ typedef struct LengthCacheItem {
 -(void)cacheElementIndex:(NSInteger)index changesPosition:(BOOL)changesPosition{
     @synchronized (lock) {
         if (elementPositionChangeCacheCount == 0){
-            const NSInteger DefaultCount = MAX(kDefaultCacheFloor, pow(2, log2(index + 1) + 1));
+            const NSInteger DefaultCount = initialCacheSizeForElementIndex(index, cachedElementCount);
             elementPositionChangeCache = calloc(DefaultCount, sizeof(ElementPositionChange));
             elementPositionChangeCacheCount = DefaultCount;
         } else if (index >= elementPositionChangeCacheCount) {
