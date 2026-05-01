@@ -8,10 +8,27 @@
 
 #import "UIBezierPathProperties.h"
 
+// Initial allocation size for the lazy-grown C-array caches below.
+// The growth path doubles on overflow, so this only controls the floor
+// for paths small enough to never trigger growth.
+static const NSInteger kDefaultCacheFloor = 16;
+
 typedef struct LengthCacheItem {
     CGFloat acceptableError;
     CGFloat length;
 } LengthCacheItem;
+
+// `knownElementCount` ≤ 0 means "unknown" — falls back to the doubling heuristic.
+// Safe even if knownElementCount is stale: the lowerBound floor always guarantees
+// room for `index`, and the grow path corrects any undersize on overflow.
+static inline NSInteger initialCacheSizeForElementIndex(NSInteger index, NSInteger knownElementCount)
+{
+    NSInteger lowerBound = MAX(kDefaultCacheFloor, index + 1);
+    if (knownElementCount > 0) {
+        return MAX(lowerBound, knownElementCount);
+    }
+    return MAX(lowerBound, (NSInteger)pow(2, log2(index + 1) + 1));
+}
 
 @implementation UIBezierPathProperties {
     BOOL isFlat;
@@ -178,10 +195,10 @@ typedef struct LengthCacheItem {
     return -1;
 }
 
--(void)cacheLength:(CGFloat)length forElementIndex:(NSInteger)index acceptableError:(CGFloat)error{    
+-(void)cacheLength:(CGFloat)length forElementIndex:(NSInteger)index acceptableError:(CGFloat)error{
     @synchronized (lock) {
         if (lengthCacheCount == 0){
-            const NSInteger DefaultCount = MAX(256, pow(2, log2(index + 1) + 1));
+            const NSInteger DefaultCount = initialCacheSizeForElementIndex(index, cachedElementCount);
             elementLengthCache = calloc(DefaultCount, sizeof(LengthCacheItem));
             lengthCacheCount = DefaultCount;
         } else if (index >= lengthCacheCount) {
@@ -220,7 +237,7 @@ typedef struct LengthCacheItem {
 -(void)cacheLengthOfPath:(CGFloat)length throughElementIndex:(NSInteger)index acceptableError:(CGFloat)error {
     @synchronized (lock) {
         if (totalLengthCacheCount == 0){
-            const NSInteger DefaultCount = MAX(256, pow(2, log2(index + 1) + 1));
+            const NSInteger DefaultCount = initialCacheSizeForElementIndex(index, cachedElementCount);
             totalLengthCache = calloc(DefaultCount, sizeof(LengthCacheItem));
             totalLengthCacheCount = DefaultCount;
         } else if (index >= totalLengthCacheCount) {
@@ -244,7 +261,7 @@ typedef struct LengthCacheItem {
 -(void)cacheElementIndex:(NSInteger)index changesPosition:(BOOL)changesPosition{
     @synchronized (lock) {
         if (elementPositionChangeCacheCount == 0){
-            const NSInteger DefaultCount = MAX(256, pow(2, log2(index + 1) + 1));
+            const NSInteger DefaultCount = initialCacheSizeForElementIndex(index, cachedElementCount);
             elementPositionChangeCache = calloc(DefaultCount, sizeof(ElementPositionChange));
             elementPositionChangeCacheCount = DefaultCount;
         } else if (index >= elementPositionChangeCacheCount) {
@@ -287,7 +304,7 @@ typedef struct LengthCacheItem {
 -(void)cacheSubpathRange:(NSRange)range {
     @synchronized (lock) {
         if (subpathRangesCount == 0){
-            const NSInteger DefaultCount = 256;
+            const NSInteger DefaultCount = kDefaultCacheFloor;
             subpathRanges = calloc(DefaultCount, sizeof(NSRange));
             subpathRangesCount = DefaultCount;
         } else if (subpathRangesNextIndex >= subpathRangesCount) {
@@ -319,6 +336,28 @@ typedef struct LengthCacheItem {
         }
     }
     return NSMakeRange(NSNotFound, 0);
+}
+
+#pragma mark - Reset
+
+-(void)resetElementCaches {
+    @synchronized (lock) {
+        if (lengthCacheCount > 0 && elementLengthCache) {
+            free(elementLengthCache);
+            elementLengthCache = nil;
+            lengthCacheCount = 0;
+        }
+        if (totalLengthCacheCount > 0 && totalLengthCache) {
+            free(totalLengthCache);
+            totalLengthCache = nil;
+            totalLengthCacheCount = 0;
+        }
+        if (elementPositionChangeCacheCount > 0 && elementPositionChangeCache) {
+            free(elementPositionChangeCache);
+            elementPositionChangeCache = nil;
+            elementPositionChangeCacheCount = 0;
+        }
+    }
 }
 
 @end
