@@ -19,8 +19,8 @@ typedef struct LengthCacheItem {
 } LengthCacheItem;
 
 // `knownElementCount` ≤ 0 means "unknown" — falls back to the doubling heuristic.
-// Safe to read cachedElementCount unsynchronized: the lowerBound floor guarantees
-// room for `index` regardless of staleness; the grow path corrects any undersize.
+// Safe even if knownElementCount is stale: the lowerBound floor always guarantees
+// room for `index`, and the grow path corrects any undersize on overflow.
 static inline NSInteger initialCacheSizeForElementIndex(NSInteger index, NSInteger knownElementCount)
 {
     NSInteger lowerBound = MAX(kDefaultCacheFloor, index + 1);

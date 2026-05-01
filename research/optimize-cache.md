@@ -51,7 +51,7 @@ Note: each cache only allocates if its API is called. A path you only ever read 
 
 **Savings: ~9.6 KB per fully-populated path, ~72%.** For length-only callers, ~5 KB / ~61%.
 
-> Note: this table shows what a perfectly-sized cache would cost. Proposal A as shipped keeps a 16-slot floor on every cache, so a path with 1–3 subpaths still allocates 16 `NSRange` slots (256 B) for `subpathRanges`. Proposal B (size to element count) closes most of the remaining gap.
+> Note: this table shows what a perfectly-sized cache would cost. As shipped, every cache has a 16-slot floor, so a path with 1–3 subpaths still allocates 16 `NSRange` slots (256 B) for `subpathRanges`. Proposal B closes the gap for the three element-indexed caches; `subpathRanges` keeps the floor-only allocation since subpath count is what that cache is computing.
 
 ### Allocator rounding caveat
 
@@ -162,14 +162,14 @@ typedef struct ElementCacheEntry {
 
 **For a 10,000-path workload** the metadata savings might actually matter: 30,000 small allocations → 10,000 means ~20,000 fewer slab entries, fewer alloc-time locks, faster `dealloc`.
 
-## Recommendation
+## What shipped
 
-Tackle in two stages:
+Proposals A and B were shipped together:
 
-1. **Ship Proposal A first.** One-line change per cache, ~65% memory reduction on small paths, no behavior change. Low risk, immediate win.
-2. **Measure before doing B or C.** If `Instruments` shows allocator pressure or significant time in `calloc` during path construction, layer Proposal B on top. Save Proposal C for when there's evidence the allocator overhead matters at scale — e.g. `xctrace` shows many `_malloc_zone_malloc` calls on the path-construction hot path.
+- **A** — drop the 256-slot floor on all four caches to 16 (`kDefaultCacheFloor`).
+- **B** — on first cache write to an element-indexed cache, size to `cachedElementCount` when it's known, falling back to the doubling pow-of-two when it's not. `subpathRanges` is unchanged by B because it's subpath-indexed, not element-indexed; we don't know the subpath count ahead of time.
 
-The thing **not** to do is jump straight to Proposal C — the lazy per-cache allocation is currently a strength (a path that only needs `length` only pays for `length`'s caches), and consolidating loses that without a measured win.
+Proposal C (consolidating the three element-indexed caches into one allocation) was **not** shipped. It's a wash for memory unless callers always populate all three caches, and the lazy per-cache allocation is a strength worth keeping by default. Revisit only if profiling shows allocator-metadata overhead at scale — e.g. `xctrace` showing many `_malloc_zone_malloc` calls on the path-construction hot path.
 
 ## Out of scope but related
 

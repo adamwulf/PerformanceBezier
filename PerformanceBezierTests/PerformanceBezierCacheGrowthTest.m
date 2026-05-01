@@ -98,8 +98,7 @@
     XCTAssertEqual(middle.length, (NSUInteger)3);
 }
 
-// Builds a 100-element path before the first cache write so the cache is
-// sized to the element count, then grows past it to force the doubling path.
+// Builds a 100-element path before the first cache write, then grows past it.
 - (void)testCacheGrowthFromKnownElementCountSizing
 {
     UIBezierPath *path = [self pathWithLineSegmentCount:99 startingAt:CGPointMake(0, 0)];
@@ -115,8 +114,7 @@
     XCTAssertEqualWithAccuracy([path lengthOfElement:299 withAcceptableError:0.5], 1.0, 0.0001);
 }
 
-// Archiving restores cachedElementCount but starts the C-array caches fresh,
-// so the next length query sizes its cache from the restored element count.
+// Archiving restores cachedElementCount but starts the C-array caches fresh.
 - (void)testCacheSizingAfterArchiverRoundTrip
 {
     UIBezierPath *path = [self pathWithLineSegmentCount:50 startingAt:CGPointMake(0, 0)];
@@ -165,7 +163,7 @@
     XCTAssertEqualWithAccuracy([original lengthOfElement:4 withAcceptableError:0.5], 1.0, 0.0001);
 }
 
-// Sanity check that calloc/free pairs balance under high path churn.
+// Smoke test for crashes under high path churn; pair with ASan/leaks for full coverage.
 - (void)testManySmallPathsAllocateAndFreeCleanly
 {
     for (NSInteger i = 0; i < 5000; i++) {
