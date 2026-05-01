@@ -98,10 +98,8 @@
     XCTAssertEqual(middle.length, (NSUInteger)3);
 }
 
-// First cache write happens after the path has grown past the 16-slot floor,
-// so the helper sizes the cache from cachedElementCount instead of the floor.
-// Then the path grows further to force the doubling grow path off the
-// exact-fit allocation.
+// Builds a 100-element path before the first cache write so the cache is
+// sized to the element count, then grows past it to force the doubling path.
 - (void)testCacheGrowthFromKnownElementCountSizing
 {
     UIBezierPath *path = [self pathWithLineSegmentCount:99 startingAt:CGPointMake(0, 0)];
@@ -117,9 +115,8 @@
     XCTAssertEqualWithAccuracy([path lengthOfElement:299 withAcceptableError:0.5], 1.0, 0.0001);
 }
 
-// After NSKeyedUnarchiver, cachedElementCount is restored but the C-array
-// caches start fresh. The next length query hits Proposal B's known-count
-// sizing path with a non-zero count carried in from the archive.
+// Archiving restores cachedElementCount but starts the C-array caches fresh,
+// so the next length query sizes its cache from the restored element count.
 - (void)testCacheSizingAfterArchiverRoundTrip
 {
     UIBezierPath *path = [self pathWithLineSegmentCount:50 startingAt:CGPointMake(0, 0)];
@@ -147,8 +144,7 @@
     XCTAssertEqual(rng.length, (NSUInteger)2);
 }
 
-// Mutating the copy (including a removeAllPoints+rebuild that frees and
-// reallocates the copy's own caches) must not corrupt the original's caches.
+// Mutating the copy must not corrupt the original's caches.
 - (void)testCopiedPathHasIndependentCaches
 {
     UIBezierPath *original = [self pathWithLineSegmentCount:4 startingAt:CGPointMake(0, 0)];
@@ -170,7 +166,6 @@
 }
 
 // Sanity check that calloc/free pairs balance under high path churn.
-// Run under the leaks/asan instruments to catch regressions.
 - (void)testManySmallPathsAllocateAndFreeCleanly
 {
     for (NSInteger i = 0; i < 5000; i++) {
