@@ -159,7 +159,10 @@
 
         [UIBezierPath subdivideBezierAtT:bez bez1:bez1 bez2:bez2 t:t];
 
-        int lengthCacheIndex = (int)floorf(t * 1000);
+        // the binary search can converge on t == 1.0 exactly (and float rounding
+        // can push t * 1000 to 1000 even for t < 1), which would index one past
+        // the end of the 1000-slot cache
+        int lengthCacheIndex = MIN(999, (int)floor(t * 1000));
         len1 = subBezierLengthCache[lengthCacheIndex];
         if (!len1) {
             len1 = [UIBezierPath lengthOfBezier:bez1 withAccuracy:0.5 * acceptableError];
