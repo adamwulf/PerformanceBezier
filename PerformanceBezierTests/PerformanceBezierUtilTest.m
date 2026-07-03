@@ -117,6 +117,22 @@
     XCTAssertEqualObjects([[path userInfo] objectForKey:@"color"], color);
 }
 
+// requesting a length past the end of the curve drives the binary search's
+// t value to exactly 1.0, which must not index past the 1000-slot length cache
+- (void)testSubdivideAtLengthPastEndOfCurve
+{
+    CGPoint bez[4] = {CGPointMake(100, 100), CGPointMake(150, 100), CGPointMake(200, 100), CGPointMake(250, 100)};
+    CGPoint left[4];
+    CGPoint right[4];
+    CGFloat cache[1001] = {0};
+
+    [UIBezierPath subdivideBezier:bez intoLeft:left andRight:right atLength:200 withAcceptableError:0.5 withCache:cache];
+
+    XCTAssertEqual(cache[1000], 0);
+    XCTAssertEqual(left[3].x, 250);
+    XCTAssertEqual(left[3].y, 100);
+}
+
 - (void)testUserInfoSecureArchiving
 {
     if (@available(iOS 11.0, *)) {
