@@ -21,8 +21,6 @@
 // helper functions to prime the above caches
 void countPathElement(void *info, const CGPathElement *element);
 
-void updatePathElementAtIndex(void *info, const CGPathElement *element);
-
 @end
 
 

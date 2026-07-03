@@ -28,11 +28,6 @@
 // access to the element's points, then use the method above.
 - (CGPathElement)elementAtIndex:(NSInteger)index;
 
-// modifies the element at the index to have the input
-// points associated with it. This allows modifying the
-// path in place
-- (void)setAssociatedPoints:(CGPoint[])points atIndex:(NSInteger)index;
-
 // returns the bounds of the path including its control points
 - (CGRect)controlPointBounds;
 

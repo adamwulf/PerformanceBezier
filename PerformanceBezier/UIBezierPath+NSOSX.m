@@ -132,40 +132,6 @@ static char ELEMENT_ARRAY;
 
 
 /**
- * updates the point in the path with the new input points
- *
- * TODO: this method is entirely untested
- */
-- (void)setAssociatedPoints:(CGPoint[])points atIndex:(NSInteger)index
-{
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:[NSNumber numberWithInteger:index] forKey:@"index"];
-    [params setObject:[NSValue valueWithPointer:points] forKey:@"points"];
-    const void *_Nullable paramPtr = CFBridgingRetain(params);
-    CGPathApply(self.CGPath, (void *_Nullable) paramPtr, updatePathElementAtIndex);
-    CFRelease(paramPtr);
-}
-//
-// helper function for the setAssociatedPoints: method
-void updatePathElementAtIndex(void *info, const CGPathElement *element)
-{
-    NSMutableDictionary *params = (__bridge NSMutableDictionary *)info;
-    int currentIndex = 0;
-    if ([params objectForKey:@"curr"]) {
-        currentIndex = [[params objectForKey:@"curr"] intValue] + 1;
-    }
-    if (currentIndex == [[params objectForKey:@"index"] intValue]) {
-        CGPoint *points = [[params objectForKey:@"points"] pointerValue];
-        for (int i = 0; i < [UIBezierPath numberOfPointsForElement:*element]; i++) {
-            element->points[i] = points[i];
-        }
-        CGPathElement *returnVal = [UIBezierPath copyCGPathElement:(CGPathElement *)element];
-        [params setObject:[NSValue valueWithPointer:returnVal] forKey:@"element"];
-    }
-    [params setObject:[NSNumber numberWithInt:currentIndex] forKey:@"curr"];
-}
-
-/**
  * Returns the bounding box containing all points in a graphics path.
  * The bounding box is the smallest rectangle completely enclosing
  * all points in the path, including control points for Bézier and
